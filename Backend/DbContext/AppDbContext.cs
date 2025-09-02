@@ -9,7 +9,8 @@ public class AppDbContext : DbContext
     {
         base.OnModelCreating(modelBuilder);
         modelBuilder.Entity<User>().HasData(
-            new User { Id = 1, Name = "test" }
+            new User { Id = 1, Name = "test" },
+            new User { Id = 2, Name = "test2" }
         );
 
     }
