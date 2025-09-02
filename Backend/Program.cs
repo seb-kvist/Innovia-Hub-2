@@ -1,15 +1,39 @@
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Data.Common;
+using System.Collections.Generic;
+
+using DotNetEnv;
+
 var builder = WebApplication.CreateBuilder(args);
 
+Env.Load(); 
 
 builder.Services.AddOpenApi();
 
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
-    var cs = builder.Configuration.GetConnectionString("DefaultConnection");
+   
+    var envHost = Environment.GetEnvironmentVariable("DB_HOST");
+    string cs;
+    if (!string.IsNullOrEmpty(envHost))
+    {
+        var host = envHost;
+        var port = Environment.GetEnvironmentVariable("DB_PORT") ?? "3306";
+        var user = Environment.GetEnvironmentVariable("DB_USER") ?? "";
+        var pass = Environment.GetEnvironmentVariable("DB_PASSWORD") ?? "";
+        var db = Environment.GetEnvironmentVariable("DB_NAME") ?? "";
+        cs = $"Server={host};Port={port};Database={db};User={user};Password={pass};TreatTinyAsBoolean=true";
+    }
+    else
+    {
+        cs = builder.Configuration.GetConnectionString("DefaultConnection");
+    }
+
     options.UseMySql(cs, ServerVersion.AutoDetect(cs));
 });
 var app = builder.Build();
+
 
 
 if (app.Environment.IsDevelopment())
@@ -20,6 +44,8 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 
-app.MapGet("/ping", () => Results.Ok(new { status = "ok" }));
+
+
+
 
 app.Run();
