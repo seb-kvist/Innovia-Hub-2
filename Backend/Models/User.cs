@@ -1,8 +1,9 @@
+using Microsoft.AspNetCore.Identity;
+
 namespace Backend.Models;
 
-public class User
+/// Identity-användare. Ärver från IdentityUser<int> vilket ger Id, Email, PasswordHash m.m.
+public class User : IdentityUser
 {
-    public int Id { get; set; }
     public string Name { get; set; }
-    
 }
