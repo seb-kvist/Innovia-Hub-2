@@ -6,6 +6,10 @@ using System.Collections.Generic;
 using DotNetEnv;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
+using API;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using System.Text;
+using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,7 +30,7 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
 
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
-   
+
     var envHost = Environment.GetEnvironmentVariable("DB_HOST");
     string cs;
     if (!string.IsNullOrEmpty(envHost))
@@ -45,23 +49,69 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
     options.UseMySql(cs, ServerVersion.AutoDetect(cs));
 });
+builder.Services.AddCors(options =>
+    {
+        options.AddDefaultPolicy(policy =>
+        {
+            policy.AllowAnyOrigin()
+             .AllowAnyHeader()
+             .AllowAnyMethod();
+        });
+    });
+
+builder.Services.AddScoped<JwtToken>();
+builder.Services.AddIdentity<IdentityUser, IdentityRole>()
+    .AddEntityFrameworkStores<AppDbContext>()
+    .AddDefaultTokenProviders();
+builder.Configuration
+    .SetBasePath(Directory.GetCurrentDirectory())
+    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+    .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true)
+    .AddEnvironmentVariables();
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("AdminPolicy", policy => policy.RequireRole("admin"));
+});
+
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(options =>
+{
+    var key = builder.Configuration.GetValue<string>("Jwt:Key");
+    var issuer = builder.Configuration.GetValue<string>("Jwt:Issuer");
+    var audience = builder.Configuration.GetValue<string>("Jwt:Audience");
+    var keyBytes = Encoding.ASCII.GetBytes(key);
+
+    options.SaveToken = true;
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidIssuer = issuer,
+        ValidateAudience = true,
+        ValidAudience = audience,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(keyBytes)
+    };
+}); 
+
+builder.Services.AddAuthorization();
 var app = builder.Build();
-
-
 
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
 }
+
+app.UseCors();
 app.MapControllers();
 app.UseAuthentication();
 app.UseAuthorization();
-
+app.UseStaticFiles();
 app.UseHttpsRedirection();
-
-
-
-
-
 
 app.Run();
