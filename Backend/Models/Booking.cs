@@ -4,7 +4,7 @@ namespace Backend.Models;
 
 public class Booking
 {
-     public int Id { get; set; }
+    public int Id { get; set; }
     public DateTime Date { get; set; }
     public required string TimeSlot { get; set; } // (08–10)
 

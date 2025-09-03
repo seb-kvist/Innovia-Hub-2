@@ -5,6 +5,8 @@ using Backend.Models;
 
 public class AppDbContext : IdentityDbContext<IdentityUser>
 {
+    public DbSet<Resource> Resources{ get; set; }
+    public DbSet<Booking> Bookings{ get; set; }
     public AppDbContext(DbContextOptions<AppDbContext> options)
         : base(options)
     {
