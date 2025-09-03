@@ -6,4 +6,7 @@ namespace Backend.Models;
 public class User : IdentityUser
 {
     public string Name { get; set; }
+
+    //Relations
+    public ICollection<Booking> Bookings { get; set; } = new List<Booking>();
 }
