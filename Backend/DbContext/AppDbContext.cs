@@ -9,4 +9,8 @@ public class AppDbContext : IdentityDbContext<IdentityUser>
         : base(options)
     {
     }
+
+    public DbSet<ResourceType> ResourceTypes { get; set; }
+    public DbSet<Resource> Resources { get; set; }
+    public DbSet<Booking> Bookings { get; set; }
 }
