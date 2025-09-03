@@ -4,12 +4,25 @@ using System.Data.Common;
 using System.Collections.Generic;
 
 using DotNetEnv;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
-Env.Load(); 
+Env.Load();
 
 builder.Services.AddOpenApi();
+builder.Services.AddControllers();
+
+builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
+    {
+        options.Password.RequireDigit = true;
+        options.Password.RequiredLength = 6;
+        options.Password.RequireNonAlphanumeric = false;
+        options.Password.RequireUppercase = false;
+    })
+    .AddEntityFrameworkStores<AppDbContext>()
+    .AddDefaultTokenProviders();
 
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
@@ -40,6 +53,9 @@ if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
 }
+app.MapControllers();
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.UseHttpsRedirection();
 

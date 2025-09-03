@@ -1,17 +1,12 @@
-using Backend.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-public class AppDbContext : DbContext
+using Microsoft.AspNetCore.Identity;
+using Backend.Models;
+
+public class AppDbContext : IdentityDbContext<IdentityUser>
 {
-    public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
-
-    public DbSet<User> Users { get; set; }
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    public AppDbContext(DbContextOptions<AppDbContext> options)
+        : base(options)
     {
-        base.OnModelCreating(modelBuilder);
-        modelBuilder.Entity<User>().HasData(
-            new User { Id = 1, Name = "test" },
-            new User { Id = 2, Name = "test2" }
-        );
-
     }
 }
