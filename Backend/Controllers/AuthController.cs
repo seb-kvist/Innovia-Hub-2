@@ -3,7 +3,7 @@ using Backend.DTOs.Auth;
 using Backend.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Backend.DTOs.Auth;
+
 
 namespace Backend.Controllers;
 
@@ -21,8 +21,8 @@ public class AuthController : ControllerBase
         _signInManager = signInManager;
 
     }
-    
-      [HttpPost("register")]
+
+    [HttpPost("register")]
     public async Task<IActionResult> Register([FromBody] DTORegisterRequest model)
     {
         var user = new User { UserName = model.Name, Email = model.Email };
@@ -33,6 +33,26 @@ public class AuthController : ControllerBase
 
         return Ok(new { Message = "User registered successfully" });
     }
+
+    [HttpPost("login")]
+    public async Task<IActionResult> Login([FromBody] DTOLoginRequest model)
+    {
+        if (!ModelState.IsValid) return BadRequest(ModelState);
+
+        
+        var user = await _userManager.FindByEmailAsync(model.Email);
+        if (user == null) return Unauthorized(new { Message = "Invalid credentials" });
+
+        
+        var signInResult = await _signInManager.CheckPasswordSignInAsync(user, model.Password, lockoutOnFailure: false);
+        if (!signInResult.Succeeded) return Unauthorized(new { Message = "Invalid credentials" });
+
+        
+        return Ok(new { Message = "Login successful", user.Id, user.Email, user.UserName });
+    }
+    
+    
+
 
 
 }
