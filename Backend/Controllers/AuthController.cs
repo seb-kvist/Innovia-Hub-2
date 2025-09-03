@@ -35,7 +35,7 @@ public class AuthController : ControllerBase
         var existingUser = await _userManager.FindByEmailAsync(model.Email);
         if (existingUser != null)
         {
-            return Conflict(new { message = "Username is already taken" });
+            return Conflict(new { message = "Email is already taken" });
         }
 
         var user = new User { UserName = model.Name, Email = model.Email };
