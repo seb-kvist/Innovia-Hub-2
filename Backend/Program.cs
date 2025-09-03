@@ -10,12 +10,15 @@ using API;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
+using Backend.Interfaces.IRepositories;
+using Backend.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
 Env.Load();
 
 builder.Services.AddOpenApi();
+builder.Services.AddScoped<IBookingRepository, BookingRepository>();
 builder.Services.AddControllers();
 
 builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>

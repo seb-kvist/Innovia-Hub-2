@@ -1,4 +1,6 @@
-POST /api/booking
+POST http://localhost:5022/api/booking
+Content-Type: application/json
+
 {
   "date": "2025-09-05",
   "timeSlot": "10-12",
