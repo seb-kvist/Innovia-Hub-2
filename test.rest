@@ -1,0 +1,7 @@
+POST /api/booking
+{
+  "date": "2025-09-05",
+  "timeSlot": "10-12",
+  "resourceId": 1,
+  "userId": "abc123"
+}
