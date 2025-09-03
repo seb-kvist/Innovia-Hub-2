@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Backend.DTOs.Auth;
 using API;
 
+
 namespace Backend.Controllers;
 
 [ApiController]
@@ -45,5 +46,24 @@ public class AuthController : ControllerBase
 
         return Ok(new { Message = "User registered successfully" });
     }
+
+
+    [HttpPost("login")]
+    public async Task<IActionResult> Login([FromBody] DTOLoginRequest model)
+    {
+        if (!ModelState.IsValid) return BadRequest(ModelState);
+
+        
+        var user = await _userManager.FindByEmailAsync(model.Email);
+        if (user == null) return Unauthorized(new { Message = "Invalid credentials" });
+
+        
+        var signInResult = await _signInManager.CheckPasswordSignInAsync(user, model.Password, lockoutOnFailure: false);
+        if (!signInResult.Succeeded) return Unauthorized(new { Message = "Invalid credentials" });
+
+        
+        return Ok(new { Message = "Login successful", user.Id, user.Email, user.UserName });
+    }
+    
     
 }
