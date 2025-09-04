@@ -9,9 +9,9 @@ namespace Backend.Repositories;
 
 public class UserRepository : IUserRepository
 {
-    private readonly UserManager<User> _userManager;
+    private readonly UserManager<IdentityUser> _userManager;
 
-    public UserRepository(UserManager<User> userManager)
+    public UserRepository(UserManager<IdentityUser> userManager)
     {
         _userManager = userManager;
     }
@@ -25,18 +25,15 @@ public class UserRepository : IUserRepository
             users = users.Where(u => u.Email.Contains(filter.Email));
 
         if (!string.IsNullOrEmpty(filter?.Name))
-            users = users.Where(u => u.Name.Contains(filter.Name));
-
-        if (filter?.CreatedAfter != null)
-            users = users.Where(u => u.CreatedAt >= filter.CreatedAfter);
+            users = users.Where(u => u.UserName.Contains(filter.Name));
 
         return await users
             .Select(u => new DTOUserProfile
             {
                 Id = u.Id,
                 Email = u.Email,
-                Name = u.Name,
-                CreatedAt = u.CreatedAt
+                Name = u.UserName,
+                CreatedAt = DateTime.UtcNow
             })
             .ToListAsync();
     }
@@ -51,8 +48,8 @@ public class UserRepository : IUserRepository
         {
             Id = user.Id,
             Email = user.Email,
-            Name = user.Name,
-            CreatedAt = user.CreatedAt
+            Name = user.UserName,
+            CreatedAt = DateTime.UtcNow
         };
     }
 
@@ -67,7 +64,7 @@ public class UserRepository : IUserRepository
             user.Email = dto.Email;
 
         if (!string.IsNullOrEmpty(dto.Name))
-            user.Name = dto.Name;
+            user.UserName = dto.Name;
 
         var result = await _userManager.UpdateAsync(user);
         if (!result.Succeeded) return null;
@@ -76,8 +73,8 @@ public class UserRepository : IUserRepository
         {
             Id = user.Id,
             Email = user.Email,
-            Name = user.Name,
-            CreatedAt = user.CreatedAt
+            Name = user.UserName,
+            CreatedAt = DateTime.UtcNow
         };
     }
 
