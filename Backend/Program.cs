@@ -13,12 +13,15 @@ using Microsoft.IdentityModel.Tokens;
 using Backend.Interfaces.IRepositories;
 using Backend.Repositories;
 
+using Backend.Interfaces;
+
 var builder = WebApplication.CreateBuilder(args);
 
 Env.Load();
 
 builder.Services.AddOpenApi();
 builder.Services.AddScoped<IBookingRepository, BookingRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddControllers();
 
 builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
