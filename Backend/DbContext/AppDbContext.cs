@@ -13,8 +13,9 @@ public class AppDbContext : IdentityDbContext<User>
     public DbSet<ResourceType> ResourceTypes { get; set; }
     public DbSet<Resource> Resources { get; set; }
     public DbSet<Booking> Bookings { get; set; }
-      protected override void OnModelCreating(ModelBuilder builder)
-        {
-            base.OnModelCreating(builder);
+    protected override void OnModelCreating(ModelBuilder builder)
+    {
+        base.OnModelCreating(builder);
+            
         }
 }

@@ -53,17 +53,30 @@ public class AuthController : ControllerBase
     {
         if (!ModelState.IsValid) return BadRequest(ModelState);
 
-        
+
         var user = await _userManager.FindByEmailAsync(model.Email);
         if (user == null) return Unauthorized(new { Message = "Invalid credentials" });
 
-        
+
         var signInResult = await _signInManager.CheckPasswordSignInAsync(user, model.Password, lockoutOnFailure: false);
         if (!signInResult.Succeeded) return Unauthorized(new { Message = "Invalid credentials" });
 
-        
+
         return Ok(new { Message = "Login successful", user.Id, user.Email, user.UserName });
     }
     
+    [HttpGet("generate-system-token")]
+    public IActionResult GenerateSystemToken([FromServices] JwtToken jwtToken)
+    {
+        var systemUser = new User
+        {
+            Id = "system-user-id",
+            UserName = "admin",
+            Email = "admin@example.com"
+        };
+
+        var token = jwtToken.GenerateJwtToken(systemUser, "Admin");
+        return Ok(new { token });
+}
     
 }

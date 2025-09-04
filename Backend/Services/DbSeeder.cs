@@ -1,10 +1,11 @@
 using Backend.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace Backend.Services;
 
 public static class DbSeeder
 {
-    public static void Seed(AppDbContext context)
+    public static void Seed(AppDbContext context, UserManager<User> userManager)
     {
         //ResourceTypes
         if (!context.ResourceTypes.Any())
@@ -35,6 +36,39 @@ public static class DbSeeder
             context.Resources.AddRange(aiServers);
 
             context.SaveChanges();
+        }
+
+        if (!context.Users.Any(u => u.UserName == "admin"))
+        {
+            var systemUser = new User
+            {
+                Id = "system-user-id",
+                UserName = "admin",
+                NormalizedUserName = "ADMIN",
+                Email = "admin@example.com",
+                NormalizedEmail = "ADMIN@EXAMPLE.COM",
+                SecurityStamp = Guid.NewGuid().ToString(),
+                ConcurrencyStamp = Guid.NewGuid().ToString(),
+                Name = "System Admin"
+            };
+
+            var passwordHasher = new PasswordHasher<User>();
+            systemUser.PasswordHash = passwordHasher.HashPassword(systemUser, "AdminPassword123!");
+
+            var result = userManager.CreateAsync(systemUser).Result;
+
+            if (!result.Succeeded)
+            {
+                Console.WriteLine("Failed to create system user:");
+                foreach (var error in result.Errors)
+                {
+                    Console.WriteLine($"- {error.Description}");
+                }
+            }
+            else
+            {
+                Console.WriteLine("System user created successfully.");
+            }
         }
     }
 }
