@@ -1,3 +1,20 @@
+@hostname = localhost
+@port = 5022
+@host = {{hostname}}:{{port}}
+@usertoken = 
+@admintoken = 
+###
+
+POST http://{{host}}/api/auth/register
+Content-Type: application/json
+
+{
+    "email":"test@test.com",
+    "password":"test123!",
+    "name":"test"
+}
+
+###
 POST http://localhost:5022/api/booking
 Content-Type: application/json
 
@@ -5,5 +22,10 @@ Content-Type: application/json
   "date": "2025-09-05",
   "timeSlot": "10-12",
   "resourceId": 1,
-  "userId": "abc123"
+  "userId": "01d5c033-a326-4106-9db3-e6fb34972b18"
 }
+
+###
+
+DELETE http://localhost:5022/api/booking/12
+Accept: application/json

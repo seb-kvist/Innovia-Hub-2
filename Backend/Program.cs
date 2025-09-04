@@ -14,6 +14,9 @@ using Backend.Interfaces.IRepositories;
 using Backend.Repositories;
 
 using Backend.Interfaces;
+using Backend.Services;
+using Backend.Models;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,7 +27,7 @@ builder.Services.AddScoped<IBookingRepository, BookingRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddControllers();
 
-builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
+builder.Services.AddIdentity<User, IdentityRole>(options =>
     {
         options.Password.RequireDigit = true;
         options.Password.RequiredLength = 6;
@@ -105,7 +108,12 @@ builder.Services.AddAuthentication(options =>
 
 builder.Services.AddAuthorization();
 var app = builder.Build();
-
+// Seed database
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    DbSeeder.Seed(db);
+}
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();

@@ -13,11 +13,11 @@ namespace Backend.Controllers;
 [Route("api/[controller]")]
 public class AuthController : ControllerBase
 {
-    private readonly UserManager<IdentityUser> _userManager;
-    private readonly SignInManager<IdentityUser> _signInManager;
+    private readonly UserManager<User> _userManager;
+    private readonly SignInManager<User> _signInManager;
     private readonly JwtToken _jwtToken;
 
-    public AuthController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, JwtToken jwtToken)
+    public AuthController(UserManager<User> userManager, SignInManager<User> signInManager, JwtToken jwtToken)
     {
         _userManager = userManager;
         _signInManager = signInManager;

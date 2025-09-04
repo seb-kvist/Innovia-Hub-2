@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Backend.Repositories;
 
-public class BookingRepository: IBookingRepository
+public class BookingRepository : IBookingRepository
 {
     private readonly AppDbContext _context;
     public BookingRepository(AppDbContext context)
@@ -36,8 +36,13 @@ public class BookingRepository: IBookingRepository
     {
         return !await _context.Bookings.AnyAsync(b => b.ResourceId == resourceId && b.Date.Date == dateTime.Date && b.TimeSlot == timeSlot);
     }
-    public Task DeleteBooking(int bookingId)
+    public async Task<bool> DeleteBooking(int bookingId)
     {
-        throw new NotImplementedException();
+        var booking = await _context.Bookings.FindAsync(bookingId);
+        if (booking == null) return false;
+
+        _context.Bookings.Remove(booking);
+        await _context.SaveChangesAsync();
+        return true;
     }
 }

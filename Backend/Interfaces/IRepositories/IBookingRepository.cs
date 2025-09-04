@@ -8,5 +8,5 @@ public interface IBookingRepository
 {
     Task<Booking> AddBookingAsync(DTOCreateBooking booking);
     Task<bool> IsResourceAvailableAsync(int resourceId, DateTime date, string timeSlot);
-    Task DeleteBooking(int bookingId);
+    Task <bool>DeleteBooking(int bookingId);
 }

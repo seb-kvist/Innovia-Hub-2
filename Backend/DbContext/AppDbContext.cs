@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using Backend.Models;
 
-public class AppDbContext : IdentityDbContext<IdentityUser>
+public class AppDbContext : IdentityDbContext<User>
 {
     public AppDbContext(DbContextOptions<AppDbContext> options)
         : base(options)
@@ -11,6 +11,10 @@ public class AppDbContext : IdentityDbContext<IdentityUser>
     }
 
     public DbSet<ResourceType> ResourceTypes { get; set; }
-    public DbSet<Resource> Resources{ get; set; }
-    public DbSet<Booking> Bookings{ get; set; }
+    public DbSet<Resource> Resources { get; set; }
+    public DbSet<Booking> Bookings { get; set; }
+      protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+        }
 }
