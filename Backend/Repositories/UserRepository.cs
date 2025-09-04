@@ -9,9 +9,9 @@ namespace Backend.Repositories;
 
 public class UserRepository : IUserRepository
 {
-    private readonly UserManager<IdentityUser> _userManager;
+    private readonly UserManager<User> _userManager;
 
-    public UserRepository(UserManager<IdentityUser> userManager)
+    public UserRepository(UserManager<User> userManager)
     {
         _userManager = userManager;
     }

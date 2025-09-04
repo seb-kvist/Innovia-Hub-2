@@ -10,7 +10,7 @@ public class Resource
 
     //Relations
     public int ResourceTypeId { get; set; }
-    public required ResourceType ResourceType { get; set; }
+    public  ResourceType? ResourceType { get; set; }
 
     public ICollection<Booking> Bookings { get; set; } = new List<Booking>();
 }

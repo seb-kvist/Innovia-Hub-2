@@ -9,7 +9,4 @@ public class User : IdentityUser
 
     //Relations
     public ICollection<Booking> Bookings { get; set; } = new List<Booking>();
-
-    //För AnvändarFiltrering då det ej in går i Identity
-    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 }

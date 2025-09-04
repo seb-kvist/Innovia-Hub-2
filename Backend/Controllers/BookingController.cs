@@ -49,7 +49,7 @@ public class BookingController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> CreateBooking([FromBody] DTOCreateBooking dto)
     {
-           try
+        try
         {
             var booking = await _bookingRepository.AddBookingAsync(dto);
             return Ok(booking);
@@ -58,5 +58,14 @@ public class BookingController : ControllerBase
         {
             return BadRequest(new { message = ex.Message });
         }
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteBooking(int id)
+    {
+        var success = await _bookingRepository.DeleteBooking(id);
+        if (!success) return NotFound();
+
+        return NoContent();
     }
 }
