@@ -25,7 +25,28 @@ Content-Type: application/json
   "userId": "01d5c033-a326-4106-9db3-e6fb34972b18"
 }
 
-###
-
 DELETE http://localhost:5022/api/booking/12
 Accept: application/json
+
+### Hämta alla användare
+GET http://localhost:5022/api/users
+Accept: application/json
+
+
+### Hämta en specifik användare
+GET http://localhost:5022/api/users/01d5c033-a326-4106-9db3-e6fb34972b18
+Accept: application/json
+
+
+### Uppdatera en användare
+PUT http://localhost:5022/api/users/01d5c033-a326-4106-9db3-e6fb34972b18
+Content-Type: application/json
+
+{
+  "email": "nyemailviatest@mail.com",
+  "name": "NyttNamnviatest"
+}
+
+
+### Ta bort en användare
+DELETE http://localhost:5022/api/users/01d5c033-a326-4106-9db3-e6fb34972b18
