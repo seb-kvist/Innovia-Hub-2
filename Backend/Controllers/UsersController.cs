@@ -27,6 +27,7 @@ namespace Backend.Controllers
         }
 
         //GET för api/users/{id} - hämta specifik användare med id
+
         [Authorize]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(string id)
