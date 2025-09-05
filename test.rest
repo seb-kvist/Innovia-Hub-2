@@ -1,6 +1,7 @@
 @hostname = localhost
 @port = 5022
 @host = {{hostname}}:{{port}}
+@id= 841bdf6d-cb9d-4349-b290-f927cf2e9e93
 @usertoken = 
 @admintoken = 
 ###
@@ -14,6 +15,16 @@ Content-Type: application/json
     "name":"test"
 }
 
+
+### Logga in som användare
+POST http://{{host}}/api/auth/login
+Content-Type: application/json
+
+{
+    "email":"admin@example.com",
+    "password":"Admin@123"
+}
+
 ###
 POST http://localhost:5022/api/booking
 Content-Type: application/json
@@ -21,10 +32,49 @@ Content-Type: application/json
 {
   "date": "2025-09-05",
   "timeSlot": "10-12",
-  "resourceId": 1,
-  "userId": "01d5c033-a326-4106-9db3-e6fb34972b18"
+  "resourceTypeId": 1,
+  "userId": "{{id}}"
 }
 
+### Hämta alla bokningar
+GET  http://localhost:5022/api/booking/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjkyYmQ3ZWUxLTdjYTAtNDI2Yy04YzAwLTgwYmJiYWQyZWNhOCIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL2VtYWlsYWRkcmVzcyI6ImFkbWluQGV4YW1wbGUuY29tIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiYWRtaW4iLCJleHAiOjE3NTcxMjA3MDYsImlzcyI6Imlubm92aWFodWIiLCJhdWQiOiJpbm5vdmlhaHViIn0.xjf7rihd985RLJ_2dnTb5xBeyZ-2WvvC5yx2eSXut-w
+### Hämta bokningar för en specifik användare
+GET http://localhost:5022/api/booking/user/{{id}}
+Accept: application/json
+
+
+### change status
+PATCH  http://localhost:5022/api/booking/resource/24
+Content-Type: application/json
+
+
+
+
+### Hämta alla användare
+GET http://localhost:5022/api/users
+Accept: application/json
+
+
+### Hämta en specifik användare
+GET http://localhost:5022/api/users/{{id}}
+Accept: application/json
+
+
+### Uppdatera en användare
+PUT http://localhost:5022/api/users/{{id}}
+Content-Type: application/json
+
+{
+  "email": "nyemailviatest@mail.com",
+  "name": "NyttNamnviatest"
+}
+
+
+
+### Ta bort en användare
+DELETE http://localhost:5022/api/users/system-user-id
+=======
 DELETE http://localhost:5022/api/booking/12
 Accept: application/json
 
@@ -50,3 +100,4 @@ Content-Type: application/json
 
 ### Ta bort en användare
 DELETE http://localhost:5022/api/users/01d5c033-a326-4106-9db3-e6fb34972b18
+

@@ -15,27 +15,43 @@ public class BookingRepository : IBookingRepository
     }
     public async Task<Booking> AddBookingAsync(DTOCreateBooking booking)
     {
-        var available = await IsResourceAvailableAsync(booking.ResourceId, booking.Date, booking.TimeSlot);
-        if (!available)
-        {
-            throw new Exception("Resource is already booked for this timeslot.");
-        }
+        var resourcesList = await GetAvailableResourcesAsync(booking.ResourceTypeId, booking.Date, booking.TimeSlot);
+        var resource = GetResourceByIdAsync(resourcesList);
+
+      
         var newBooking = new Booking
         {
             Date = booking.Date,
             TimeSlot = booking.TimeSlot,
-            ResourceId = booking.ResourceId,
-            UserId = booking.UserId
+            ResourceTypeId = booking.ResourceTypeId,
+            UserId = booking.UserId,
+            ResourceId = resource!.Id,
         };
 
         _context.Bookings.Add(newBooking);
         await _context.SaveChangesAsync();
         return newBooking;
     }
-    public async Task<bool> IsResourceAvailableAsync(int resourceId, DateTime dateTime, string timeSlot)
+    public async Task<List<Resource>> GetAvailableResourcesAsync(
+                int resourceTypeId, DateTime date, string timeSlot)
+            {
+            var availableResources = await _context.Resources
+        .Where(r => r.IsBookable
+                 && r.ResourceTypeId == resourceTypeId
+                 && !r.Bookings.Any(b =>
+                        b.Date.Date == date.Date &&
+                        b.TimeSlot == timeSlot))
+        .ToListAsync();
+
+            return availableResources;
+        }
+
+    public  Resource? GetResourceByIdAsync(List<Resource> resources)
     {
-        return !await _context.Bookings.AnyAsync(b => b.ResourceId == resourceId && b.Date.Date == dateTime.Date && b.TimeSlot == timeSlot);
+          return  resources.FirstOrDefault();
+            
     }
+
     public async Task<bool> DeleteBooking(int bookingId)
     {
         var booking = await _context.Bookings.FindAsync(bookingId);

@@ -1,24 +1,29 @@
+using System.Threading.Tasks;
 using Backend.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace Backend.Services;
 
 public static class DbSeeder
 {
-    public static void Seed(AppDbContext context)
+    public static async Task Seed(
+        AppDbContext context,
+        UserManager<User> userManager,
+        RoleManager<IdentityRole> roleManager)
     {
-        //ResourceTypes
+        // ResourceTypes
         if (!context.ResourceTypes.Any())
         {
             context.ResourceTypes.AddRange(
-            new ResourceType { ResourceTypeName = "Drop-in skrivbord" },
-            new ResourceType { ResourceTypeName = "Mötesrum" },
-            new ResourceType { ResourceTypeName = "VR headset" },
-            new ResourceType { ResourceTypeName = "AI server" }
+                new ResourceType { ResourceTypeName = "Drop-in skrivbord" },
+                new ResourceType { ResourceTypeName = "Mötesrum" },
+                new ResourceType { ResourceTypeName = "VR headset" },
+                new ResourceType { ResourceTypeName = "AI server" }
             );
-            context.SaveChanges();
+            await context.SaveChangesAsync();
         }
 
-        //Resources
+        // Resources
         if (!context.Resources.Any())
         {
             var dropinDesks = Enumerable.Range(1, 15)
@@ -34,7 +39,43 @@ public static class DbSeeder
             context.Resources.AddRange(vrHeadsets);
             context.Resources.AddRange(aiServers);
 
-            context.SaveChanges();
+            await context.SaveChangesAsync();
+        }
+
+        // Ensure admin role exists
+        if (!await roleManager.RoleExistsAsync("admin"))
+        {
+            await roleManager.CreateAsync(new IdentityRole("admin"));
+        }
+
+        // Ensure admin user exists
+        var systemUser = await userManager.FindByNameAsync("admin");
+        if (systemUser == null)
+        {
+            systemUser = new User
+            {
+                UserName = "admin",
+                NormalizedUserName = "ADMIN",
+                Email = "admin@example.com",
+                NormalizedEmail = "ADMIN@EXAMPLE.COM",
+                Name = "System Admin"
+            };
+
+            var result = await userManager.CreateAsync(systemUser, "Admin@123");
+
+            if (result.Succeeded)
+            {
+                await userManager.AddToRoleAsync(systemUser, "admin");
+                Console.WriteLine("System user created and assigned to admin role.");
+            }
+            else
+            {
+                Console.WriteLine("Failed to create system user:");
+                foreach (var error in result.Errors)
+                {
+                    Console.WriteLine($"- {error.Description}");
+                }
+            }
         }
     }
 }
