@@ -1,4 +1,5 @@
 using System;
+using System.Text.Json.Serialization;
 
 namespace Backend.Models;
 
@@ -12,5 +13,6 @@ public class Resource
     public int ResourceTypeId { get; set; }
     public  ResourceType? ResourceType { get; set; }
 
+    [JsonIgnore]
     public ICollection<Booking> Bookings { get; set; } = new List<Booking>();
 }

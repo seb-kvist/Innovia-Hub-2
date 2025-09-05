@@ -38,6 +38,9 @@ namespace Backend.Migrations
                     b.Property<int>("ResourceId")
                         .HasColumnType("int");
 
+                    b.Property<int>("ResourceTypeId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime?>("StartTime")
                         .HasColumnType("datetime(6)");
 
@@ -51,6 +54,8 @@ namespace Backend.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("ResourceId");
+
+                    b.HasIndex("ResourceTypeId");
 
                     b.HasIndex("UserId");
 
@@ -307,6 +312,12 @@ namespace Backend.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Backend.Models.ResourceType", "ResourceType")
+                        .WithMany()
+                        .HasForeignKey("ResourceTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Backend.Models.User", "User")
                         .WithMany("Bookings")
                         .HasForeignKey("UserId")
@@ -314,6 +325,8 @@ namespace Backend.Migrations
                         .IsRequired();
 
                     b.Navigation("Resource");
+
+                    b.Navigation("ResourceType");
 
                     b.Navigation("User");
                 });

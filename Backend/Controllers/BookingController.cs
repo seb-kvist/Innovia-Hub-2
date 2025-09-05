@@ -4,6 +4,8 @@ using Backend.Models;
 using Backend.Interfaces.IRepositories;
 using System.Xml;
 using Backend.DTOs.Booking;
+using System.Runtime.Versioning;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Backend.Controllers;
 
@@ -20,13 +22,27 @@ public class BookingController : ControllerBase
         _bookingRepository = bookingRepository;
     }
 
+    [Authorize (Roles = "admin")]
+
     [HttpGet]
     public async Task<IActionResult> GetAllBookings()
     {
         var bookings = await _context.Bookings
-            .Include(b => b.User)
-            .Include(b => b.Resource)
-            .ToListAsync();
+        .Include(b => b.User)
+        .Include(b => b.ResourceType)
+        .Include(b => b.Resource)
+        .Select(b => new BookingsDto
+        {   userName = b.User.UserName,
+            date = b.Date.ToString("yyyy-MM-dd"),
+            timeSlot = b.TimeSlot,
+            resourceType = b.ResourceType.ResourceTypeName,
+            resourceName = b.Resource.ResourceName
+            
+        }).ToListAsync();
+           
+            
+
+        
 
         return Ok(bookings);
     }
@@ -35,9 +51,14 @@ public class BookingController : ControllerBase
     public async Task<IActionResult> GetUserBookings(string userId)
     {
         var userBookings = await _context.Bookings
-            .Where(b => b.UserId == userId)
-            .Include(b => b.Resource)
-            .ToListAsync();
+        .Include(b => b.Resource)
+        .Select(b => new UserBookingDTO
+        {   
+            date = b.Date.ToString("yyyy-MM-dd"),
+            timeSlot = b.TimeSlot,
+            resourceName = b.Resource.ResourceName
+            
+        }).ToListAsync();
 
         if (!userBookings.Any())
         {
@@ -52,14 +73,21 @@ public class BookingController : ControllerBase
         try
         {
             var booking = await _bookingRepository.AddBookingAsync(dto);
-            return Ok(booking);
+            
+            return Ok(new UserBookingDTO
+            {   
+                date = booking.Date.ToString("yyyy-MM-dd"),
+                timeSlot = booking.TimeSlot,
+                resourceName = booking.Resource!.ResourceName
+                
+            });
         }
         catch (Exception ex)
         {
             return BadRequest(new { message = ex.Message });
         }
     }
-
+    
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteBooking(int id)
     {
@@ -69,8 +97,8 @@ public class BookingController : ControllerBase
         return NoContent();
     }
 
-    [HttpPatch("resource/{resourceId}/unavailable")]
-    public async Task<IActionResult> MarkResourceUnavailable(int resourceId)
+    [HttpPatch("resource/{resourceId}")]
+    public async Task<IActionResult> ChangeResourceStatus(int resourceId)
     {
         var resource = await _context.Resources.FindAsync(resourceId);
         if (resource == null)
@@ -78,48 +106,35 @@ public class BookingController : ControllerBase
             return NotFound(new { message = "Resource not found" });
         }
 
-        resource.IsBookable = false;
+        resource.IsBookable =  !resource.IsBookable;
         await _context.SaveChangesAsync();
 
-        return Ok(new { message = "Resource marked as unavailable" });
+        return Ok(new { message = "Resource status is changed" });
     }
 
-    [HttpPatch("resource/{resourceId}/available")]
-    public async Task<IActionResult> MarkResourceAvailable(int resourceId)
-    {
-        var resource = await _context.Resources.FindAsync(resourceId);
-        if (resource == null)
-        {
-            return NotFound(new { message = "Resource not found" });
-        }
+    
 
-        resource.IsBookable = true; // Mark the resource as available
-        await _context.SaveChangesAsync();
+    // [HttpPost("resource/{resourceId}/block-period")]
+    // public async Task<IActionResult> BlockResourceForPeriod(int resourceId, [FromBody]  DTOBlockPeriod blockPeriod)
+    // {
+    //     var resource = await _context.Resources.FindAsync(resourceId);
+    //     if (resource == null)
+    //     {
+    //         return NotFound(new { message = "Resource not found" });
+    //     }
 
-        return Ok(new { message = "Resource marked as available" });
-    }
+    //     // Create a new booking entry to block the resource for the specified period
+    //     var blockBooking = new Booking
+    //     {
+    //         ResourceId = resourceId,
+    //         UserId = "system-userid", 
+    //         StartTime = blockPeriod.StartDate,
+    //         EndTime = blockPeriod.EndDate
+    //     };
 
-    [HttpPost("resource/{resourceId}/block-period")]
-    public async Task<IActionResult> BlockResourceForPeriod(int resourceId, [FromBody] DTOBlockPeriod blockPeriod)
-    {
-        var resource = await _context.Resources.FindAsync(resourceId);
-        if (resource == null)
-        {
-            return NotFound(new { message = "Resource not found" });
-        }
+    //     _context.Bookings.Add(blockBooking);
+    //     await _context.SaveChangesAsync();
 
-        // Create a new booking entry to block the resource for the specified period
-        var blockBooking = new Booking
-        {
-            ResourceId = resourceId,
-            UserId = "system-userid", 
-            StartTime = blockPeriod.StartDate,
-            EndTime = blockPeriod.EndDate
-        };
-
-        _context.Bookings.Add(blockBooking);
-        await _context.SaveChangesAsync();
-
-        return Ok(new { message = "Resource blocked for the specified period" });
-    }
+    //     return Ok(new { message = "Resource blocked for the specified period" });
+    // }
 }

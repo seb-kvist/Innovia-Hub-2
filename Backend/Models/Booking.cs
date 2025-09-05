@@ -15,6 +15,8 @@ public class Booking
     public required string UserId { get; set; }
     public User User { get; set; } = null!;
 
+    public int ResourceTypeId { get; set; }
+    public ResourceType ResourceType { get; set; } = null!;
     public int ResourceId { get; set; }
     public Resource Resource { get; set; } = null!;
 }
