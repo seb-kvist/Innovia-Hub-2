@@ -16,6 +16,7 @@ using Backend.Repositories;
 using Backend.Interfaces;
 using Backend.Services;
 using Backend.Models;
+using Backend.Hubs;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -26,6 +27,8 @@ builder.Services.AddOpenApi();
 builder.Services.AddScoped<IBookingRepository, BookingRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddControllers();
+builder.Services.AddSignalR();
+
 
 builder.Services.AddIdentity<User, IdentityRole>(options =>
     {
@@ -128,5 +131,6 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.UseStaticFiles();
 app.UseHttpsRedirection();
+app.MapHub<BookingHub>("/bookingHub");
 
 app.Run();
