@@ -6,6 +6,8 @@ using System.Xml;
 using Backend.DTOs.Booking;
 using System.Runtime.Versioning;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.SignalR;
+using Backend.Hubs;
 
 namespace Backend.Controllers;
 
@@ -15,11 +17,13 @@ public class BookingController : ControllerBase
 {
     private readonly AppDbContext _context;
     private readonly IBookingRepository _bookingRepository;
+    private readonly IHubContext<BookingHub> _hubContext;
 
-    public BookingController(AppDbContext context, IBookingRepository bookingRepository)
+    public BookingController(AppDbContext context, IBookingRepository bookingRepository, IHubContext<BookingHub> hubContext)
     {
         _context = context;
         _bookingRepository = bookingRepository;
+        _hubContext = hubContext;
     }
 
     [Authorize (Roles = "admin")]
@@ -73,13 +77,23 @@ public class BookingController : ControllerBase
         try
         {
             var booking = await _bookingRepository.AddBookingAsync(dto);
-            
+
+            // SignalR: skicka uppdatering till alla klienter
+            await _hubContext.Clients.All.SendAsync("ReceiveBookingUpdate", new
+            {
+                date = booking.Date.ToString("yyyy-MM-dd"),
+                timeSlot = booking.TimeSlot,
+                resourceName = booking.Resource!.ResourceName,
+                userId = booking.UserId
+            });
+
+
             return Ok(new UserBookingDTO
-            {   
+            {
                 date = booking.Date.ToString("yyyy-MM-dd"),
                 timeSlot = booking.TimeSlot,
                 resourceName = booking.Resource!.ResourceName
-                
+
             });
         }
         catch (Exception ex)
@@ -94,6 +108,10 @@ public class BookingController : ControllerBase
         var success = await _bookingRepository.DeleteBooking(id);
         if (!success) return NotFound();
 
+
+        //SignalR: meddela att bokningen tagits bort
+        await _hubContext.Clients.All.SendAsync("ReceiveBookingUpdate",
+            $"Bokning med id {id} har tagits bort");
         return NoContent();
     }
 
