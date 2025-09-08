@@ -8,6 +8,7 @@ import Profile from "./pages/Profile";
 import Resource from "./pages/Resource";
 import Footer from "./components/Footer";
 import Header from "./components/Header";
+import Login from "./pages/Login";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
         <Route path="/booking" element={<Booking />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/resource" element={<Resource />} />
+        <Route path="/login" element={<Login/>}/>
         <Route path="*" element={<NotFound />} />
       </Routes>
       <Footer />

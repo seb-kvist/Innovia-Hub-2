@@ -63,11 +63,13 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 });
 builder.Services.AddCors(options =>
     {
-        options.AddDefaultPolicy(policy =>
+        options.AddPolicy("AllowReactApp", policy =>
         {
-            policy.AllowAnyOrigin()
+            policy.WithOrigins("http://localhost:5173")
              .AllowAnyHeader()
-             .AllowAnyMethod();
+             .AllowAnyMethod()
+             .AllowCredentials(); 
+        
         });
     });
 
@@ -125,7 +127,7 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
 }
 
-app.UseCors();
+app.UseCors("AllowReactApp");
 app.MapControllers();
 app.UseAuthentication();
 app.UseAuthorization();
