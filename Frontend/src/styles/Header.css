@@ -1,0 +1,80 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background: transparent;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  z-index: 10;
+}
+
+.header-logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #e9e5ef; /* vit */
+}
+
+.header-nav .btn-login,
+.header-nav .btn-register,
+.header-nav .btn-profile,
+.header-nav .btn-logout {
+  margin-left: 0.5rem;
+  padding: 0.4rem 1rem;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  border: 1px solid #e9e5ef;
+  background: transparent;
+  color: #e9e5ef;
+  transition: all 0.3s ease;
+}
+
+.header-nav .btn-login:hover,
+.header-nav .btn-register:hover,
+.header-nav .btn-profile:hover,
+.header-nav .btn-logout:hover {
+  background-color: #6b72f0; /* light blue */
+  color: white;
+}
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background: transparent;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  z-index: 10;
+}
+
+.header-logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #e9e5ef; /* vit */
+}
+
+.header-nav {
+  display: flex;
+  gap: 1rem;
+}
+
+.header-nav a,
+.header-nav button {
+  border: 1px solid #e9e5ef;
+  background: transparent;
+  color: #e9e5ef;
+  padding: 0.4rem 1rem;
+  border-radius: 20px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.header-nav a:hover,
+.header-nav button:hover {
+  background-color: #6b72f0; /* light blue */
+  color: white;
+}

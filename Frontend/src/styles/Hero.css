@@ -1,0 +1,44 @@
+.hero {
+  text-align: center;
+  padding: 8rem 2rem 4rem;
+  background: linear-gradient(to bottom, #494eb1, #6b72f0); /* purple -> light blue */
+  color: #e9e5ef;
+}
+
+.hero h1 {
+  font-size: 3rem;
+  margin: 0.5rem 0;
+  font-weight: bold;
+}
+
+.hero h2 {
+  font-size: 22px;
+  font-weight: 300;
+}
+
+.hero p {
+  margin: 1rem auto 2rem;
+  max-width: 600px;
+  font-size: 1rem;
+}
+
+.btn-cta {
+  background: #6b72f0;
+  border: none;
+  padding: 0.8rem 1.8rem;
+  color: white;
+  border-radius: 25px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.3s ease;
+}
+
+.btn-cta:hover {
+  background: #494eb1; /* purple */
+}
+.hero {
+  text-align: center;
+  padding: 8rem 2rem 4rem;
+  background: linear-gradient(to bottom, #494eb1, #6b72f0);
+  color: #e9e5ef;
+}

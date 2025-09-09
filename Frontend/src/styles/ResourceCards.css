@@ -1,0 +1,77 @@
+.resourcecards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  padding: 2rem;
+}
+
+.resource-card-section {
+  position: relative;
+  overflow: hidden;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.resource-card-section img {
+  width: 100%;
+  height: auto;
+  display: block;
+  transition: transform 0.3s ease;
+}
+
+.resource-card-section:hover img {
+  transform: scale(1.05);
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(73, 78, 177, 0.8); /* purple med transparens */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  color: white;
+}
+
+.resource-card-section:hover .overlay {
+  opacity: 1;
+}
+
+.overlay h3 {
+  margin-bottom: 1rem;
+  font-size: 1.3rem;
+}
+
+.btn-reserve {
+  background: #6b72f0;
+  border: none;
+  padding: 0.6rem 1.4rem;
+  color: white;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.3s ease;
+  text-decoration: none;
+}
+
+.btn-reserve:hover {
+  background: #494eb1;
+}
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(73, 78, 177, 0.8);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.resource-card-section:hover .overlay {
+  opacity: 1;
+}
