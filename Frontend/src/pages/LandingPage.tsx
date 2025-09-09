@@ -1,11 +1,19 @@
 import Hero from "../components/Hero";
 import ResourceCards from "../components/RecourceCards";
+import { useEffect, useState } from "react";
 
 const LandingPage: React.FC = () => {
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    setIsLoggedIn(!!token);
+  }, []);
+
   return (
     <>
-      <Hero isLoggedIn={false} /> {/* tills auth är kopplat */}
-      <ResourceCards isLoggedIn={false} />
+      <Hero isLoggedIn={isLoggedIn} />
+      <ResourceCards isLoggedIn={isLoggedIn} />
     </>
   );
 };

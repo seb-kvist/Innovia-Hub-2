@@ -1,15 +1,17 @@
 .footer {
-  padding: 3rem 2rem;
-  background: #494eb1; /* purple */
+  padding: 2.5rem 2rem 3.5rem;
+  background: transparent;
   color: #e9e5ef;
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
 }
 
 .footer-links {
-  display: flex;
-  gap: 4rem;
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 220px 1fr 1fr;
+  gap: 28px;
+  padding-top: 18px;
+  border-top: 1px solid rgba(233,229,239,0.35);
 }
 
 .footer-links h4 {
@@ -29,14 +31,8 @@
 }
 
 .footer-socials {
-  margin-top: 1rem;
+  max-width: 1100px;
+  margin: 0.75rem auto 0;
   font-size: 0.85rem;
 }
-.footer {
-  background: #494eb1;
-  color: #e9e5ef;
-  padding: 3rem 2rem;
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-}
+.footer { }
