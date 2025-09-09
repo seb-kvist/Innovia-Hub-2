@@ -3,7 +3,9 @@
   line-height: 1.5;
   font-weight: 400;
 
-  color: #E9E5EF;
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #242424;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -22,6 +24,8 @@ a:hover {
 
 body {
   margin: 0;
+  display: flex;
+  place-items: center;
   min-width: 320px;
   min-height: 100vh;
   background: linear-gradient(180deg, #494EB1 21%, #999999 100%);
@@ -54,6 +58,14 @@ button:focus-visible {
 }
 
 @media (prefers-color-scheme: light) {
-  :root { color: #E9E5EF; }
-  body { background: linear-gradient(180deg, #494EB1 0%, #5E66E8 50%, #6B72F0 100%); }
+  :root {
+    color: #213547;
+    background-color: #ffffff;
+  }
+  a:hover {
+    color: #747bff;
+  }
+  button {
+    background-color: #f9f9f9;
+  }
 }

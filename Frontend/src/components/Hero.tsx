@@ -8,7 +8,7 @@ interface HeroProps {
 const Hero: React.FC<HeroProps> = ({ isLoggedIn }) => {
     return (
         <section className="hero">
-            <img src="/img/innovialogo.png" alt="Innovia logo" style={{width: 72, height: 72, marginBottom: 12}} />
+            <img src="/img/innovialogo.png" alt="Innovia logo" className="hero-logo" style={{width: 106, height: 106, marginBottom: 12}} />
             <h2>Välkommen till</h2>
             <h1>Innovia Hub</h1>
             <p>

@@ -40,4 +40,12 @@
   box-shadow: 0 4px 12px rgba(107, 223, 207, 0.4);
   filter: brightness(1.1);
 }
-.hero { /* duplicate block removed and consolidated above */ }
+
+.hero-logo {
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+}
+
+.hero-logo:hover {
+  transform: rotate(360deg);
+}

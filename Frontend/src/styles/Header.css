@@ -21,7 +21,7 @@
 .header-nav a,
 .header-nav button {
   padding: 0.4rem 1rem;
-  border-radius: 20px;
+  border-radius: 6px;
   cursor: pointer;
   text-decoration: none;
   transition: all 0.3s ease;
