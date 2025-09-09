@@ -26,27 +26,27 @@ public class BookingController : ControllerBase
         _bookingRepository = bookingRepository;
         _hubContext = hubContext;
     }
-  [HttpPost("{resourceTypeId}/freeSlots")]
-public async Task<IActionResult> GetFreeSlots(int resourceTypeId, [FromBody] BookingInfo bookingInfo)
-{
-    var date = bookingInfo.Date.Date;
-
-    // Define all possible timeslots
-    var allSlots = new List<string> { "08-10", "10-12", "12-14", "14-16", "16-18", "18-20" };
-    var freeSlots = new List<string>();
-
-    // Loop through each slot and check if at least one resource is available
-    foreach (var slot in allSlots)
+    [HttpPost("{resourceTypeId}/freeSlots")]
+    public async Task<IActionResult> GetFreeSlots(int resourceTypeId, [FromBody] BookingInfo bookingInfo)
     {
-        var availableResources = await _bookingRepository.GetAvailableResourcesAsync(resourceTypeId, date, slot);
-        if (availableResources.Any())
-        {
-            freeSlots.Add(slot); // slot is free because at least one resource is available
-        }
-    }
+        var date = bookingInfo.Date.Date;
 
-    return Ok(freeSlots); // returns only truly free slots
-}
+        // Define all possible timeslots
+        var allSlots = new List<string> { "08-10", "10-12", "12-14", "14-16", "16-18", "18-20" };
+        var freeSlots = new List<string>();
+
+
+        foreach (var slot in allSlots)
+        {
+            var availableResources = await _bookingRepository.GetAvailableResourcesAsync(resourceTypeId, date, slot);
+            if (availableResources.Any())
+            {
+                freeSlots.Add(slot);
+            }
+        }
+
+        return Ok(freeSlots);
+    }
 
 
 
@@ -72,10 +72,7 @@ public async Task<IActionResult> GetFreeSlots(int resourceTypeId, [FromBody] Boo
             resourceName = b.Resource.ResourceName
             
         }).ToListAsync();
-           
-            
-
-        
+              
 
         return Ok(bookings);
     }
