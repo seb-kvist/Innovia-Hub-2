@@ -8,6 +8,7 @@ using System.Runtime.Versioning;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
 using Backend.Hubs;
+using System.Diagnostics;
 
 namespace Backend.Controllers;
 
@@ -25,8 +26,36 @@ public class BookingController : ControllerBase
         _bookingRepository = bookingRepository;
         _hubContext = hubContext;
     }
+    [HttpPost("{resourceTypeId}/freeSlots")]
+    public async Task<IActionResult> GetFreeSlots(int resourceTypeId, [FromBody] BookingInfo bookingInfo)
+    {
+        var date = bookingInfo.Date.Date;
 
-    [Authorize (Roles = "admin")]
+        // Define all possible timeslots
+        var allSlots = new List<string> { "08-10", "10-12", "12-14", "14-16", "16-18", "18-20" };
+        var freeSlots = new List<string>();
+
+
+        foreach (var slot in allSlots)
+        {
+            var availableResources = await _bookingRepository.GetAvailableResourcesAsync(resourceTypeId, date, slot);
+            if (availableResources.Any())
+            {
+                freeSlots.Add(slot);
+            }
+        }
+
+        return Ok(freeSlots);
+    }
+
+
+
+    
+
+
+
+
+    [Authorize(Roles = "admin")]
 
     [HttpGet]
     public async Task<IActionResult> GetAllBookings()
@@ -43,10 +72,7 @@ public class BookingController : ControllerBase
             resourceName = b.Resource.ResourceName
             
         }).ToListAsync();
-           
-            
-
-        
+              
 
         return Ok(bookings);
     }
@@ -114,6 +140,46 @@ public class BookingController : ControllerBase
             $"Bokning med id {id} har tagits bort");
         return NoContent();
     }
+
+
+    //Hämta all bokningar för en specifik resource
+    [Authorize (Roles ="admin")]
+    [HttpPost("{resourceTypeId}")]
+    public async Task<IActionResult> GetResourceFreeSlots(int resourceTypeId, [FromBody] BookingInfo bookingInfo)
+    {
+        var date = bookingInfo.Date;
+        var bookings = await _context.Bookings.Where(b => b.Date == date && b.ResourceTypeId == resourceTypeId)
+        .Select(b => new BookingsDto
+        {
+            userName = b.User.UserName,
+            date = b.Date.ToString(),
+            timeSlot = b.TimeSlot,
+            resourceType = b.ResourceType.ResourceTypeName,
+            resourceName = b.Resource.ResourceName
+
+        }).ToListAsync();
+        if (bookings == null || bookings.Count == 0)
+        {
+            return NotFound(new { message = "No bookings under this day" });
+        }
+        
+
+        return Ok(bookings);
+
+
+    // var resourceType = await _context.ResourceTypes.FindAsync(resourceTypeId);
+        // if (resourceType == null)
+        // {
+        //     return NotFound(new { message = "Resource Type not found" });
+        // }
+        // var resources = resourceType.Resources.Select(b => b.Bookings.Where(b.Bookings.Select());
+
+
+
+
+    }
+
+
 
     [HttpPatch("resource/{resourceId}")]
     public async Task<IActionResult> ChangeResourceStatus(int resourceId)
