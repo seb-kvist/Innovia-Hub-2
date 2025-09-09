@@ -17,16 +17,20 @@ public class BookingRepository : IBookingRepository
     {
         var resourcesList = await GetAvailableResourcesAsync(booking.ResourceTypeId, booking.Date, booking.TimeSlot);
         var resource = GetResourceByIdAsync(resourcesList);
+      if (!resourcesList.Any())
+    {
+        throw new InvalidOperationException("No available resources for the selected type, date, and timeslot.");
+    }
+       
 
-      
-        var newBooking = new Booking
-        {
-            Date = booking.Date,
-            TimeSlot = booking.TimeSlot,
-            ResourceTypeId = booking.ResourceTypeId,
-            UserId = booking.UserId,
-            ResourceId = resource!.Id,
-        };
+    var newBooking = new Booking
+    {
+        Date = booking.Date,
+        TimeSlot = booking.TimeSlot,
+        ResourceTypeId = booking.ResourceTypeId,
+        UserId = booking.UserId,
+        ResourceId = resource.Id,
+    };
 
         _context.Bookings.Add(newBooking);
         await _context.SaveChangesAsync();
