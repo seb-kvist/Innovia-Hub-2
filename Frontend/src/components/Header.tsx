@@ -9,9 +9,7 @@ interface HeaderProps {
 
 const Header: React.FC<HeaderProps> = ({ isLoggedIn, onLogout}) => {
     return (
-        <header className="header">
-            <div className="header-logo">Innovia Hub</div>
-
+        <header className="header"> 
             <nav className="header-nav">
                 {!isLoggedIn ? (
 
