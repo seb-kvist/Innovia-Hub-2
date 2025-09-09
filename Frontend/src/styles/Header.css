@@ -2,19 +2,19 @@
   position: fixed;
   top: 0;
   left: 0;
-  right: 0;
-  width: 100%;
-  padding: 1rem 0;        /* remove horizontal padding */
+  width: 100vw;
+  padding: 1rem 0;
   background: transparent;
   z-index: 100;
-
   display: flex;
-  justify-content: center; /* center the nav container */
+  justify-content: center;
+  box-sizing: border-box;
 }
 
 .header-nav {
   position: relative;
   width: 100%;
+  max-width: 1200px;
   display: flex;
   align-items: center;
 }
