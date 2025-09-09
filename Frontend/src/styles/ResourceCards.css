@@ -1,0 +1,76 @@
+.resourcecards {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(480px, 1fr));
+  gap: 2rem 2.5rem;
+  padding: 1.25rem 2rem 3rem;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.resource-card-section {
+  position: relative;
+  overflow: hidden;
+  border-radius: 12px;
+  cursor: pointer;
+}
+
+.resource-card-section img {
+  width: 100%;
+  height: 260px;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.3s ease;
+}
+
+.resource-card-section:hover img {
+  transform: scale(1.05);
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(73, 78, 177, 0.65);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+  color: #E9E5EF;
+}
+
+.resource-card-section:hover .overlay {
+  opacity: 1;
+}
+
+.overlay h3 { margin-bottom: 0.9rem; font-size: 1.2rem; }
+
+.btn-reserve {
+  background: rgba(233,229,239,0.15);
+  border: 1px solid rgba(233,229,239,0.6);
+  padding: 0.55rem 1.4rem;
+  color: #E9E5EF;
+  border-radius: 22px;
+  cursor: pointer;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.btn-reserve:hover {
+  background: #494eb1;
+}
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(73, 78, 177, 0.8);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.resource-card-section:hover .overlay {
+  opacity: 1;
+}
