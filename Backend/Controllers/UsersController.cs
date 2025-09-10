@@ -37,14 +37,14 @@ namespace Backend.Controllers
             return Ok(user);
         }
 
-        // PUT för api/users/{id} - uppdatera en användare
-        // [HttpPut("{id}")]
-        // public async Task<IActionResult> Update(string id, [FromBody] DTOUpdateUser dto)
-        // {
-        //     var user = await _userRepository.UpdateUserAsync(id, dto);
-        //     if (user == null) return NotFound();
-        //     return Ok(user);
-        // }
+        //PUT för api/users/{id} - uppdatera en användare
+        [HttpPost("{id}")]
+        public async Task<IActionResult> Update(string id, [FromBody] DTOUpdateUser dto)
+        {
+            var user = await _userRepository.UpdateUserAsync(id, dto);
+            if (user == null) return NotFound();
+            return Ok(user);
+        }
 
         // DELETE för api/users/{id} - ta bort användare
         [Authorize]

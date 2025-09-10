@@ -62,7 +62,7 @@ Accept: application/json
 
 
 ### Uppdatera en användare
-PUT http://localhost:5022/api/users/{{id}}
+POST http://localhost:5022/api/users/{{id}}
 Content-Type: application/json
 
 {
@@ -75,6 +75,7 @@ Content-Type: application/json
 ### Ta bort en användare
 DELETE http://localhost:5022/api/users/system-user-id
 =======
+### ta bort bokning
 DELETE http://localhost:5022/api/booking/12
 Accept: application/json
 

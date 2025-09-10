@@ -113,7 +113,7 @@ export const updateUserById = async (
   name: string,
   email: string
 ) => {
-  const res = await api.put(
+  const res = await api.post(
     `/users/${id}`,
     { email, name },
     {
