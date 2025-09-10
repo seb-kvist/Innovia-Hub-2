@@ -38,8 +38,8 @@ const Header: React.FC<HeaderProps> = ({ isLoggedIn, onLogout}) => {
     <div className="header-buttons">
       {!isLoggedIn ? (
         <>
-          <Link to="/login" className="btn-login">Logga in</Link>
-          <Link to="/login" className="btn-register">Registrera</Link>
+          <Link to="/login" state={{ mode: "login" }} className="btn-login">Logga in</Link>
+          <Link to="/login" state={{ mode: "register" }} className="btn-register">Registrera</Link>
         </>
       ) : (
         <>

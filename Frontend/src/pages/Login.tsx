@@ -1,9 +1,19 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import LoginForm from "../components/LoginForm";
 import RegisterForm from "../components/RegisterForm";
+import { useLocation } from "react-router-dom";
 
 const Login = () => {
+  const location= useLocation();
   const [showRegister, setShowRegister] = useState(false);
+
+  useEffect(()=>{
+    if(location.state?.mode==="register"){
+      setShowRegister(true)
+    }else{
+      setShowRegister(false)
+    }
+  },[location.state])
 
   return (
     <div className={`loginContainer ${showRegister ? "showRegister" : ""}`}>
