@@ -18,10 +18,10 @@ interface ResourceCardsProps {
 
 const ResourceCards: React.FC<ResourceCardsProps> = ({ isLoggedIn }) => {
     const resourceCards: ResourceCard[] = [
-        { id: 1, name: "Skrivbord", img: "/img/skrivbord.png", path: "/resource/skrivbord", description: "En modern arbetsstation med bekvämt skrivbord och stol."},
-        { id: 2, name: "Mötesrum", img: "/img/motesrum.png", path: "/resource/motesrum", description: "Ett fullt utrustat mötesrum med skärm och whiteboard." },
-        { id: 3, name: "VR Headset", img: "/img/vrheadset.png", path: "/resource/vrheadset", description: "Testa framtidens teknik med vårt VR-headset." },
-        { id: 4, name: "AI Server", img: "/img/aiserver.png", path: "/resource/aiserver", description: "Kraftfull server för AI- och maskininlärningsprojekt." },
+        { id: 1, name: "Skrivbord", img: "/img/skrivbord.png", path: "/resource/1", description: "En modern arbetsstation med bekvämt skrivbord och stol."},
+        { id: 2, name: "Mötesrum", img: "/img/motesrum.png", path: "/resource/2", description: "Ett fullt utrustat mötesrum med skärm och whiteboard." },
+        { id: 3, name: "VR Headset", img: "/img/vrheadset.png", path: "/resource/3", description: "Testa framtidens teknik med vårt VR-headset." },
+        { id: 4, name: "AI Server", img: "/img/aiserver.png", path: "/resource/4", description: "Kraftfull server för AI- och maskininlärningsprojekt." },
         ];
 
     return (
