@@ -1,22 +1,16 @@
 .header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
+  width: 100%;
   padding: 3rem 0 1rem 0; /* extra top padding for larger logo */
   background: transparent;
-  z-index: 100;
   display: flex;
   justify-content: center;
-  box-sizing: border-box;
 }
 
 .header-nav {
-  position: relative;
   width: 100%;
-  max-width: 1200px;
   display: flex;
   align-items: center;
+  flex-direction: row-reverse;
 }
 
 /* Back button absolute left */
@@ -45,6 +39,7 @@
   width: 106px;
   transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;
+  margin-top: 8rem;
 }
 
 .logo-img:hover {
@@ -53,7 +48,6 @@
 
 /* Right buttons */
 .header-buttons {
-  margin-left: auto; /* push buttons to far right */
   display: flex;
   gap: 0.75rem;
 }
@@ -61,7 +55,6 @@
 /* Existing button styles */
 .header-nav a,
 .header-nav button {
-  padding: 0.4rem 1rem;
   border-radius: 6px;
   cursor: pointer;
   text-decoration: none;
