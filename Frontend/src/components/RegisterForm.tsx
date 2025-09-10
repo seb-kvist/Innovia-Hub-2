@@ -1,9 +1,8 @@
 import { useState } from "react";
 import { registerUser } from "../api/api";
 import "../styles/LoginAndRegisterForms.css";
-import type { FormProps } from "../Interfaces/FormInterface";
 
-const RegisterForm = ({ onSwitch }: FormProps) => {
+const RegisterForm = () => {
   const [userName, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");

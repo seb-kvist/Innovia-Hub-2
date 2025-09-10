@@ -1,17 +1,18 @@
 import { useState } from "react";
 import { loginUser } from "../api/api";
 import "../styles/LoginAndRegisterForms.css";
-import type { FormProps } from "../Interfaces/FormInterface";
 
-const LoginForm = ({ onSwitch }: FormProps) => {
+
+const LoginForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  //const [showRegister, setShowRegister] = useState(false);
   const handleSubmit = async (event: React.FormEvent) => {
     event?.preventDefault();
     if (email && password) {
-      await loginUser(email, password);
+      const user= await loginUser(email, password);
+      localStorage.setItem("userId", user.id)
+      localStorage.setItem("token", user.token)
     } else {
       console.log("gick inte");
     }
