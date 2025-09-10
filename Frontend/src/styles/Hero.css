@@ -1,9 +1,7 @@
 .hero {
   text-align: center;
-  padding: 7.5rem 2rem 3.25rem;
+  padding: 7.5rem 0;
   color: #e9e5ef;
-  max-width: 1100px;
-  margin: 0 auto 1.75rem auto;
 }
 
 .hero h1 {

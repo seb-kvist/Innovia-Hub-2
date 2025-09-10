@@ -23,15 +23,14 @@ a:hover {
 }
 
 body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
+  margin: 0 auto;
   background: linear-gradient(180deg, #494EB1 21%, #999999 100%);
   background-attachment: fixed;
   background-repeat: no-repeat;
-  overflow-x: hidden; /* Prevent horizontal scrollbar */
+}
+
+main {
+  width: 100%;
 }
 
 h1 {
@@ -39,7 +38,7 @@ h1 {
   line-height: 1.1;
 }
 
-button {
+/* button {
   border-radius: 8px;
   border: 1px solid transparent;
   padding: 0.6em 1.2em;
@@ -49,7 +48,8 @@ button {
   background-color: #1a1a1a;
   cursor: pointer;
   transition: border-color 0.25s;
-}
+} */
+
 button:hover {
   border-color: #646cff;
 }
