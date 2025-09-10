@@ -42,7 +42,7 @@ export const getUserBookings = async (userId: string, token: string) => {
 
 //TIMESlOTS
 export const getFreeSlots = async (date:string, resourceTypeId:number, token:string) => {
-  const res = await api.post<string[]>(`/booking/${resourceTypeId}/freeslots`, {date}, {
+  const res = await api.post<string[]>(`/booking/${resourceTypeId}/freeSlots`, {date}, {
     headers: { Authorization: `Bearer ${token}` },
   });
   console.log(res.data);
