@@ -1,0 +1,80 @@
+.profileContainer {
+    margin-top: 4rem;
+    padding: 20px;
+    color: #e9e5ef;
+    min-height: 100vh;
+  }
+  
+  .profileContainer h2 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .profileSections {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+  }
+  
+  .bookingsSection,
+  .editProfileSection {
+    background: #f1eef4;
+    color: black;
+    padding: 20px;
+    border-radius: 10px;
+    width: 45%;
+  }
+  
+  .bookingsSection ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .bookingsSection li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    padding: 10px;
+    border-top: 1px solid #c0c0c0;
+  }
+  
+  .cancelButton {
+    background-color: #49AAB1;
+    color: #ffffff;
+    font-weight: 600;
+    border: none;
+    padding: .175rem 1rem;
+    border-radius: 12px;
+    cursor: pointer;
+  }
+  
+  .cancelButton:hover {
+    background-color: #358086;
+  }
+  
+  .editProfileSection form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .editProfileSection label {
+    display: flex;
+    flex-direction: column;
+    font-size: 14px;
+  }
+  
+  .updateButton {
+    background-color: #49AAB1;
+    color: #ffffff;
+    font-size: .80rem;
+    border: none;
+    padding: 10px;
+    border-radius: 16px;
+    cursor: pointer;
+  }
+  
+  .updateButton:hover {
+    background-color: #45a049;
+  }

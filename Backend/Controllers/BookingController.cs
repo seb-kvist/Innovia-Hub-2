@@ -82,6 +82,7 @@ public class BookingController : ControllerBase
     {
         var userBookings = await _context.Bookings
         .Include(b => b.Resource)
+        .Where(b => b.UserId == userId)
         .Select(b => new UserBookingDTO
         {   
             date = b.Date.ToString("yyyy-MM-dd"),
