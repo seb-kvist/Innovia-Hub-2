@@ -8,6 +8,7 @@ import Profile from "./pages/Profile";
 import Resource from "./pages/Resource";
 import Layout from "./pages/Layout"; // "ram" med Header + Footer
 import Login from "./pages/Login";
+import ProtectedRoute from "./components/protectedRoute";
 
 function App() {
   return (
@@ -15,9 +16,9 @@ function App() {
         <Route element={<Layout />}>
         <Route path="/" element={<LandingPage />} />
         <Route path="/admin" element={<Admin />} />
-        <Route path="/booking/:resourceId/:date/:slot" element={<Booking />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/resource/:resourceId" element={<Resource />} />
+        <Route path="/booking/:resourceId/:date/:slot" element={<ProtectedRoute><Booking /></ProtectedRoute>} />
+        <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+        <Route path="/resource/:resourceId" element={<ProtectedRoute><Resource /></ProtectedRoute>} />
         <Route path="/login" element={<Login/>}/>
         <Route path="*" element={<NotFound />} />
         </Route>
