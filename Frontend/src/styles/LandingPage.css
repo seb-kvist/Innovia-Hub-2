@@ -7,6 +7,6 @@
 
 /* Override body flex centering for landing page */
 body:has(.landing-page) {
-  display: block;
+  display: flex;
   place-items: initial;
 }
