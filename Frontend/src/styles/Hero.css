@@ -1,6 +1,6 @@
 .hero {
   text-align: center;
-  padding: 7.5rem 0;
+  padding: 3rem 0 8rem 0;
   color: #e9e5ef;
 }
 
@@ -16,24 +16,24 @@
 }
 
 .hero p {
-  margin: 1rem auto 1.4rem;
+  margin: 3rem auto 3rem;
   max-width: 560px;
   font-size: 0.95rem;
   opacity: 0.95;
 }
 
 .btn-cta {
-  background: #6BDFCF;
+  background: #49AAB1;
   border: none;
   padding: 0.78rem 1.7rem;
-  color: #0b0b0b;
+  color: #ffffff;
   border-radius: 22px;
   cursor: pointer;
   font-weight: 600;
 }
 
 .btn-cta:hover { 
-  background: #5AC8A8;
+  background: #6BDFCF;
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(107, 223, 207, 0.4);
   filter: brightness(1.1);

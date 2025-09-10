@@ -16,7 +16,7 @@ const Footer: React.FC = () => {
                     </div>
 
                     <div>
-                    <h4>INNOVIA HUB 2</h4>
+                    <h4>Resursers</h4>
                     <ul>
                         <li>Karriär</li>
                         <li>Partners</li>

@@ -13,21 +13,6 @@
   flex-direction: row-reverse;
 }
 
-/* Back button absolute left */
-.btn-back {
-  position: absolute;
-  left: 2rem;
-  background: transparent;
-  border: none;
-  font-size: 1.2rem;
-  color: #e9e5ef;
-  cursor: pointer;
-  transition: color 0.2s ease;
-}
-.btn-back:hover {
-  color: #6b72f0;
-}
-
 /* Center logo */
 .header-logo {
   position: absolute;
@@ -39,7 +24,7 @@
   width: 106px;
   transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;
-  margin-top: 8rem;
+  margin-top: 2rem;
 }
 
 .logo-img:hover {
@@ -55,6 +40,7 @@
 /* Existing button styles */
 .header-nav a,
 .header-nav button {
+  padding: 0.4rem 1rem;
   border-radius: 6px;
   cursor: pointer;
   text-decoration: none;
@@ -62,24 +48,45 @@
   background: transparent;
 }
 
-.btn-login {
+/* Sign in and Profile share styling */
+.btn-login,
+.btn-profile {
   border: 1px solid #6BDFCF;
   color: #6BDFCF;
 }
 
-.btn-register {
+/* Register and Logout share styling */
+.btn-register,
+.btn-logout {
   border: 1px solid #e9e5ef;
   color: #e9e5ef;
 }
 
-.btn-login:hover {
+/* Hover states */
+.btn-login:hover,
+.btn-profile:hover {
   background-color: #6BDFCF;
   color: #0b0b0b;
   transform: translateY(-1px);
   box-shadow: 0 2px 8px rgba(107, 223, 207, 0.3);
 }
 
-.btn-register:hover {
+.btn-register:hover,
+.btn-logout:hover {
+  background-color: #e9e5ef;
+  color: #494EB1;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(233, 229, 239, 0.3);
+}
+
+.btn-back {
+  order: 9999;          /* in row-reverse, higher order moves further left */
+  margin-right: auto;   /* pushes it to the left end in row-reverse */
+  align-self: center;   /* vertical centering in the nav bar */
+}
+
+.btn-back:hover {
+
   background-color: #e9e5ef;
   color: #494EB1;
   transform: translateY(-1px);

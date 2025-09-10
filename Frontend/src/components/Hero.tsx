@@ -12,8 +12,10 @@ const Hero: React.FC<HeroProps> = ({ isLoggedIn }) => {
             <h2>Välkommen till</h2>
             <h1>Innovia Hub</h1>
             <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam non sapien
-                mollis, interdum justo a, iaculis magna.
+            Innovia Hub är en modern plattform där du kan upptäcka, boka och använda resurser 
+            som konferensrum, coworking-ytor, VR-headset och AI-server. Oavsett om du vill samarbeta, 
+            utveckla idéer eller testa ny teknik gör Innovia Hub det enkelt att reservera rätt resurs 
+            för dina behov.
             </p>
 
             {!isLoggedIn && (
