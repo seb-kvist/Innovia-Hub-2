@@ -27,10 +27,13 @@ body {
   background: linear-gradient(180deg, #494EB1 21%, #999999 100%);
   background-attachment: fixed;
   background-repeat: no-repeat;
+  min-height:100vh;
 }
 
 main {
   width: 100%;
+  flex-grow: 1;
+  margin-top: 6rem;
 }
 
 h1 {

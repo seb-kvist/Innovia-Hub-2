@@ -12,13 +12,16 @@ const FreeSlots = ({ resourceId, date }: FreeSlotsProps) => {
   };
   useEffect(() => {
     const token = localStorage.getItem("token");
-    console.log("TOKEN", token);
     
     if (!token) return;
     const fetchSlots=async()=>{
         try{
             const slots=await getFreeSlots(date, resourceId, token);
+            console.log("fetched slots ", slots);
+            
             setAvailableSlots(slots)
+            console.log(availableSlots);
+            
         }catch(error){
             console.error("Kunde inte hämta slots", error);
         }
