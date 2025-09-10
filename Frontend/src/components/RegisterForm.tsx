@@ -11,6 +11,7 @@ const RegisterForm = () => {
     event?.preventDefault();
     if (userName && email && password) {
       await registerUser(email, password, userName);
+      localStorage.setItem("userName", userName);
     } else {
       console.log("gick inte");
     }
