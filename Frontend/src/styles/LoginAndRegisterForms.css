@@ -60,6 +60,7 @@ form input {
   border-radius: 11px;
   padding: 10px;
   margin-bottom: 20px;
+  color: rgba(73, 78, 177, 1);
 }
 
 .formHeading,
@@ -102,3 +103,15 @@ form p {
 .secondaryView button {
   border: 0.7px solid rgba(233, 229, 239, 1);
 }
+.formBtn{
+    border: 0.7px solid rgba(73, 78, 177, 1);
+}
+.secondaryView button:hover{
+    background-color: rgba(233, 229, 239, 1);
+    color:rgba(73, 78, 177, 1);
+  }
+  .formBtn:hover{
+    border: 0.7px solid rgba(73, 78, 177, 1);
+    background-color: rgba(233, 229, 239, 1);
+    color:rgba(73, 78, 177, 1);
+  }

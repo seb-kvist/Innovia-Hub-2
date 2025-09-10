@@ -9,9 +9,9 @@ const Login = () => {
     <div className={`loginContainer ${showRegister ? "showRegister" : ""}`}>
       <div className="formHolder">
         {showRegister ? (
-          <RegisterForm onSwitch={() => setShowRegister(false)} />
+          <RegisterForm  />
         ) : (
-          <LoginForm onSwitch={() => setShowRegister(true)} />
+          <LoginForm  />
         )}
       </div>
 
