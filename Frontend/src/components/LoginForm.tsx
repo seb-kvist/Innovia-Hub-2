@@ -1,22 +1,39 @@
 import { useState } from "react";
 import { loginUser } from "../api/api";
 import "../styles/LoginAndRegisterForms.css";
+import { useNavigate } from "react-router-dom";
 
 
 const LoginForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
+  const [errorMessage, setErrorMessage]=useState("");
+  const navigate = useNavigate();
   const handleSubmit = async (event: React.FormEvent) => {
     event?.preventDefault();
-    if (email && password) {
+
+    if(!email || !password){
+      setErrorMessage("Fyll i både email och lösenord")
+      return
+    }
+    try{
       const user= await loginUser(email, password);
+
       localStorage.setItem("userId", user.id)
       localStorage.setItem("token", user.token)
       localStorage.setItem("userName", user.userName);
-    } else {
-      console.log("gick inte");
+
+      setErrorMessage("")
+      navigate("/");
+    }catch(error:any){
+      if(error.response?.status===401){
+        setErrorMessage("Felaktigt användarnamn eller lösenord");
+      } else {
+        setErrorMessage("Något gick fel, försök igen senare");
+      }
+      
     }
+   
   };
   return (
     <div className="formBox">
@@ -34,6 +51,7 @@ const LoginForm = () => {
           onChange={(e) => setPassword(e.target.value)}
           value={password}
         />
+        {errorMessage && <p className="errorMessage">{errorMessage}</p>}
         <p>Har du glömt ditt lösenord?</p>
         <button type="submit" className="formBtn">
           Logga in

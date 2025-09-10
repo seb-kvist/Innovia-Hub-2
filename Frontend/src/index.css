@@ -29,11 +29,17 @@ body {
   background-repeat: no-repeat;
   min-height:100vh;
 }
+.resourceBg{
+  background: rgba(233, 229, 239, 1);
+}
+body.resourceBg footer {
+  color: rgba(73, 78, 177, 1)
+}
 
 main {
   width: 100%;
   flex-grow: 1;
-  margin-top: 6rem;
+  margin-top: 9rem;
 }
 
 h1 {
