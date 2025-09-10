@@ -15,7 +15,7 @@ function App() {
         <Route element={<Layout />}>
         <Route path="/" element={<LandingPage />} />
         <Route path="/admin" element={<Admin />} />
-        <Route path="/booking" element={<Booking />} />
+        <Route path="/booking/:resourceId/:date/:slot" element={<Booking />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/resource/:resourceId" element={<Resource />} />
         <Route path="/login" element={<Login/>}/>

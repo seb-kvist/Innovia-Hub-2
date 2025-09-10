@@ -6,14 +6,26 @@ const RegisterForm = () => {
   const [userName, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
 
   const handleSubmit = async (event: React.FormEvent) => {
     event?.preventDefault();
-    if (userName && email && password) {
+    if (!userName || !email || !password) {
+      setErrorMessage("Fyll i alla fält");
+      return;
+    }
+
+     try {
       await registerUser(email, password, userName);
-      localStorage.setItem("userName", userName);
-    } else {
-      console.log("gick inte");
+      setErrorMessage("");
+      setSuccessMessage("Konto skapat! Du kan nu logga in.");
+    } catch (error: any) {
+      if (error.response?.status === 409) {
+        setErrorMessage("E-postadressen används redan");
+      } else {
+        setErrorMessage("Något gick fel, försök igen senare");
+      }
     }
   };
   return (
@@ -38,6 +50,8 @@ const RegisterForm = () => {
           onChange={(e) => setPassword(e.target.value)}
           value={password}
         />
+         {errorMessage && <p className="errorMessage">{errorMessage}</p>}
+         {successMessage && <p className="successMessage">{successMessage}</p>}
         <button type="submit" className="formBtn">
           Registrera dig
         </button>

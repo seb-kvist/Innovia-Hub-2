@@ -1,15 +1,14 @@
 import { useEffect, useState } from "react";
-import type { FreeSlotsProps } from "../Interfaces/FreeSlotsProps";
+import type { FreeSlotsProps } from "../Interfaces/Props";
 import { getFreeSlots } from "../api/api";
+import { useNavigate } from "react-router-dom";
 
 const FreeSlots = ({ resourceId, date }: FreeSlotsProps) => {
   const allSlots = ["08-10", "10-12", "12-14", "14-16", "16-18", "18-20"];
   const [availableSlots, setAvailableSlots] = useState<string[]>([]);
+  const navigate = useNavigate();
 
 
-  const handleSelectSlot = (slot: string) => {
-    console.log("Selected slot ", slot);
-  };
   useEffect(() => {
     const token = localStorage.getItem("token");
     
@@ -37,7 +36,7 @@ const FreeSlots = ({ resourceId, date }: FreeSlotsProps) => {
           <div
             key={slot}
             className={isAvailable ? "isAvailable" : "notAvailable"}
-            onClick={() => isAvailable && handleSelectSlot(slot)}
+            onClick={() => isAvailable && navigate(`/booking/${resourceId}/${date}/${slot}`)}
           >
             {slot}
           </div>

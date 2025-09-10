@@ -2,8 +2,9 @@ import { useParams } from "react-router-dom";
 import resourceData from "../data/resourceData";
 import "../styles/Resource.css";
 import Calendar from "../components/Calendar";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import FreeSlots from "../components/FreeSlots";
+import ResouceImageAndDate from "../components/ResourceImgAndDate";
 const Resource = () => {
   const [selectedDate, setSelectedDate]=useState<Date|null>(new Date())
   const {resourceId}= useParams<{resourceId:string}>();
@@ -11,14 +12,21 @@ const Resource = () => {
 
   //Hitta resursen i vår data baserat på id
  const resource = resourceData.find(r=>r.id===id)
+   useEffect(()=>{
+     document.body.classList.add("resourceBg");
+     return()=>{
+       document.body.classList.remove("resourceBg")
+     }
+   },[])
+
   return (
     <div className="resourcePage">
       <h2>
         {resource?.name}
       </h2>
       <div className="recourceImgAndDate">
-        <img src={resource?.imageUrl} alt={resource?.name}/>
-        <div className="selectedDate">{selectedDate?.toLocaleDateString()}</div>
+        {resource?.imageUrl && resource?.name && selectedDate?.toLocaleDateString() &&  <ResouceImageAndDate imgUrl={resource?.imageUrl} imgAlt={resource?.name} selectedDate={selectedDate?.toLocaleDateString()}/>}
+       
         <div className="calendar"><Calendar selectedDate={selectedDate} onDateChange={setSelectedDate}/></div>
       </div>
       <div>
