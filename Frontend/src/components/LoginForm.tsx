@@ -13,6 +13,7 @@ const LoginForm = () => {
       const user= await loginUser(email, password);
       localStorage.setItem("userId", user.id)
       localStorage.setItem("token", user.token)
+      localStorage.setItem("userName", user.userName);
     } else {
       console.log("gick inte");
     }
