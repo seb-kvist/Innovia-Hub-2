@@ -44,9 +44,10 @@ const FreeSlots = ({ resourceId, date }: FreeSlotsProps) => {
           if (updateDate === normalizedDate && updateSlot) {
             setAvailableSlots(prev => prev.filter(s => s !== updateSlot));
           }
-        } catch {}
-        // Säkerställ konsistens med ett refetch
-          setTimeout(fetchSlots, 1000);
+        } catch(err){
+              console.log(err);
+        }
+          fetchSlots();
       };
   
       connection.on("ReceiveBookingUpdate", handler);
