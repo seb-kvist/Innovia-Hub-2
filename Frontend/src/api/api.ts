@@ -11,13 +11,13 @@ export const registerUser = async (
   name: string
 ) => {
   const res = await api.post("/auth/register", { email, password, name });
-  console.log(res.data)
+  console.log(res.data);
   return res.data;
 };
 
 //AUTH - Log in
 export const loginUser = async (email: string, password: string) => {
-  const res = await api.post("/auth/login", { email, password});
+  const res = await api.post("/auth/login", { email, password });
   console.log("API Response:", res.data);
   return res.data;
 };
@@ -40,14 +40,31 @@ export const getUserBookings = async (userId: string, token: string) => {
   return res.data;
 };
 
-
 //TIMESlOTS
-export const getFreeSlots = async (date:string, resourceTypeId:number, token:string) => {
-  const res = await api.post<string[]>(`/booking/${resourceTypeId}/freeSlots`, {date}, {
-    headers: { Authorization: `Bearer ${token}` },
-  });
-  console.log(res.data);
-  
+export const getFreeSlots = async (
+  date: string | Date,
+  resourceTypeId: number,
+  token: string
+) => {
+  let formattedDate: string;
+
+  if (date instanceof Date) {
+    // always "YYYY-MM-DD"
+    formattedDate = date.toISOString().split("T")[0];
+  } else {
+    // if already a string, convert to Date first
+    formattedDate = new Date(date).toISOString().split("T")[0];
+  }
+
+  const payload = { date: formattedDate };
+  console.log("🚀 Sending payload to backend:", payload);
+
+  const res = await api.post<string[]>(
+    `/booking/${resourceTypeId}/freeSlots`, // match backend casing
+    payload,
+    { headers: { Authorization: `Bearer ${token}` } }
+  );
+
   return res.data;
 };
 
@@ -78,12 +95,19 @@ export const deleteBooking = async (bookingId: string, token: string) => {
 };
 
 //BOOKING - Change Resource Status
-export const changeResourceStatus = async (resourceId: number, token: string) => {
-    const res = await api.patch(`/booking/resource/${resourceId}`, {}, {
-      headers: { Authorization: `Bearer ${token}` }
-    }); 
-    return res.data;
-}
+export const changeResourceStatus = async (
+  resourceId: number,
+  token: string
+) => {
+  const res = await api.patch(
+    `/booking/resource/${resourceId}`,
+    {},
+    {
+      headers: { Authorization: `Bearer ${token}` },
+    }
+  );
+  return res.data;
+};
 //USERS - Ge All Users
 export const getAllUsers = async (token: string) => {
   const res = await api.get("/users", {
@@ -122,6 +146,6 @@ export const updateUserById = async (
         "Content-Type": "application/json",
       },
     }
-);
+  );
   return res.data;
 };
