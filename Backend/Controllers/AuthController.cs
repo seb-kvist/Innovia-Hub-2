@@ -65,7 +65,7 @@ public class AuthController : ControllerBase
         var role = roles.FirstOrDefault() ?? "User";
 
         var Token = _jwtToken.GenerateJwtToken(user, role);
-        return Ok(new { Message = "Login successful", user.Id, user.Email, user.UserName, Token });
+        return Ok(new { Message = "Login successful", user.Id, user.Email, user.UserName, Token,role });
     }
     
 //     [HttpGet("generate-system-token")]
