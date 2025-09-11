@@ -85,7 +85,7 @@ export const createBooking = async (
 };
 
 //BOOKING - Remove a booking
-export const deleteBooking = async (bookingId: string, token: string) => {
+export const deleteBooking = async (bookingId: number, token: string) => {
   const res = await api.delete(`/booking/${bookingId}`, {
     headers: {
       Authorization: `Bearer ${token}`,

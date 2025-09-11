@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { getUserBookings, updateUserById, deleteBooking } from "../api/api";
 import "../styles/Profile.css";
 
 interface Booking {
-  id: string;
+  bookingId: number;
   resourceName: string;
   date: string;
   timeSlot: string;
@@ -32,6 +32,7 @@ const Profile = () => {
       if (userId && token) {
         try {
           const userBookings = await getUserBookings(userId, token);
+          console.log("Bokningar från backend:", userBookings);
           setBookings(userBookings);
         } catch (err: any) {
           if (err.response && err.response.status === 404) {
@@ -50,7 +51,7 @@ const Profile = () => {
     fetchBookings();
   }, []);
 
-  const handleCancelBooking = async (bookingId: string) => {
+  const handleCancelBooking = async (bookingId: number) => {
     try {
       console.log("Avbokar bokning med ID:", bookingId);
       const token = localStorage.getItem("token");
@@ -63,9 +64,9 @@ const Profile = () => {
       await deleteBooking(bookingId, token);
       alert("Bokningen har avbokats!");
   
-      // Uppdatera bokningslistan efter avbokning
+      // uppdaterar bokningar efter avbokning
       setBookings((prevBookings) =>
-        prevBookings.filter((booking) => booking.id !== bookingId)
+        prevBookings.filter((booking) => booking.bookingId !== bookingId)
       );
     } catch (error) {
       console.error("Fel vid avbokning:", error);
@@ -93,6 +94,19 @@ const Profile = () => {
     }
   };
 
+  const resourceImages = (resourceName: string): string => {
+    if (resourceName.startsWith("VR Headset")) {
+      return "./img/vrheadset.png";
+    } else if (resourceName.startsWith("Drop-in skrivbord")) {
+      return "./img/skrivbord.png";
+    } else if (resourceName.startsWith("Mötesrum")) {
+      return "./img/motesrum.png";
+    } else if (resourceName.startsWith("AI Server")) {
+      return "./img/aiserver.png";
+    }
+    return "/images/default.jpg"; //fall back bild om det inte funkar
+  };
+
   return (
     <div className="profileContainer">
       <h2>Välkommen {userName || "Gäst"}!</h2>
@@ -103,15 +117,19 @@ const Profile = () => {
           {error && <p className="error">{error}</p>}
           {bookings.length > 0 ? (
             <ul>
-              {bookings.map((booking, index) => (
-                <li key={booking.id || `${booking.date}-${booking.timeSlot}-${index}`}>
+              {bookings.map((booking) => (
+                <li key={booking.bookingId || `${booking.date}-${booking.timeSlot}`}>
                   <p>
-                    <strong>{booking.resourceName}</strong>
+                    <img 
+                      src={resourceImages(booking.resourceName)} 
+                      alt={booking.resourceName} 
+                      style={{ width: "100px", height: "100px", objectFit: "cover", borderRadius: "12px" }}
+                    />
                   </p>
                   <p>{booking.timeSlot}:00</p>
                   <p>{booking.date}</p>
                   <button className="cancelButton"
-                  onClick={() => handleCancelBooking(booking.id)}
+                  onClick={() => handleCancelBooking(booking.bookingId)}
                   >AVBOKA</button>
                 </li>
               ))}
@@ -121,7 +139,7 @@ const Profile = () => {
           )}
         </div>
 
-        {/* Redigera profil */}
+        {/* redigera profil */}
         <div className="editProfileSection">
           <h3>Redigera din profil</h3>
           <form onSubmit={(e) => e.preventDefault()}>
