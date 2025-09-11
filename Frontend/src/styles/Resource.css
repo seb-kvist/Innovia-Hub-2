@@ -15,45 +15,44 @@
 .calendar{
     width:30%
 }
-/* .react-datepicker{
-    width:100% !important;
-    height:100% !important;
-    background-color: rgba(255, 255, 255, 1)!important;
-    box-sizing: border-box;
-} */
+.react-datepicker__header {
+  background-color: rgba(255, 255, 255, 1)!important;
+  border-bottom: 1px solid rgba(73, 78, 177, 1)!important;
+  padding-bottom: 30px !important;
+  margin-bottom: 20px;
+}
+.react-datepicker__current-month{
+  text-align: center!important;
+}
+.react-datepicker__navigation-icon::before, .react-datepicker__year-read-view--down-arrow, .react-datepicker__month-read-view--down-arrow, .react-datepicker__month-year-read-view--down-arrow {
+  border-color:rgba(73, 78, 177, 1)!important;
+  
+}
+
 .react-datepicker {
     width: 100% !important;
     height: 100%;
     max-width: 100%;
     font-size: 16px;
-    /* border: none; */
+    border: none!important;
+    border-radius: 9px !important;
   }
-/* Kalenderns header (månad + navigation) */
-/* .react-datepicker__header {
-    background-color: #494EB1 !important;
-    width: 100% !important;
-    color: white;
-    border-bottom: none;
-    padding: 10px;
-    box-sizing: border-box;
-    text-align: center;
-  } */
+
 .react-datepicker__month-container{
     background-color: rgba(255, 255, 255, 1)!important;
     width: 100% !important;
     height: 100% !important;
 } 
-/* .react-datepicker__month {
-    display: grid;
-    grid-template-columns: no-repeat(7, 1fr); /* 7 kolumner för veckodagar 
-    grid-gap: 2px;
-  } */
+
   .react-datepicker__day-names{
     width: 100%;  
     display: flex;
     align-items: center;
     justify-content: space-between;
     margin:2px 1px;  
+  }
+  .react-datepicker__day-name{
+    color: rgba(73, 78, 177, 1) !important;
   }
   .react-datepicker__day,
   .react-datepicker__day--keyboard-selected,
@@ -63,31 +62,25 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-          /* lite mellanrum mellan rader */
+    color: rgba(73, 78, 177, 1) !important;
   }
-  
+  .react-datepicker__day--selected {
+    background-color: rgba(73, 170, 177, 1) !important;
+    color: rgba(255, 255, 255, 1) !important;
+  }
   .react-datepicker__week {
     display: flex;            /* behåll flex för veckor */
     justify-content: space-between;
+    margin-top: 20px;
   }
   
   .react-datepicker__month {
     width: 100%;
     display: flex;
     flex-direction: column;
+    margin: 0 !important;
   }
-  /* .react-datepicker__day--selected {
-    background: #494EB1;
-    color: white;
-    border-radius: 8px;
-  }
-  
-  .react-datepicker__day:hover {
-    background: #9899B4;
-    color: white;
-    border-radius: 8px;
-  } */
-  
+
  
 .selectedDate{
     min-height: 100%;
@@ -115,4 +108,38 @@
 .isAvailable{
     background-color: rgba(73, 170, 177, 1) !important;
     cursor: pointer;
+}
+
+/* Speciell styling för header buttons på resource page */
+body.resourceBg .header-nav .btn-login,
+body.resourceBg .header-nav .btn-logout {
+    border-color: #494EB1;
+    color: #494EB1;
+}
+
+body.resourceBg .header-nav .btn-login:hover {
+    background-color: #e9e5ef;
+    color: #494EB1;
+    box-shadow: 0 2px 8px rgba(233, 229, 239, 0.3);
+}
+
+body.resourceBg .header-nav .btn-logout:hover {
+    background-color: #494EB1;
+    color: #ffffff;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(73, 78, 177, 0.35);
+}
+
+body.resourceBg .header-nav .btn-profile,
+body.resourceBg .header-nav .btn-back {
+    border-color: #2CB5A5; 
+    color: #2CB5A5;
+}
+
+body.resourceBg .header-nav .btn-profile:hover,
+body.resourceBg .header-nav .btn-back:hover {
+    background-color: #2CB5A5; 
+    color: #ffffff;           
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(44, 181, 165, 0.35);
 }
