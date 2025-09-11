@@ -108,13 +108,24 @@ export const changeResourceStatus = async (
   );
   return res.data;
 };
+export const getAllResources = async (token: string) => {
+  const res = await api.get("/resource", {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  return res.data;
+};
+
 //USERS - Ge All Users
-export const getAllUsers = async (token: string) => {
+export const getAllUsers = async (
+  token: string,
+  filter?: { name?: string; email?: string }
+) => {
   const res = await api.get("/users", {
     headers: {
       Authorization: `Bearer ${token}`,
       Accept: "application/json",
     },
+    params: filter,
   });
   return res.data;
 };

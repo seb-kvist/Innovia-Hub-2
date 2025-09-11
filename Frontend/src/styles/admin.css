@@ -1,0 +1,36 @@
+.admin-container {
+  padding: 16px;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.resource-card {
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  margin-bottom: 12px;
+  padding: 12px;
+  background-color: #fff;
+}
+
+.resource-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.resource-body input {
+  display: block;
+  width: 100%;
+  margin: 6px 0;
+  padding: 6px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+button {
+  background-color: #4db6ac;
+  border: none;
+  padding: 8px 12px;
+  color: white;
+  border-radius: 8px;
+}

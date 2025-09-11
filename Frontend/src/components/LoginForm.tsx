@@ -3,37 +3,37 @@ import { loginUser } from "../api/api";
 import "../styles/LoginAndRegisterForms.css";
 import { useNavigate } from "react-router-dom";
 
-
 const LoginForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [errorMessage, setErrorMessage]=useState("");
+  const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
   const handleSubmit = async (event: React.FormEvent) => {
     event?.preventDefault();
 
-    if(!email || !password){
-      setErrorMessage("Fyll i både email och lösenord")
-      return
+    if (!email || !password) {
+      setErrorMessage("Fyll i både email och lösenord");
+      return;
     }
-    try{
-      const user= await loginUser(email, password);
+    try {
+      const { token, role } = await loginUser(email, password);
 
-      localStorage.setItem("userId", user.id)
-      localStorage.setItem("token", user.token)
-      localStorage.setItem("userName", user.userName);
+      localStorage.setItem("token", token);
+      localStorage.setItem("role", role);
 
-      setErrorMessage("")
-      navigate("/");
-    }catch(error:any){
-      if(error.response?.status===401){
+      setErrorMessage("");
+      if (role.toLowerCase() === "admin") {
+        navigate("/admin");
+      } else {
+        navigate("/"); // 
+      }
+    } catch (error: any) {
+      if (error.response?.status === 401) {
         setErrorMessage("Felaktigt användarnamn eller lösenord");
       } else {
         setErrorMessage("Något gick fel, försök igen senare");
       }
-      
     }
-   
   };
   return (
     <div className="formBox">

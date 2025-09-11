@@ -1,5 +1,10 @@
 import { useState, useEffect } from "react";
-import { getUserBookings, updateUserById, deleteBooking, getUserById } from "../api/api";
+import {
+  getUserBookings,
+  updateUserById,
+  deleteBooking,
+  getUserById,
+} from "../api/api";
 import "../styles/Profile.css";
 
 interface Booking {
@@ -18,7 +23,7 @@ const Profile = () => {
   useEffect(() => {
     const storedName = localStorage.getItem("userName") || "Gäst";
     const storedEmail = localStorage.getItem("email") || "";
-    setUserName(storedName || ""); 
+    setUserName(storedName || "");
     setEmail(storedEmail || "");
 
     const fetchBookings = async () => {
@@ -51,15 +56,15 @@ const Profile = () => {
     try {
       console.log("Avbokar bokning med ID:", bookingId);
       const token = localStorage.getItem("token");
-  
+
       if (!token) {
         alert("Du är inte inloggad.");
         return;
       }
-  
+
       await deleteBooking(bookingId, token);
       alert("Bokningen har avbokats!");
-  
+
       // uppdaterar bokningar efter avbokning
       setBookings((prevBookings) =>
         prevBookings.filter((booking) => booking.bookingId !== bookingId)
@@ -77,12 +82,12 @@ const Profile = () => {
 
       console.log("Token:", token);
       console.log("UserId:", userId);
-  
+
       if (!token || !userId) {
         alert("Du är inte inloggad.");
         return;
       }
-  
+
       await updateUserById(userId, token, userName, email);
       alert("Profilen har uppdaterats!");
 
@@ -92,7 +97,6 @@ const Profile = () => {
       setEmail(updatedUser.email);
       localStorage.setItem("userName", updatedUser.userName);
       localStorage.setItem("email", updatedUser.email);
-
     } catch (error) {
       console.error("Fel vid uppdatering av profil:", error);
       alert("Kunde inte uppdatera profil. Försök igen senare.");
@@ -123,19 +127,29 @@ const Profile = () => {
           {bookings.length > 0 ? (
             <ul>
               {bookings.map((booking) => (
-                <li key={booking.bookingId || `${booking.date}-${booking.timeSlot}`}>
+                <li
+                  key={
+                    booking.bookingId || `${booking.date}-${booking.timeSlot}`
+                  }>
                   <p>
-                    <img 
-                      src={resourceImages(booking.resourceName)} 
-                      alt={booking.resourceName} 
-                      style={{ width: "100px", height: "100px", objectFit: "cover", borderRadius: "12px" }}
+                    <img
+                      src={resourceImages(booking.resourceName)}
+                      alt={booking.resourceName}
+                      style={{
+                        width: "100px",
+                        height: "100px",
+                        objectFit: "cover",
+                        borderRadius: "12px",
+                      }}
                     />
                   </p>
                   <p>{booking.timeSlot}:00</p>
                   <p>{booking.date}</p>
-                  <button className="cancelButton"
-                  onClick={() => handleCancelBooking(booking.bookingId)}
-                  >AVBOKA</button>
+                  <button
+                    className="cancelButton"
+                    onClick={() => handleCancelBooking(booking.bookingId)}>
+                    AVBOKA
+                  </button>
                 </li>
               ))}
             </ul>
