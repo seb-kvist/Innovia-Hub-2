@@ -40,38 +40,59 @@
 /* Existing button styles */
 .header-nav a,
 .header-nav button {
-  padding: 0.4rem 1rem;
+  /* unify visual rhythm across <a> and <button> */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  height: 40px;
+  padding: 0 1rem;
   border-radius: 6px;
   cursor: pointer;
   text-decoration: none;
   transition: all 0.3s ease;
   background: transparent;
+  font-family: inherit;
+  font-weight: 600;
+  font-size: 1rem;
+  line-height: 1;
 }
 
-/* Sign in and Profile share styling */
+/* Unify all header buttons to look like "Min profil" */
 .btn-login,
-.btn-profile {
+.btn-register,
+.btn-profile,
+.btn-logout,
+.btn-back {
   border: 1px solid #6BDFCF;
   color: #6BDFCF;
 }
 
-/* Register and Logout share styling */
-.btn-register,
-.btn-logout {
-  border: 1px solid #e9e5ef;
-  color: #e9e5ef;
-}
-
-/* Hover states */
 .btn-login:hover,
-.btn-profile:hover {
+.btn-register:hover,
+.btn-profile:hover,
+.btn-logout:hover,
+.btn-back:hover {
   background-color: #6BDFCF;
   color: #0b0b0b;
   transform: translateY(-1px);
   box-shadow: 0 2px 8px rgba(107, 223, 207, 0.3);
 }
 
-.btn-register:hover,
+/* Override: Register/Logout should be white */
+.btn-register,
+.btn-logout {
+  border-color: #ffffff;
+  color: #ffffff;
+}
+
+.btn-register:hover {
+  background-color: rgba(255, 255, 255, 0.14);
+  color: #ffffff;
+  box-shadow: 0 2px 8px rgba(255, 255, 255, 0.25);
+}
+
+/* Match Logga ut hover to Tillbaka hover */
 .btn-logout:hover {
   background-color: #e9e5ef;
   color: #494EB1;

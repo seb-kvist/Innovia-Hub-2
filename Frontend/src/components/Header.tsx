@@ -11,14 +11,24 @@ const Header: React.FC<HeaderProps> = ({ isLoggedIn, onLogout}) => {
     const location = useLocation();
     const navigate = useNavigate();
 
-    const showBackButton = location.pathname !== "/"; // don’t show on LandingPage
+    const isAdminRoute = location.pathname.startsWith("/admin");
+    const showBackButton = location.pathname !== "/" && !isAdminRoute; // don’t show on LandingPage or Admin
 
     return (
         <header className="header"> 
             <nav className="header-nav">
     {/* Back button (absolute left) */}
     {showBackButton && (
-      <button className="btn-back" onClick={() => navigate("/")}>
+      <button
+        className="btn-back"
+        onClick={() => {
+          if (window.history.length > 1) {
+            navigate(-1);
+          } else {
+            navigate("/");
+          }
+        }}
+      >
         ← Tillbaka
       </button>
     )}
