@@ -7,6 +7,7 @@ const Calendar = ({selectedDate, onDateChange}:CalendarProps) => {
     <DatePicker
       selected={selectedDate}
       onChange={onDateChange}
+      minDate={new Date()}
       inline
     />
   );
