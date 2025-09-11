@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { getUserBookings, updateUserById, deleteBooking } from "../api/api";
+import { getUserBookings, updateUserById, deleteBooking, getUserById } from "../api/api";
 import "../styles/Profile.css";
 
 interface Booking {
@@ -18,12 +18,8 @@ const Profile = () => {
   useEffect(() => {
     const storedName = localStorage.getItem("userName") || "Gäst";
     const storedEmail = localStorage.getItem("email") || "";
-    if (storedName) {
-      setUserName(storedName);
-    }
-    if (storedEmail) {
-      setEmail(storedEmail);
-    }
+    setUserName(storedName || ""); 
+    setEmail(storedEmail || "");
 
     const fetchBookings = async () => {
       const userId = localStorage.getItem("userId");
@@ -78,6 +74,9 @@ const Profile = () => {
     try {
       const token = localStorage.getItem("token");
       const userId = localStorage.getItem("userId");
+
+      console.log("Token:", token);
+      console.log("UserId:", userId);
   
       if (!token || !userId) {
         alert("Du är inte inloggad.");
@@ -86,8 +85,14 @@ const Profile = () => {
   
       await updateUserById(userId, token, userName, email);
       alert("Profilen har uppdaterats!");
-      localStorage.setItem("userName", userName);
-      localStorage.setItem("email", email);
+
+      const updatedUser = await getUserById(userId, token);
+
+      setUserName(updatedUser.userName);
+      setEmail(updatedUser.email);
+      localStorage.setItem("userName", updatedUser.userName);
+      localStorage.setItem("email", updatedUser.email);
+
     } catch (error) {
       console.error("Fel vid uppdatering av profil:", error);
       alert("Kunde inte uppdatera profil. Försök igen senare.");
@@ -147,7 +152,7 @@ const Profile = () => {
               Namn:
               <input
                 type="text"
-                value={userName}
+                value={userName || ""}
                 onChange={(e) => setUserName(e.target.value)}
               />
             </label>
@@ -155,7 +160,7 @@ const Profile = () => {
               Email:
               <input
                 type="email"
-                value={email}
+                value={email || ""}
                 onChange={(e) => setEmail(e.target.value)}
               />
             </label>
