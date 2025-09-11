@@ -9,7 +9,7 @@ import {
 } from "../api/api";
 
 export interface Booking {
-  id: string;
+  id: number;
   userName: string;
   resourceName: string;
   date: string;
@@ -110,7 +110,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ token }) => {
   }, [activeTab, token]);
 
   // Delete booking
-  const handleDeleteBooking = async (id: string) => {
+  const handleDeleteBooking = async (id: number) => {
     if (confirm("Är du säker på att du vill ta bort denna bokning?")) {
       try {
         await deleteBooking(id, token);
