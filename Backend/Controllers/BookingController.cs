@@ -85,6 +85,7 @@ public class BookingController : ControllerBase
         .Where(b => b.UserId == userId)
         .Select(b => new UserBookingDTO
         {   
+            bookingId = b.Id,
             date = b.Date.ToString("yyyy-MM-dd"),
             timeSlot = b.TimeSlot,
             resourceName = b.Resource.ResourceName
