@@ -109,3 +109,37 @@
     background-color: rgba(73, 170, 177, 1) !important;
     cursor: pointer;
 }
+
+/* Speciell styling för header buttons på resource page */
+body.resourceBg .header-nav .btn-login,
+body.resourceBg .header-nav .btn-logout {
+    border-color: #494EB1;
+    color: #494EB1;
+}
+
+body.resourceBg .header-nav .btn-login:hover {
+    background-color: #e9e5ef;
+    color: #494EB1;
+    box-shadow: 0 2px 8px rgba(233, 229, 239, 0.3);
+}
+
+body.resourceBg .header-nav .btn-logout:hover {
+    background-color: #494EB1;
+    color: #ffffff;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(73, 78, 177, 0.35);
+}
+
+body.resourceBg .header-nav .btn-profile,
+body.resourceBg .header-nav .btn-back {
+    border-color: #2CB5A5; 
+    color: #2CB5A5;
+}
+
+body.resourceBg .header-nav .btn-profile:hover,
+body.resourceBg .header-nav .btn-back:hover {
+    background-color: #2CB5A5; 
+    color: #ffffff;           
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(44, 181, 165, 0.35);
+}
