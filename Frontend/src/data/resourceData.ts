@@ -4,26 +4,30 @@ const resourceData:ResourceType[]=[
 {
     id:1,
     name:"Drop-in skrivbord",
-    description:"Supporting line text lorem ipsum dolor sit amet, consectetur.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam non sapien mollis, interdum justo at, iaculis magna. Maecenas tempus augue turpis, vel tempor velit mattis vel. Sed ullamcorper pharetra diam, bibendum tincidunt felis tempus non. ",
-    imageUrl:"/img/skrivbord.png"
+    description:"En modern arbetsstation med bekvämt skrivbord och stol.",
+    imageUrl:"/img/skrivbord.png",
+    path:"/resource/1"
 },
 {
     id:2,
     name:"Mötesrum",
-    description:"Supporting line text lorem ipsum dolor sit amet, consectetur.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam non sapien mollis, interdum justo at, iaculis magna. Maecenas tempus augue turpis, vel tempor velit mattis vel. Sed ullamcorper pharetra diam, bibendum tincidunt felis tempus non. ",
-    imageUrl:"/img/motesrum.png"
+    description:"Ett fullt utrustat mötesrum med skärm och whiteboard.",
+    imageUrl:"/img/motesrum.png",
+    path:"/resource/2"
 },
 {
     id:3,
     name:"VR Headset",
-    description:"Supporting line text lorem ipsum dolor sit amet, consectetur.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam non sapien mollis, interdum justo at, iaculis magna. Maecenas tempus augue turpis, vel tempor velit mattis vel. Sed ullamcorper pharetra diam, bibendum tincidunt felis tempus non. ",
-    imageUrl:"/img/vrheadset.png"
+    description:"Testa framtidens teknik med vårt VR-headset.",
+    imageUrl:"/img/vrheadset.png",
+    path:"/resource/3"
 },
 {
     id:4,
     name:"AI Server",
-    description:"Supporting line text lorem ipsum dolor sit amet, consectetur.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam non sapien mollis, interdum justo at, iaculis magna. Maecenas tempus augue turpis, vel tempor velit mattis vel. Sed ullamcorper pharetra diam, bibendum tincidunt felis tempus non. ",
-    imageUrl:"/img/aiserver.png"
+    description:"Kraftfull server för AI- och maskininlärningsprojekt.",
+    imageUrl:"/img/aiserver.png",
+    path:"/resource/4"
 }
 ]
 export default resourceData;

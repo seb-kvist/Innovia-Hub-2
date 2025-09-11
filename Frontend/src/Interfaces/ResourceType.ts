@@ -3,4 +3,5 @@ export interface ResourceType{
     name:string;
     description:string;
     imageUrl:string;
+    path:string;
 }
