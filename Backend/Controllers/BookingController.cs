@@ -65,7 +65,8 @@ public class BookingController : ControllerBase
         .Include(b => b.ResourceType)
         .Include(b => b.Resource)
         .Select(b => new BookingsDto
-        {   userName = b.User.UserName,
+        {   bookingId = b.Id,
+            userName = b.User.UserName,
             date = b.Date.ToString("yyyy-MM-dd"),
             timeSlot = b.TimeSlot,
             resourceType = b.ResourceType.ResourceTypeName,

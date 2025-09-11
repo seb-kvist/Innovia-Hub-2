@@ -9,7 +9,7 @@ import {
 } from "../api/api";
 
 export interface Booking {
-  id: number;
+  bookingId: number;
   userName: string;
   resourceName: string;
   date: string;
@@ -111,15 +111,19 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ token }) => {
 
   // Delete booking
   const handleDeleteBooking = async (id: number) => {
-    if (confirm("Är du säker på att du vill ta bort denna bokning?")) {
-      try {
-        await deleteBooking(id, token);
-        setBookings((prev) => prev.filter((b) => b.id !== id));
-        alert("Bokningen har tagits bort!");
-      } catch (err) {
-        console.error(err);
-        alert("Kunde inte ta bort bokningen. Försök igen senare.");
-      }
+    if (!confirm("Är du säker på att du vill ta bort denna bokning?")) return;
+
+    try {
+      // Call backend to delete
+      await deleteBooking(id, token);
+
+      // Remove from state so UI updates instantly
+      setBookings((prev) => prev.filter((b) => b.bookingId !== id));
+
+      alert("Bokningen har tagits bort!");
+    } catch (err) {
+      console.error(err);
+      alert("Kunde inte ta bort bokningen. Försök igen senare.");
     }
   };
 
@@ -187,7 +191,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ token }) => {
             )}
             {!bookingsLoading &&
               bookings.map((b) => (
-                <div key={b.id} className="booking-card">
+                <div key={b.bookingId} className="booking-card">
                   <div className="booking-info">
                     <p className="resource">{b.resourceName}</p>
                     <p>{b.timeSlot}</p>
@@ -196,7 +200,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ token }) => {
                   <div className="booking-actions">
                     <button
                       className="delete-btn"
-                      onClick={() => handleDeleteBooking(b.id)}>
+                      onClick={() => handleDeleteBooking(b.bookingId)}>
                       TA BORT
                     </button>
                   </div>
