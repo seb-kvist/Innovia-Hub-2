@@ -1,18 +1,46 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import ResourceImgAndDate from "../components/ResourceImgAndDate";
 import resourceData from "../data/resourceData";
 import "../styles/Booking.css";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { createBooking } from "../api/api";
 
 const Booking = () => {
   const { resourceId, date, slot } = useParams();
   const resource = resourceData.find((r) => r.id === Number(resourceId));
   const userName=localStorage.getItem("userName")
-  const completeReservation=()=>{
+  const userId=localStorage.getItem("userId")
+  const token = localStorage.getItem("token")
+  const [isLoading, setIsLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const navigate = useNavigate();
+  const completeReservation= async ()=>{
+    if(!userId || !date || !slot || !resourceId || !token){
+      return
+    }
+    setIsLoading(true);
+    setErrorMessage("");
+
     try {
-      //const reservation=
-    } catch (error) {
-      
+      // Skicka ISO-datum (yyyy-MM-dd) om möjligt
+      const isoDate = new Date(date).toISOString().slice(0, 10);
+
+      await createBooking(
+        {date:isoDate, 
+        timeSlot:slot, 
+        resourceTypeId:Number(resourceId), 
+        userId
+        }
+        ,token)
+        navigate(`/resource/${resourceId}`);
+    } catch (error:any) {
+      if (error?.response?.status === 409) {
+        setErrorMessage("Denna tid är redan bokad. Välj en annan tid.");
+      } else {
+        setErrorMessage("Något gick fel vid bokningen. Försök igen.");
+      }
+    } finally {
+      setIsLoading(false);
     }
 
   }
@@ -40,7 +68,9 @@ const Booking = () => {
             <p>Tid: {slot}</p>
             <p>Namn:{userName} </p>
           </div>
-          <button className=" formBtn reserveBtn" onClick={completeReservation}>Reservera</button>
+          <button className=" formBtn reserveBtn" onClick={completeReservation} disabled={isLoading}
+          >{isLoading ? "Reserverar..." : "Reservera"}</button>
+            {errorMessage && <p className="errorMessage">{errorMessage}</p>}
         </div>
       </div>
     </>
