@@ -3,6 +3,7 @@ import type { FreeSlotsProps } from "../Interfaces/Props";
 import { getFreeSlots } from "../api/api";
 import { useNavigate } from "react-router-dom";
 import * as signalR from "@microsoft/signalr";
+import { connection } from "../signalRConnection";
 
 
 const FreeSlots = ({ resourceId, date }: FreeSlotsProps) => {
@@ -32,14 +33,7 @@ const FreeSlots = ({ resourceId, date }: FreeSlotsProps) => {
 
     // Lyssna på SignalR-uppdateringar och refetcha
     useEffect(() => {
-      if (!token) return;
-  
-      const connection = new signalR.HubConnectionBuilder()
-        .withUrl("http://localhost:5022/bookingHub", {
-          accessTokenFactory: () => token
-        })
-        .withAutomaticReconnect()
-        .build();
+
   
       const handler = (update: any) => {
         // Optimistisk uppdatering: om samma datum → ta bort sloten direkt
@@ -56,13 +50,11 @@ const FreeSlots = ({ resourceId, date }: FreeSlotsProps) => {
       };
   
       connection.on("ReceiveBookingUpdate", handler);
-      connection.start().catch(err => console.error("SignalR error", err));
   
       return () => {
         connection.off("ReceiveBookingUpdate", handler);
-        connection.stop();
       };
-    }, [fetchSlots]);
+    }, [fetchSlots, normalizedDate]);
 
   return (
     <div className="slotsHolder">
