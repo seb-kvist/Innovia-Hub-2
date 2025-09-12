@@ -9,7 +9,6 @@ import Footer from "../components/Footer";
  * - <Outlet /> är en plats där den aktuella route-sidan laddas in.
  */
 
-
 const Layout: React.FC = () => {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const location = useLocation();
@@ -24,6 +23,8 @@ const Layout: React.FC = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("userId");
     localStorage.removeItem("userName");
+    localStorage.removeItem("role");
+
     setIsLoggedIn(false);
     navigate("/login");
   };
