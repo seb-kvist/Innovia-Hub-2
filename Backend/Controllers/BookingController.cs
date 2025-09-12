@@ -29,7 +29,7 @@ public class BookingController : ControllerBase
     [HttpPost("{resourceTypeId}/freeSlots")]
     public async Task<IActionResult> GetFreeSlots(int resourceTypeId, [FromBody] BookingInfo bookingInfo)
     {
-        var date = bookingInfo.Date.Date;
+        var date = bookingInfo.Date;
 
         // Define all possible timeslots
         var allSlots = new List<string> { "08-10", "10-12", "12-14", "14-16", "16-18", "18-20" };
@@ -49,7 +49,8 @@ public class BookingController : ControllerBase
     }
 
 
-
+    
+  
     
 
 
@@ -77,6 +78,29 @@ public class BookingController : ControllerBase
 
         return Ok(bookings);
     }
+
+
+
+    [HttpGet("date")]
+    public async Task<IActionResult> GetBookingsByDate([FromQuery] DateTime date)
+    {
+        var bookings = await _bookingRepository.GetBookingByDate(date);
+        var filteredBookings = bookings
+        .Select(b => new BookingsDto
+        {
+            userName = b.User.UserName,
+            bookingId = b.Id,
+            date = b.Date.ToString("yyyy-MM-dd"),
+            timeSlot = b.TimeSlot,
+            resourceName = b.Resource.ResourceName,
+            resourceType = b.ResourceType.ResourceTypeName
+            
+
+        });
+        return Ok(filteredBookings);
+    }
+
+
 
     [HttpGet("user/{userId}")]
     public async Task<IActionResult> GetUserBookings(string userId)

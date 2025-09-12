@@ -2,6 +2,7 @@ using System;
 using Backend.DTOs.Booking;
 using Backend.Interfaces.IRepositories;
 using Backend.Models;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 
 namespace Backend.Repositories;
@@ -43,17 +44,34 @@ public class BookingRepository : IBookingRepository
         .Where(r => r.IsBookable
                  && r.ResourceTypeId == resourceTypeId
                  && !r.Bookings.Any(b =>
-                        b.Date.Date == date.Date &&
+                        b.Date == date &&
                         b.TimeSlot == timeSlot))
         .ToListAsync();
 
             return availableResources;
         }
 
-    public  Resource? GetResourceByIdAsync(List<Resource> resources)
+    public async Task<IEnumerable<Booking>> GetBookingByDate(DateTime date)
     {
-          return  resources.FirstOrDefault();
+        var bookings = await _context.Bookings
+        .Include(b => b.Resource)      
+        .Include(b => b.ResourceType)  
+        .Include(b => b.User) 
+        .Where(b => b.Date == date)
+        .ToListAsync();
+        if (bookings is null)
+        {
+            return [];
+        }
+
+        return bookings;
             
+    }
+
+    public Resource? GetResourceByIdAsync(List<Resource> resources)
+    {
+        return resources.FirstOrDefault();
+
     }
 
     public async Task<bool> DeleteBooking(int bookingId)
@@ -65,4 +83,6 @@ public class BookingRepository : IBookingRepository
         await _context.SaveChangesAsync();
         return true;
     }
+
+   
 }

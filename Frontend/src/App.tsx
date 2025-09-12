@@ -1,7 +1,7 @@
 import "./App.css";
 import { Route, Routes } from "react-router-dom";
 import LandingPage from "./pages/LandingPage";
-import AdminDashboard from "./pages/Admin";
+import Admin from "./pages/Admin";
 import Booking from "./pages/Booking";
 import NotFound from "./pages/NotFound";
 import Profile from "./pages/Profile";
@@ -19,7 +19,7 @@ function App() {
           path="/admin"
           element={
             <ProtectedRoute requiredRole="admin">
-              <AdminDashboard token={localStorage.getItem("token") || ""} />
+              <Admin token={localStorage.getItem("token") || ""} />
             </ProtectedRoute>
           }
         />
