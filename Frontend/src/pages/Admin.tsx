@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import "../styles/admin.css";
+import "../styles/Admin.css";
 import {
   getAllBookings,
   deleteBooking,
@@ -51,7 +51,13 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ token }) => {
   const [resources, setResources] = useState<Resource[]>([]);
   const [resourcesLoading, setResourcesLoading] = useState(false);
   const [resourcesError, setResourcesError] = useState("");
-
+  
+  useEffect(() => {
+    document.body.classList.add("resourceBg");
+    return () => {
+      document.body.classList.remove("resourceBg");
+    };
+  }, []);
   // Load bookings
   useEffect(() => {
     if (activeTab !== "bookings") return;
@@ -158,8 +164,10 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ token }) => {
   return (
     <div className="dashboard">
       <header className="header">
-        <h1>Admin Dashboard</h1>
-        <span className="user-label">Admin användare</span>
+        <div>
+        <h1>Välkommen</h1>
+        <span className="user-label">Admin</span>
+        </div>
       </header>
 
       <nav className="tabs">
@@ -193,8 +201,8 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ token }) => {
               bookings.map((b) => (
                 <div key={b.bookingId} className="booking-card">
                   <div className="booking-info">
-                    <p className="resource">{b.resourceName}</p>
                     <p>{b.timeSlot}</p>
+                    <p className="resource">{b.resourceName}</p>
                     <p>{b.userName}</p>
                   </div>
                   <div className="booking-actions">
