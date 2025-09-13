@@ -3,8 +3,8 @@ export interface FreeSlotsProps {
   date: string | Date;
 }
 export interface CalendarProps {
-  selectedDate: Date | null;
-  onDateChange: (date: Date | null) => void;
+  selectedDate: Date;
+  onDateChange: (date: Date) => void;
 }
 export interface ResourceImageAndDateProps {
   imgUrl: string;

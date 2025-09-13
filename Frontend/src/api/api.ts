@@ -32,7 +32,15 @@ export const getAllBookings = async (token: string) => {
   });
   return res.data;
 };
-
+// Booking Get filtered Bookings
+export const getFilteredBookings = async (token: string, date: Date | null) => {
+  const dateStr = date!.toISOString().slice(0, 10);
+  const res = await api.get(`/booking/date?date=${dateStr}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  
+  return res.data;
+};
 //BOOKING - Get a users booking
 export const getUserBookings = async (userId: string, token: string) => {
   const res = await api.get(`/booking/user/${userId}`, {

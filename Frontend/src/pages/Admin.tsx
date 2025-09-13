@@ -3,7 +3,7 @@ import "../styles/Admin.css";
 import BookingsTab from "../components/BookingsTab";
 import UsersTab from "../components/UsersTab";
 import ResourcesTab from "../components/ResourcesTab";
-import Calendar from "../components/Calendar";
+
 
 interface AdminProps {
   token: string;

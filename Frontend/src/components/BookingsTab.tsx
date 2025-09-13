@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { getAllBookings, deleteBooking } from "../api/api";
 import Calendar from "./Calendar";
+import { getFilteredBookings } from "../api/api";
 
 interface Booking {
   bookingId: number;
@@ -16,31 +17,26 @@ interface Props {
 }
 
 const BookingsTab: React.FC<Props> = ({ token }) => {
-  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+  const [selectedDate, setSelectedDate] = useState<Date>(new Date());
+  const [filteredBookings, setFilteredBookings] = useState<Booking[]>([]);
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
   useEffect(() => {
-    const fetchBookingsByDate = async () => {
+    const fetchFilteredBookings = async () => {
       try {
-        const dateStr = selectedDate!.toISOString().slice(0, 10);
-        const response = await fetch(
-          `http://localhost:5022/api/booking/date?date=${dateStr}`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-        const data = await response.json();
-        setBookings(data);
-      } catch (err) {
-        console.error(err);
+        setLoading(true);
+        const res = await getFilteredBookings(token, selectedDate);
+        const bookings = res;
+        setFilteredBookings(bookings);
+      } catch (error) {
+      } finally {
+        setLoading(false);
       }
     };
 
-    fetchBookingsByDate();
+    fetchFilteredBookings();
   }, [selectedDate, token]);
 
   useEffect(() => {
@@ -77,7 +73,8 @@ const BookingsTab: React.FC<Props> = ({ token }) => {
       <div className="calendar">
         <Calendar selectedDate={selectedDate} onDateChange={setSelectedDate} />
       </div>
-      {bookings.map((b) => (
+
+      {filteredBookings.map((b) => (
         <div key={b.bookingId} className="booking-card">
           <div className="booking-info">
             <p>{b.timeSlot}</p>
