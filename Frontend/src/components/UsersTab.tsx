@@ -11,6 +11,14 @@ const UsersTab: React.FC<Props> = ({ token }) => {
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [filter, setFilter] = useState("");
+
+  const filteredUsers =
+    filter.trim() === ""
+      ? users
+      : users.filter((user) =>
+          user.name.toLowerCase().includes(filter.toLowerCase())
+        );
 
   useEffect(() => {
     const loadUsers = async () => {
@@ -33,7 +41,14 @@ const UsersTab: React.FC<Props> = ({ token }) => {
 
   return (
     <div className="users">
-      {users.map((u) => (
+      <input
+        type="text"
+        placeholder="Sök användare..."
+        value={filter}
+        onChange={(e) => setFilter(e.target.value)}
+        className="user-filter-input"
+      />
+      {filteredUsers.map((u) => (
         <UserCard key={u.id} user={u} />
       ))}
     </div>
