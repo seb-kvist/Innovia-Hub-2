@@ -71,7 +71,12 @@ const BookingsTab: React.FC<Props> = ({ token }) => {
   return (
     <div className="bookings">
       <div className="calendar">
-        <Calendar selectedDate={selectedDate} onDateChange={setSelectedDate} />
+        {/* Popup version */}
+        <Calendar
+          selectedDate={selectedDate}
+          onDateChange={setSelectedDate}
+          variant="popup"
+        />
       </div>
 
       {filteredBookings.map((b) => (

@@ -1,6 +1,5 @@
 import axios from "axios";
-const API_BASE_URL =
-  import.meta.env.VITE_API_URL || "http://localhost:5022/api";
+const API_BASE_URL = import.meta.env.VITE_API_URL;
 const api = axios.create({
   baseURL: API_BASE_URL,
 });
@@ -38,7 +37,7 @@ export const getFilteredBookings = async (token: string, date: Date | null) => {
   const res = await api.get(`/booking/date?date=${dateStr}`, {
     headers: { Authorization: `Bearer ${token}` },
   });
-  
+
   return res.data;
 };
 //BOOKING - Get a users booking

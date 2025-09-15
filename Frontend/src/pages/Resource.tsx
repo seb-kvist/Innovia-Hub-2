@@ -37,6 +37,7 @@ const Resource = () => {
           <Calendar
             selectedDate={selectedDate}
             onDateChange={setSelectedDate}
+            variant="full"
           />
         </div>
       </div>

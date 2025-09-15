@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { getAllResources, changeResourceStatus } from "../api/api";
 import type { Resource } from "./types";
 import ResourceCard from "./ResourceCard";
+import resourceData from "../data/resourceData";
+import type { ResourceType } from "../Interfaces/ResourceType";
 
 interface Props {
   token: string;
@@ -52,9 +54,22 @@ const ResourcesTab: React.FC<Props> = ({ token }) => {
   if (error) return <p className="error">{error}</p>;
   if (resources.length === 0) return <p>Inga resurser hittades</p>;
 
+  const mergedResources: ResourceType[] = resources.map((r) => {
+    const fullData = resourceData.find((rd) => rd.name === r.resourceTypeId);
+    return (
+      fullData || {
+        ...r,
+        name: "Unknown",
+        description: "",
+        imageUrl: "",
+        path: "",
+      }
+    );
+  });
+
   return (
     <div className="resources">
-      {resources.map((r) => (
+      {mergedResources.map((r) => (
         <ResourceCard key={r.id} resource={r} onToggle={toggleResourceStatus} />
       ))}
     </div>

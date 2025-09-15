@@ -9,8 +9,19 @@ import Resource from "./pages/Resource";
 import Layout from "./pages/Layout"; // "ram" med Header + Footer
 import Login from "./pages/Login";
 import ProtectedRoute from "./components/protectedRoute";
+import { useEffect, useState } from "react";
 
 function App() {
+  // In App.tsx or similar
+  const [token, setToken] = useState<string | null>(null);
+
+  useEffect(() => {
+    const storedToken = localStorage.getItem("token");
+    if (storedToken) {
+      setToken(storedToken);
+    }
+  }, []);
+
   return (
     <Routes>
       <Route element={<Layout />}>
@@ -19,7 +30,7 @@ function App() {
           path="/admin"
           element={
             <ProtectedRoute requiredRole="admin">
-              <Admin token={localStorage.getItem("token") || ""} />
+              {token ? <Admin token={token} /> : <div>Loading...</div>}
             </ProtectedRoute>
           }
         />
