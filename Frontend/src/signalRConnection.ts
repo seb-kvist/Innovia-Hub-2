@@ -3,7 +3,7 @@ import * as signalR from "@microsoft/signalr";
 const token = localStorage.getItem("token");
 
 export const connection = new signalR.HubConnectionBuilder()
-  .withUrl("https://83c353ae5f2e.ngrok-free.app/bookingHub", {
+  .withUrl("https://2b991f4fb50d.ngrok-free.app/bookingHub", {
     accessTokenFactory: () => token || ""
   })
   .withAutomaticReconnect()
