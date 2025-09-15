@@ -1,6 +1,5 @@
 .profileContainer {
     margin-top: 4rem;
-    padding: 20px;
     color: #e9e5ef;
     min-height: 100vh;
   }
@@ -12,17 +11,17 @@
   
   .profileSections {
     display: flex;
-    justify-content: space-between;
-    gap: 20px;
+    flex-direction: column;
+  }
+
+  .profileSections h3{
+    margin-left: 20px;
   }
   
   .bookingsSection,
   .editProfileSection {
     background: #f1eef4;
     color: black;
-    padding: 20px;
-    border-radius: 10px;
-    width: 45%;
   }
   
   .bookingsSection ul {
@@ -35,7 +34,7 @@
     justify-content: space-between;
     align-items: center;
     margin-bottom: 10px;
-    padding: 10px;
+    padding: 20px;
     border-top: 1px solid #c0c0c0;
   }
   
@@ -43,9 +42,10 @@
     background-color: #49AAB1;
     color: #ffffff;
     font-weight: 600;
+    font-size: 1rem;
     border: none;
-    padding: .175rem 1rem;
-    border-radius: 12px;
+    padding: .35rem 1.5rem;
+    border-radius: 16px;
     cursor: pointer;
   }
   
@@ -54,9 +54,18 @@
   }
   
   .editProfileSection form {
+    padding: 20px;
     display: flex;
     flex-direction: column;
     gap: 10px;
+  }
+
+  .editProfileSection input {
+    padding: .75rem;
+    border: 1px solid #505050;
+    color: black;
+    border-radius: 16px;
+    font-size: 1rem;
   }
   
   .editProfileSection label {
@@ -68,13 +77,39 @@
   .updateButton {
     background-color: #49AAB1;
     color: #ffffff;
-    font-size: .80rem;
+    font-size: 1rem;
     border: none;
     padding: 10px;
     border-radius: 16px;
     cursor: pointer;
+    width: 50%;
+    align-self: center;
   }
   
   .updateButton:hover {
-    background-color: #45a049;
+    background-color: #358086;
+  }
+
+  img {
+    width: 25%;
+    height: 100%;
+    border-radius: 12px;
+    object-fit: contain;
+  }
+
+  @media screen and (min-width: 800px) {
+    .profileSections {
+      flex-direction: row;
+      gap: 40px;
+      justify-content: center;
+      align-items: flex-start;
+    }
+  
+    .bookingsSection,
+    .editProfileSection {
+      flex: 1;
+      max-width: 50%;
+    }
+    
+    
   }

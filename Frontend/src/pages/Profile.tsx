@@ -131,19 +131,11 @@ const Profile = () => {
                   key={
                     booking.bookingId || `${booking.date}-${booking.timeSlot}`
                   }>
-                  <p>
-                    <img
-                      src={resourceImages(booking.resourceName)}
-                      alt={booking.resourceName}
-                      style={{
-                        width: "100px",
-                        height: "100px",
-                        objectFit: "cover",
-                        borderRadius: "12px",
-                      }}
-                    />
-                  </p>
-                  <p>{booking.timeSlot}:00</p>
+                  <img
+                    src={resourceImages(booking.resourceName)}
+                    alt={booking.resourceName}
+                  />
+                  <p>{booking.timeSlot}</p>
                   <p>{booking.date}</p>
                   <button
                     className="cancelButton"
@@ -162,22 +154,18 @@ const Profile = () => {
         <div className="editProfileSection">
           <h3>Redigera din profil</h3>
           <form onSubmit={(e) => e.preventDefault()}>
-            <label>
-              Namn:
-              <input
-                type="text"
-                value={userName || ""}
-                onChange={(e) => setUserName(e.target.value)}
-              />
-            </label>
-            <label>
-              Email:
-              <input
-                type="email"
-                value={email || ""}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-            </label>
+            <input
+              placeholder="Användarnamn"
+              type="text"
+              value={userName || ""}
+              onChange={(e) => setUserName(e.target.value)}
+            />
+            <input
+              placeholder="Email"
+              type="email"
+              value={email || ""}
+              onChange={(e) => setEmail(e.target.value)}
+            />
             <button className="updateButton" onClick={handleUpdateProfile}>
               LÄGG TILL
             </button>
