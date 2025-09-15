@@ -89,3 +89,14 @@
   line-height: 1.4;
   opacity: 0.9;
 }
+
+@media (max-width: 1024px) {
+  .resourcecards {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+    padding: 0.75rem 0;
+  }
+  .resource-card-section img {
+    height: 220px;
+  }
+}
