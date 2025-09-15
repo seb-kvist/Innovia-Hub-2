@@ -16,20 +16,22 @@ const Admin: React.FC<AdminProps> = ({ token }) => {
   >("bookings");
 
   useEffect(() => {
-    document.body.classList.add("resourceBg");
+    document.body.classList.add("adminBg");
     return () => {
-      document.body.classList.remove("resourceBg");
+      document.body.classList.remove("adminBg");
     };
   }, []);
 
   return (
     <div className="dashboard">
+      <div className="adminHeaderHolder">
       <header className="header">
         <div>
           <h1>Välkommen</h1>
           <span className="user-label">Admin</span>
         </div>
       </header>
+      </div>
 
       <nav className="tabs">
         <button
@@ -49,11 +51,11 @@ const Admin: React.FC<AdminProps> = ({ token }) => {
         </button>
       </nav>
 
-      <main className="content">
+      <div className="content">
         {activeTab === "bookings" && <BookingsTab token={token} />}
         {activeTab === "users" && <UsersTab token={token} />}
         {activeTab === "resources" && <ResourcesTab token={token} />}
-      </main>
+      </div>
     </div>
   );
 };

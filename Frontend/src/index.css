@@ -35,6 +35,13 @@ body {
 body.resourceBg footer {
   color: rgba(73, 78, 177, 1);
 }
+body.adminBg {
+  background: rgba(254, 247, 255, 1);
+}
+
+body.adminBg footer {
+  color: rgba(73, 78, 177, 1);
+}
 
 main {
   width: 100%;
