@@ -23,6 +23,12 @@
     background: #f1eef4;
     color: black;
   }
+
+  .pastBooking {
+    background-color: #f0f0f0;
+    color: #a0a0a0;
+    pointer-events: none; 
+  }
   
   .bookingsSection ul {
     list-style: none;
@@ -33,8 +39,8 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 10px;
-    padding: 20px;
+    margin-bottom: 5px;
+    padding: 10px;
     border-top: 1px solid #c0c0c0;
   }
   
@@ -51,6 +57,11 @@
   
   .cancelButton:hover {
     background-color: #358086;
+  }
+
+  .cancelButton:disabled {
+    background-color: #dcdcdc;
+    cursor: not-allowed;
   }
   
   .editProfileSection form {

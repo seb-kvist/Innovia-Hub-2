@@ -34,7 +34,32 @@ const Profile = () => {
         try {
           const userBookings = await getUserBookings(userId, token);
           console.log("Bokningar från backend:", userBookings);
-          setBookings(userBookings);
+
+          const now = new Date().getTime();
+
+          const upcomingBookings = userBookings.filter((booking: Booking) => {
+            const bookingDate = new Date(booking.date).getTime();
+            return bookingDate >= now; // kommande bokningar
+          });
+
+          const pastBookings = userBookings.filter((booking: Booking) => {
+            const bookingDate = new Date(booking.date).getTime();
+            return bookingDate < now; // tidigare bokningar
+          });
+
+          const sortedUpcomingBookings = upcomingBookings.sort(
+            (a: Booking, b: Booking) => {
+              return new Date(a.date).getTime() - new Date(b.date).getTime();
+            }
+          );
+    
+          const sortedPastBookings = pastBookings.sort(
+            (a: Booking, b: Booking) => {
+              return new Date(b.date).getTime() - new Date(a.date).getTime(); // Senaste först
+            }
+          );
+
+          setBookings([...sortedUpcomingBookings, ...sortedPastBookings]);
         } catch (err: any) {
           if (err.response && err.response.status === 404) {
             console.warn("Inga bokningar hittades för användaren.");
@@ -95,8 +120,8 @@ const Profile = () => {
 
       setUserName(updatedUser.userName);
       setEmail(updatedUser.email);
-      localStorage.setItem("userName", updatedUser.userName);
-      localStorage.setItem("email", updatedUser.email);
+      localStorage.setItem("userName", userName);
+      localStorage.setItem("email", email);
     } catch (error) {
       console.error("Fel vid uppdatering av profil:", error);
       alert("Kunde inte uppdatera profil. Försök igen senare.");
@@ -125,26 +150,59 @@ const Profile = () => {
           <h3>Dina bokningar</h3>
           {error && <p className="error">{error}</p>}
           {bookings.length > 0 ? (
-            <ul>
-              {bookings.map((booking) => (
-                <li
-                  key={
-                    booking.bookingId || `${booking.date}-${booking.timeSlot}`
-                  }>
-                  <img
-                    src={resourceImages(booking.resourceName)}
-                    alt={booking.resourceName}
-                  />
-                  <p>{booking.timeSlot}</p>
-                  <p>{booking.date}</p>
-                  <button
-                    className="cancelButton"
-                    onClick={() => handleCancelBooking(booking.bookingId)}>
-                    AVBOKA
-                  </button>
-                </li>
-              ))}
-            </ul>
+            <>
+              <h4>Kommande bokningar</h4>
+              <ul>
+                {bookings
+                  .filter((booking) => new Date(booking.date).getTime() >= new Date().getTime())
+                  .map((booking) => (
+                    <li key={booking.bookingId || `${booking.date}-${booking.timeSlot}`}>
+                      
+                      <img
+                        src={resourceImages(booking.resourceName)}
+                        alt={booking.resourceName}
+                      />
+                      <div>
+                        <p>{booking.resourceName}</p>
+                        <p>Tid: {booking.timeSlot}</p>
+                        <p>Datum: {booking.date}</p>
+                      </div>
+                      <button
+                        className="cancelButton"
+                        onClick={() => handleCancelBooking(booking.bookingId)}
+                      >
+                        AVBOKA
+                      </button>
+                    </li>
+                  ))}
+              </ul>
+
+              <h4>Tidigare bokningar</h4>
+              <ul>
+                {bookings
+                  .filter((booking) => new Date(booking.date).getTime() < new Date().getTime())
+                  .map((booking) => (
+                    <li
+                      key={booking.bookingId || `${booking.date}-${booking.timeSlot}`}
+                      className="pastBooking"
+                    >
+                      <img
+                        src={resourceImages(booking.resourceName)}
+                        alt={booking.resourceName}
+                      />
+                      <div>
+                        <p>{booking.resourceName}</p>
+                        <p>Tid: {booking.timeSlot}</p>
+                        <p>Datum: {booking.date}</p>
+                      </div>
+
+                      <button className="cancelButton" disabled>
+                        AVBOKA
+                      </button>
+                    </li>
+                  ))}
+              </ul>
+            </>
           ) : (
             !error && <p>Du har inga bokningar ännu.</p>
           )}
