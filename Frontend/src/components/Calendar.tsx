@@ -34,33 +34,33 @@ const Calendar = ({
 
   return (
     <div className={`custom-calendar ${variant}`}>
-      <div className="calendar-header">
-        <button onClick={goToPreviousDay}>◀</button>
-
-        <button
-          onClick={variant === "popup" ? toggleCalendar : undefined}
-          className="selected-date">
-          {selectedDate
-            ? selectedDate.toLocaleDateString("sv-SE", {
-                weekday: "short",
-                month: "short",
-                day: "numeric",
-              })
-            : "Välj datum"}
-        </button>
-
-        <button onClick={goToNextDay}>▶</button>
-      </div>
-
       {/* Variant handling */}
-      {variant === "popup" && showCalendar && (
+      {variant === "popup" && (
         <div className="calendar-popup">
-          <DatePicker
-            selected={selectedDate}
-            onChange={(date) => date && handleDateChange(date)}
-            inline
-            minDate={new Date()}
-          />
+          <div className="calendar-header">
+            <button onClick={goToPreviousDay}>◀</button>
+
+            <button onClick={toggleCalendar} className="selected-date">
+              {selectedDate
+                ? selectedDate.toLocaleDateString("sv-SE", {
+                    weekday: "short",
+                    month: "short",
+                    day: "numeric",
+                  })
+                : "Välj datum"}
+            </button>
+
+            <button onClick={goToNextDay}>▶</button>
+          </div>
+
+          {showCalendar && (
+            <DatePicker
+              selected={selectedDate}
+              onChange={(date) => date && handleDateChange(date)}
+              inline
+              minDate={new Date()}
+            />
+          )}
         </div>
       )}
 
