@@ -47,3 +47,26 @@
 .hero-logo:hover {
   transform: rotate(360deg);
 }
+
+/* Responsive adjustments for mobile */
+@media (max-width: 768px) {
+  .hero {
+    padding: 0rem 1rem 3rem 1rem;
+  }
+  .hero h1 {
+    font-size: 2rem;
+  }
+  .hero h2 {
+    font-size: 1rem;
+  }
+  .hero p {
+    max-width: 90%;
+    margin: 1.25rem auto 2rem;
+    font-size: 0.95rem;
+    line-height: 1.5;
+  }
+  .btn-cta {
+    width: 100%;
+    max-width: 320px;
+  }
+}
