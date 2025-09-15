@@ -11,6 +11,7 @@ export interface User {
   id: string;
   name: string;
   email: string;
+  bookings?: Booking[];
 }
 
 export interface Resource {

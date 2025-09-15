@@ -117,10 +117,7 @@ public class BookingController : ControllerBase
             
         }).ToListAsync();
 
-        if (!userBookings.Any())
-        {
-            return NotFound(new { message = "No bookings found for this user" });
-        }
+        
 
         return Ok(userBookings);
     }
