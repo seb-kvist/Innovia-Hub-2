@@ -26,13 +26,20 @@ const Booking = () => {
       const isoDate = new Date(date).toISOString().slice(0, 10);
 
       await createBooking(
-        {date:isoDate, 
-        timeSlot:slot, 
-        resourceTypeId:Number(resourceId), 
-        userId
-        }
-        ,token)
-        navigate(`/resource/${resourceId}`);
+        {
+          date: isoDate,
+          timeSlot: slot,
+          resourceTypeId: Number(resourceId),
+          userId,
+        },
+        token
+      );
+  
+      // visar en alert för att bekräfta bokningen
+      alert("Bokningen lyckades! Du kommer nu att omdirigeras till dina bokningar.");
+  
+      // navigerar till profilsidan
+      navigate("/profile");
     } catch (error:any) {
       if (error?.response?.status === 409) {
         setErrorMessage("Denna tid är redan bokad. Välj en annan tid.");

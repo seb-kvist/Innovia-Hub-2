@@ -8,8 +8,20 @@ const LoginForm = () => {
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
+
   const handleSubmit = async (event: React.FormEvent) => {
     event?.preventDefault();
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      setErrorMessage("Ange en giltig e-postadress");
+      return;
+    }
+
+    if(password.length < 6){
+      setErrorMessage("Lösenordet måste vara minst 6 tecken långt");
+      return;
+    }
 
     if (!email || !password) {
       setErrorMessage("Fyll i både email och lösenord");
@@ -20,6 +32,7 @@ const LoginForm = () => {
 
       localStorage.setItem("token", token);
       localStorage.setItem("role", role);
+      localStorage.setItem("email", email);
 
       setErrorMessage("");
       if (role.toLowerCase() === "admin") {
