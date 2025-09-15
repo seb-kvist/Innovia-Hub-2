@@ -24,16 +24,16 @@ a:hover {
 
 body {
   margin: 0 auto;
-  background: linear-gradient(180deg, #494EB1 21%, #999999 100%);
+  background: linear-gradient(180deg, #494eb1 21%, #999999 100%);
   background-attachment: fixed;
   background-repeat: no-repeat;
-  min-height:100vh;
+  min-height: 100vh;
 }
-.resourceBg{
+.resourceBg {
   background: rgba(233, 229, 239, 1);
 }
 body.resourceBg footer {
-  color: rgba(73, 78, 177, 1)
+  color: rgba(73, 78, 177, 1);
 }
 
 main {
@@ -77,5 +77,11 @@ button:focus-visible {
   }
   button {
     background-color: #f9f9f9;
+  }
+}
+/* Tablet breakpoint */
+@media (max-width: 1024px) {
+  main {
+    margin-top: 5rem;
   }
 }

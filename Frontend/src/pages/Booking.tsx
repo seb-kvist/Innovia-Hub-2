@@ -53,7 +53,7 @@ const Booking = () => {
   if (!resource) return <p>Resurs hittades inte</p>;
 
   return (
-    <>
+    <div className="bookingPage">
       <h2 className="resourceName">Boka {resource.name}</h2>
       <div className="recourceImgAndDate">
         <ResourceImgAndDate
@@ -73,7 +73,7 @@ const Booking = () => {
             {errorMessage && <p className="errorMessage">{errorMessage}</p>}
         </div>
       </div>
-    </>
+    </div>
   );
 };
 export default Booking;

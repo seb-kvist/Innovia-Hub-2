@@ -135,7 +135,7 @@
 }
 
 /* Tablet breakpoint */
-@media (max-width: 1024px) {
+@media (max-width: 1142px) {
   .header-nav { margin-right:1.5rem;
   margin-left:1.5rem; }
   .header-buttons { gap: 0.4rem; }
