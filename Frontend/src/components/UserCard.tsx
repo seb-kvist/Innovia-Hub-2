@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import type { User, Booking } from "../components/types";
-import { getUserBookings, deleteUserById } from "../api/api";
+import { getUserBookings, deleteUserById, deleteBooking } from "../api/api";
 
 interface UserCardProps {
   user: User;
@@ -53,6 +53,17 @@ const UserCard: React.FC<UserCardProps> = ({ user, onDelete }) => {
     }
   };
 
+  const handelDeleteBooking = (id: number, booking: Booking) => {
+    try {
+      () => {
+        const token = localStorage.getItem("token")!;
+        deleteBooking(booking.bookingId, token);
+        alert(`Booking ${booking.resourceName} deleted Successfully!`);
+        setUserBookings(userBookings!.filter((b) => b.bookingId != id));
+      };
+    } catch (error) {}
+  };
+
   return (
     <>
       <div
@@ -83,7 +94,13 @@ const UserCard: React.FC<UserCardProps> = ({ user, onDelete }) => {
               {userBookings.map((booking) => (
                 <li key={booking.bookingId}>
                   {booking.resourceName} — {booking.date}
-                  <button className="deleteBookingBtn">🗑</button>
+                  <button
+                    className="deleteBookingBtn"
+                    onClick={() => {
+                      handelDeleteBooking(booking.bookingId, booking);
+                    }}>
+                    🗑
+                  </button>
                 </li>
               ))}
             </ul>
