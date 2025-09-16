@@ -122,3 +122,30 @@ form p {
     color: rgba(73, 170, 177, 1);
 
   }
+  @media (max-width: 1024px) {
+    .loginContainer{
+      margin-top: 3rem;
+    }
+  }
+  @media (max-width: 768px) {
+    .loginContainer {
+      flex-direction: column;   
+      height: auto;            
+      box-shadow: none;  
+      border-radius: 0;
+    }
+  
+    .formHolder,
+    .secondaryView {
+      position: relative; 
+      width: 100%;        
+      height: auto;  
+      transform: none !important; 
+      border-radius: 0;   
+    }
+  
+    .secondaryView {
+      margin-top: 30px; 
+      padding: 20px 0px;
+    }
+  }
