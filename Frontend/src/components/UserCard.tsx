@@ -42,7 +42,11 @@ const UserCard: React.FC<UserCardProps> = ({ user, onDelete }) => {
     }
   };
 
-  const handelDeleteUser = () => {
+  const handleDeleteUser = () => {
+    const confirmed = window.confirm(
+      `Are you sure you want to delete ${user.name}?`
+    );
+    if (!confirmed) return; // exit if user clicked "Cancel"
     try {
       const token = localStorage.getItem("token")!;
       deleteUserById(user.id, token).then(() => onDelete(user.id, token));
@@ -53,15 +57,23 @@ const UserCard: React.FC<UserCardProps> = ({ user, onDelete }) => {
     }
   };
 
-  const handelDeleteBooking = (id: number, booking: Booking) => {
+  const handleDeleteBooking = async (id: number) => {
+    const confirmed = window.confirm(
+      "Are you sure you want to delete this booking?"
+    );
+    if (!confirmed) return;
     try {
-      () => {
-        const token = localStorage.getItem("token")!;
-        deleteBooking(booking.bookingId, token);
-        alert(`Booking ${booking.resourceName} deleted Successfully!`);
-        setUserBookings(userBookings!.filter((b) => b.bookingId != id));
-      };
-    } catch (error) {}
+      const token = localStorage.getItem("token")!;
+      await deleteBooking(id, token);
+
+      setUserBookings((prev) =>
+        prev ? prev.filter((b) => b.bookingId !== id) : []
+      );
+      alert("Booking deleted successfully!");
+    } catch (error) {
+      console.error(error);
+      alert("Failed to delete booking");
+    }
   };
 
   return (
@@ -73,7 +85,7 @@ const UserCard: React.FC<UserCardProps> = ({ user, onDelete }) => {
         <p>{user.name}</p>
         <button
           onClick={() => {
-            handelDeleteUser();
+            handleDeleteUser();
           }}
           className="delete-btn">
           Ta bort
@@ -97,7 +109,7 @@ const UserCard: React.FC<UserCardProps> = ({ user, onDelete }) => {
                   <button
                     className="deleteBookingBtn"
                     onClick={() => {
-                      handelDeleteBooking(booking.bookingId, booking);
+                      handleDeleteBooking(booking.bookingId);
                     }}>
                     🗑
                   </button>
