@@ -53,13 +53,80 @@
   border:none;
   border-radius: 20px;
   padding: 5px 20px;
+  min-width: 100px;
 }
+.bookings{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+/* user */
 .user-card{
 display: flex;
 justify-content: space-between;
 border-bottom: 0.5px solid rgb(206, 199, 199);
 width: 45%;
+align-items: center;
+cursor: pointer;
+padding-right: 10px;
 }
+.user-filter-input{
+  background-color: rgba(236, 230, 240, 1);
+  border: none;
+  padding: 10px 15px;
+  border-radius: 28px;
+  min-width: 200px;
+  color: rgba(73, 69, 79, 1);
+  margin-bottom: 50px;
+}
+.user-card img{
+  width: 50px;
+}
+.user-card p{
+  flex-grow: 1;
+  margin-left: 2rem;
+  text-align: start;
+}
+.userBookings{
+width: 40%;
+text-align: start;
+margin: 20px;
+margin-bottom: 30px;
+}
+.userBookings div{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+.userBookings h3{
+  margin:0px ;
+}
+.userBookings p{
+  font-style: italic;
+  margin: 0px;
+}
+.userBookings ul{
+  padding-left: 0;
+}
+.userBookings ul li{
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+.deleteBookingBtn{
+  appearance: none;
+    background: white;
+    box-shadow: none;
+    border: none;
+    cursor: pointer;
+}
+.activeShowBookings{
+  background-color: rgba(236, 230, 240, 1);
+}
+/* resource */
 .resource-card {
   border: 1px solid #ddd;
   border-radius: 12px;
@@ -103,14 +170,7 @@ width: 45%;
 .content{
   margin-top: 3rem;
 }
-.user-filter-input{
-  background-color: rgba(236, 230, 240, 1);
-  border: none;
-  padding: 10px 15px;
-  border-radius: 28px;
-  min-width: 200px;
-  color: rgba(73, 69, 79, 1);
-}
+
 /* Tablet breakpoint */
 @media (max-width: 1142px) {
   .dashboard {
@@ -132,6 +192,12 @@ width: 45%;
   .tabs .tab{
     min-width: 0;
   }
+  .user-card{
+    width: 100%;
+  }
+  .userBookings{
+    width: 90%;
+  }
 }
 @media (max-width: 768px) {
   .adminHeaderHolder{
@@ -141,5 +207,8 @@ width: 45%;
 @media (max-width: 450px) {
   .user-filter-input{
     width: 90%;
+  }
+  .user-card p {
+    margin-left: 1rem;
   }
 }

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import type { CalendarProps } from "../Interfaces/CalenderProps";
@@ -10,7 +10,16 @@ const Calendar = ({
   variant = "popup",
 }: CalendarProps) => {
   const [showCalendar, setShowCalendar] = useState(false);
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 825);
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 825);
+    };
+    window.addEventListener("resize", handleResize);
 
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+  const effectiveVariant = isMobile ? "popup" : variant ?? "full";
   const goToPreviousDay = () => {
     if (!selectedDate) return;
     const prevDate = new Date(selectedDate);
@@ -29,13 +38,13 @@ const Calendar = ({
 
   const handleDateChange = (date: Date) => {
     onDateChange(date);
-    if (variant === "popup") setShowCalendar(false);
+    if (effectiveVariant === "popup") setShowCalendar(false);
   };
 
   return (
-    <div className={`custom-calendar ${variant}`}>
+    <div className={`custom-calendar ${effectiveVariant}`}>
       {/* Variant handling */}
-      {variant === "popup" && (
+      {effectiveVariant === "popup" && (
         <div className="calendar-popup">
           <div className="calendar-header">
             <button onClick={goToPreviousDay}>◀</button>
@@ -64,11 +73,12 @@ const Calendar = ({
         </div>
       )}
 
-      {variant === "full" && (
+      {effectiveVariant === "full" && (
         <div className="calendar-full">
           <DatePicker
             selected={selectedDate}
             onChange={(date) => date && handleDateChange(date)}
+            minDate={new Date()}
             inline
           />
         </div>

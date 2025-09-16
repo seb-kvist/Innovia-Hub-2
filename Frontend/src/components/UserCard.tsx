@@ -43,46 +43,39 @@ const UserCard: React.FC<UserCardProps> = ({ user, onDelete }) => {
   };
 
   return (
-    <div className="user-card border rounded-2xl shadow-md p-4 bg-white">
-      <div className="flex justify-between items-center mb-2">
-        <h2 className="text-lg font-semibold">{user.name}</h2>
-        <div className="flex gap-2">
-          <button
-            onClick={handleFetchBookings}
-            className="text-blue-500 hover:text-blue-700">
-            {showBookings ? "Hide Bookings" : "Show Bookings"}
-          </button>
-          <button
-            onClick={() => onDelete(user.id)}
-            className="text-red-500 hover:text-red-700">
-            🗑 Delete
-          </button>
-        </div>
+    <>
+      <div onClick={handleFetchBookings} className={`user-card ${showBookings ? "activeShowBookings" : ""}`}>
+        <img src="/img/profile.png"/>
+        <p>{user.name}</p>
+        <button onClick={() => onDelete(user.id)} className="delete-btn">
+          Ta bort
+        </button>
       </div>
-
-      <p className="text-sm text-gray-600">{user.email}</p>
-
       {showBookings && (
-        <div className="mt-3">
-          <h3 className="font-medium">Bookings:</h3>
+        <div className="userBookings">
+          <div>
+          <h3>Bookings:</h3>
+          <p>{user.email}</p>
+          </div>
           {loading ? (
             <p>Loading bookings...</p>
           ) : error ? (
             <p className="text-red-500">{error}</p>
           ) : userBookings && userBookings.length > 0 ? (
-            <ul className="list-disc list-inside text-sm text-gray-700">
+            <ul>
               {userBookings.map((booking) => (
                 <li key={booking.bookingId}>
                   {booking.resourceName} — {booking.date}
+                  <button className="deleteBookingBtn">🗑</button>
                 </li>
               ))}
             </ul>
           ) : (
-            <p className="text-sm text-gray-400">No bookings</p>
+            <p className="noBookings">No bookings</p>
           )}
         </div>
       )}
-    </div>
+    </>
   );
 };
 
