@@ -170,3 +170,13 @@ export const updateUserById = async (
   );
   return res.data;
 };
+
+export const deleteUserById = async (id: string, token: string) => {
+  const res = await api.delete(`/users/${id}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+  });
+  return res.data;
+};

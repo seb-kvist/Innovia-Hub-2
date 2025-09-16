@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import type { User, Booking } from "../components/types";
-import { getUserBookings } from "../api/api";
+import { getUserBookings, deleteUserById } from "../api/api";
 
 interface UserCardProps {
   user: User;
-  onDelete: (id: string) => void;
+  onDelete: (id: string, token: string) => void;
 }
 
 const UserCard: React.FC<UserCardProps> = ({ user, onDelete }) => {
@@ -42,20 +42,37 @@ const UserCard: React.FC<UserCardProps> = ({ user, onDelete }) => {
     }
   };
 
+  const handelDeleteUser = () => {
+    try {
+      const token = localStorage.getItem("token")!;
+      deleteUserById(user.id, token).then(() => onDelete(user.id, token));
+      alert("User deleted successfully!");
+    } catch (error) {
+      console.error(error);
+      alert("Failed to delete user");
+    }
+  };
+
   return (
     <>
-      <div onClick={handleFetchBookings} className={`user-card ${showBookings ? "activeShowBookings" : ""}`}>
-        <img src="/img/profile.png"/>
+      <div
+        onClick={handleFetchBookings}
+        className={`user-card ${showBookings ? "activeShowBookings" : ""}`}>
+        <img src="/img/profile.png" />
         <p>{user.name}</p>
-        <button onClick={() => onDelete(user.id)} className="delete-btn">
+        <button
+          onClick={() => {
+            handelDeleteUser();
+          }}
+          className="delete-btn">
           Ta bort
         </button>
       </div>
       {showBookings && (
         <div className="userBookings">
           <div>
-          <h3>Bookings:</h3>
-          <p>{user.email}</p>
+            <h3>Bookings:</h3>
+            <p>{user.email}</p>
           </div>
           {loading ? (
             <p>Loading bookings...</p>

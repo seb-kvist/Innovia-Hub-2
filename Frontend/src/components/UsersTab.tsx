@@ -40,7 +40,7 @@ const UsersTab: React.FC<Props> = ({ token }) => {
   if (users.length === 0) return <p>Inga användare hittades</p>;
 
   const handleDeleteUser = (id: string) => {
-    setUsers(filteredUsers.filter((u) => u.id !== id));
+    setUsers(users.filter((u) => u.id !== id));
   };
 
   return (
@@ -52,7 +52,7 @@ const UsersTab: React.FC<Props> = ({ token }) => {
         onChange={(e) => setFilter(e.target.value)}
         className="user-filter-input"
       />
-      {filteredUsers.map((u) => (
+      {users.map((u) => (
         <UserCard key={u.id} user={u} onDelete={handleDeleteUser} />
       ))}
     </div>

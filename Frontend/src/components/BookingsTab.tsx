@@ -58,7 +58,7 @@ const BookingsTab: React.FC<Props> = ({ token }) => {
     if (!confirm("Är du säker på att du vill ta bort denna bokning?")) return;
     try {
       await deleteBooking(id, token);
-      setBookings((prev) => prev.filter((b) => b.bookingId !== id));
+      setFilteredBookings((prev) => prev.filter((b) => b.bookingId !== id));
     } catch {
       alert("Kunde inte ta bort bokningen. Försök igen senare.");
     }
