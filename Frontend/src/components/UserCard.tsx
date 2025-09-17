@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import type { User, Booking } from "../components/types";
+import type { User, Booking } from "../Interfaces/types";
 import { getUserBookings, deleteUserById, deleteBooking } from "../api/api";
 
 interface UserCardProps {
