@@ -46,8 +46,10 @@ const BookingsTab: React.FC<Props> = ({ token }) => {
   useEffect(() => {
     const startConnection = async () => {
       try {
-        await connection.start();
-        console.log("Connected to BookingHub");
+        if (connection.state === "Disconnected") {
+          await connection.start();
+          console.log("Connected to BookingHub");
+        }
       } catch (err) {
         console.error("SignalR error:", err);
       }
@@ -56,8 +58,9 @@ const BookingsTab: React.FC<Props> = ({ token }) => {
     startConnection();
 
     const updateHandler = () => {
-      // fetch latest filtered bookings for current date
-      getFilteredBookings(token, selectedDateRef.current).then(setFilteredBookings);
+      getFilteredBookings(token, selectedDateRef.current).then(
+        setFilteredBookings
+      );
     };
 
     connection.on("ReceiveBookingUpdate", updateHandler);
@@ -101,8 +104,7 @@ const BookingsTab: React.FC<Props> = ({ token }) => {
           <div className="booking-actions">
             <button
               className="delete-btn"
-              onClick={() => handleDeleteBooking(b.bookingId)}
-            >
+              onClick={() => handleDeleteBooking(b.bookingId)}>
               TA BORT
             </button>
           </div>
