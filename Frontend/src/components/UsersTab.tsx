@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { getAllUsers } from "../api/api";
-import type { User } from "./types";
+import type { User } from "../Interfaces/types";
 import UserCard from "./UserCard";
 
 interface Props {
@@ -12,13 +12,20 @@ const UsersTab: React.FC<Props> = ({ token }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [filter, setFilter] = useState("");
+  const [page, setPage] = useState(1);
 
   const filteredUsers =
     filter.trim() === ""
       ? users
       : users.filter((user) =>
-          user.name.toLowerCase().includes(filter.toLowerCase())
+          user.name.toLowerCase().startsWith(filter.toLowerCase())
         );
+  const usersPerPage = 10;
+  const startIndex = (page - 1) * usersPerPage;
+  const paginatedUsers = filteredUsers.slice(
+    startIndex,
+    startIndex + usersPerPage
+  );
 
   useEffect(() => {
     const loadUsers = async () => {
@@ -52,9 +59,19 @@ const UsersTab: React.FC<Props> = ({ token }) => {
         onChange={(e) => setFilter(e.target.value)}
         className="user-filter-input"
       />
-      {users.map((u) => (
+      {paginatedUsers.map((u) => (
         <UserCard key={u.id} user={u} onDelete={handleDeleteUser} />
       ))}
+      <div className="pagination">
+        {Array.from(
+          { length: Math.ceil(filteredUsers.length / usersPerPage) },
+          (_, i) => (
+            <button key={i} onClick={() => setPage(i + 1)}>
+              {i + 1}
+            </button>
+          )
+        )}
+      </div>
     </div>
   );
 };

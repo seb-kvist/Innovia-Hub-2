@@ -1,3 +1,5 @@
+import type { ResourceType } from "./ResourceType";
+
 export interface Booking {
   bookingId: number;
   userName: string;
@@ -14,10 +16,11 @@ export interface User {
   bookings?: Booking[];
 }
 
-export interface Resource {
+export interface Resource extends ResourceType {
   id: number;
   resourceName: string;
-  resourceTypeId: string;
+  resourceType: string;
+  resourceTypeId: number;
   isBookable: boolean;
-  updating?: boolean;
+  
 }

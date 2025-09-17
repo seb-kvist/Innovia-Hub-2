@@ -1,5 +1,6 @@
 import React from "react";
-import type { Resource } from "../Interfaces/Resource";
+import type { Resource } from "../Interfaces/types";
+import "../styles/ResourceCard.css";
 
 interface Props {
   resource: Resource;
@@ -18,7 +19,7 @@ const ResourceCard: React.FC<Props> = ({ resource, onToggle }) => {
 
       {/* Content */}
       <div className="resource-card-content">
-        <h3 className="resource-card-title">{resource.name}</h3>
+        <h3 className="resource-card-title">{resource.resourceName}</h3>
         <p className="resource-card-desc">{resource.description}</p>
         <p
           className={`resource-card-status ${
@@ -34,7 +35,6 @@ const ResourceCard: React.FC<Props> = ({ resource, onToggle }) => {
           <input
             type="checkbox"
             checked={resource.isBookable}
-            disabled={resource.updating}
             onChange={() => onToggle(resource.id)}
           />
           <span className="slider round"></span>
