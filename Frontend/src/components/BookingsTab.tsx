@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
-import { getAllBookings, deleteBooking } from "../api/api";
+import React, { useEffect, useState, useRef } from "react";
+import { deleteBooking, getFilteredBookings } from "../api/api";
 import Calendar from "./Calendar";
-import { getFilteredBookings } from "../api/api";
+import { connection } from "../signalRConnection";
 
 interface Booking {
   bookingId: number;
@@ -19,39 +19,52 @@ interface Props {
 const BookingsTab: React.FC<Props> = ({ token }) => {
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [filteredBookings, setFilteredBookings] = useState<Booking[]>([]);
-  const [bookings, setBookings] = useState<Booking[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  useEffect(() => {
-    const fetchFilteredBookings = async () => {
-      try {
-        setLoading(true);
-        const res = await getFilteredBookings(token, selectedDate);
-        const bookings = res;
-        setFilteredBookings(bookings);
-      } catch (error) {
-      } finally {
-        setLoading(false);
-      }
-    };
+  const selectedDateRef = useRef(selectedDate);
+  selectedDateRef.current = selectedDate;
 
+  //  fetch bookings for selected date
+  const fetchFilteredBookings = async () => {
+    try {
+      setLoading(true);
+      const res = await getFilteredBookings(token, selectedDateRef.current);
+      setFilteredBookings(res);
+    } catch {
+      setError("Kunde inte ladda bokningar");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
     fetchFilteredBookings();
   }, [selectedDate, token]);
 
+  //  setup SignalR once
   useEffect(() => {
-    const loadBookings = async () => {
+    const startConnection = async () => {
       try {
-        setLoading(true);
-        const data = await getAllBookings(token);
-        setBookings(data);
-      } catch {
-        setError("Kunde inte ladda bokningar");
-      } finally {
-        setLoading(false);
+        await connection.start();
+        console.log("Connected to BookingHub");
+      } catch (err) {
+        console.error("SignalR error:", err);
       }
     };
-    loadBookings();
+
+    startConnection();
+
+    const updateHandler = () => {
+      // fetch latest filtered bookings for current date
+      getFilteredBookings(token, selectedDateRef.current).then(setFilteredBookings);
+    };
+
+    connection.on("ReceiveBookingUpdate", updateHandler);
+
+    return () => {
+      connection.off("ReceiveBookingUpdate", updateHandler);
+    };
   }, [token]);
 
   const handleDeleteBooking = async (id: number) => {
@@ -66,12 +79,11 @@ const BookingsTab: React.FC<Props> = ({ token }) => {
 
   if (loading) return <p>Laddar bokningar...</p>;
   if (error) return <p className="error">{error}</p>;
-  if (bookings.length === 0) return <p>Inga bokningar hittades</p>;
+  if (filteredBookings.length === 0) return <p>Inga bokningar hittades</p>;
 
   return (
     <div className="bookings">
       <div className="calendar">
-        {/* Popup version */}
         <Calendar
           selectedDate={selectedDate}
           onDateChange={setSelectedDate}
@@ -89,7 +101,8 @@ const BookingsTab: React.FC<Props> = ({ token }) => {
           <div className="booking-actions">
             <button
               className="delete-btn"
-              onClick={() => handleDeleteBooking(b.bookingId)}>
+              onClick={() => handleDeleteBooking(b.bookingId)}
+            >
               TA BORT
             </button>
           </div>
