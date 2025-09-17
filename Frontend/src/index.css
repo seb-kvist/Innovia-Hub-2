@@ -38,6 +38,9 @@ body.resourceBg footer {
 body.adminBg {
   background: rgba(254, 247, 255, 1);
 }
+body.adminBg .selected-date{
+  background-color: white !important;
+}
 
 body.adminBg footer {
   color: rgba(73, 78, 177, 1);
