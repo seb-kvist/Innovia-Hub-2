@@ -37,6 +37,39 @@
   background-color: #4db6ac;
 }
 
+/* Admin-specific button overrides:  */
+body.adminBg .header-nav .btn-login,
+body.adminBg .header-nav .btn-profile,
+body.adminBg .header-nav .btn-back {
+  border-color: #6BDFCF;
+  color: #0b0b0b;
+  background-color: #6BDFCF; 
+}
+
+body.adminBg .header-nav .btn-login:hover,
+body.adminBg .header-nav .btn-profile:hover,
+body.adminBg .header-nav .btn-back:hover {
+  background-color: #4dd4c4; 
+  color: #0b0b0b;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 24px rgba(107, 223, 207, 0.8), 0 0 20px rgba(107, 223, 207, 0.4); 
+}
+
+body.adminBg .header-nav .btn-register,
+body.adminBg .header-nav .btn-logout {
+  border-color: #ffffff;
+  color: #494EB1;
+  background-color: #ffffff; 
+}
+
+body.adminBg .header-nav .btn-register:hover,
+body.adminBg .header-nav .btn-logout:hover {
+  background-color: #f8f9fa; 
+  color: #494EB1;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 24px rgba(255, 255, 255, 0.4), 0 0 20px rgba(255, 255, 255, 0.4); 
+}
+
 .booking-card{
   display: flex;
   align-items: center;
