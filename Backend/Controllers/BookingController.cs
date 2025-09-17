@@ -139,7 +139,8 @@ public class BookingController : ControllerBase
 
 
             return Ok(new UserBookingDTO
-            {
+            {   
+                bookingId =booking.Id,
                 date = booking.Date.ToString("yyyy-MM-dd"),
                 timeSlot = booking.TimeSlot,
                 resourceName = booking.Resource!.ResourceName

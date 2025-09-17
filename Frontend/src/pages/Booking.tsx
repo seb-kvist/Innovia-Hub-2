@@ -8,15 +8,15 @@ import { createBooking } from "../api/api";
 const Booking = () => {
   const { resourceId, date, slot } = useParams();
   const resource = resourceData.find((r) => r.id === Number(resourceId));
-  const userName=localStorage.getItem("userName")
-  const userId=localStorage.getItem("userId")
-  const token = localStorage.getItem("token")
+  const userName = localStorage.getItem("userName");
+  const userId = localStorage.getItem("userId");
+  const token = localStorage.getItem("token");
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
-  const completeReservation= async ()=>{
-    if(!userId || !date || !slot || !resourceId || !token){
-      return
+  const completeReservation = async () => {
+    if (!userId || !date || !slot || !resourceId || !token) {
+      return;
     }
     setIsLoading(true);
     setErrorMessage("");
@@ -25,6 +25,7 @@ const Booking = () => {
       // Skicka ISO-datum (yyyy-MM-dd) om möjligt
       const isoDate = new Date(date).toISOString().slice(0, 10);
 
+      console.log(date, slot, resourceId, userId);
       await createBooking(
         {
           date: isoDate,
@@ -34,13 +35,15 @@ const Booking = () => {
         },
         token
       );
-  
+
       // visar en alert för att bekräfta bokningen
-      alert("Bokningen lyckades! Du kommer nu att omdirigeras till dina bokningar.");
-  
+      alert(
+        "Bokningen lyckades! Du kommer nu att omdirigeras till dina bokningar."
+      );
+
       // navigerar till profilsidan
       navigate("/profile");
-    } catch (error:any) {
+    } catch (error: any) {
       if (error?.response?.status === 409) {
         setErrorMessage("Denna tid är redan bokad. Välj en annan tid.");
       } else {
@@ -49,14 +52,13 @@ const Booking = () => {
     } finally {
       setIsLoading(false);
     }
-
-  }
-  useEffect(()=>{
+  };
+  useEffect(() => {
     document.body.classList.add("resourceBg");
-    return()=>{
-      document.body.classList.remove("resourceBg")
-    }
-  },[])
+    return () => {
+      document.body.classList.remove("resourceBg");
+    };
+  }, []);
   if (!resource) return <p>Resurs hittades inte</p>;
 
   return (
@@ -75,9 +77,13 @@ const Booking = () => {
             <p>Tid: {slot}</p>
             <p>Namn:{userName} </p>
           </div>
-          <button className=" formBtn reserveBtn" onClick={completeReservation} disabled={isLoading}
-          >{isLoading ? "Reserverar..." : "Reservera"}</button>
-            {errorMessage && <p className="errorMessage">{errorMessage}</p>}
+          <button
+            className=" formBtn reserveBtn"
+            onClick={completeReservation}
+            disabled={isLoading}>
+            {isLoading ? "Reserverar..." : "Reservera"}
+          </button>
+          {errorMessage && <p className="errorMessage">{errorMessage}</p>}
         </div>
       </div>
     </div>
