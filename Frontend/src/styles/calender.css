@@ -25,11 +25,13 @@
   cursor: pointer;
   color:rgba(73, 78, 177, 1);
   background-color: rgba(233, 229, 239, 1) !important;
+  flex-grow: 1;
 }
 .calendar-popup {
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
   border-radius: 8px;
   margin-top: 8px;
+  padding: 10px;
 }
 
 .calendar-full{

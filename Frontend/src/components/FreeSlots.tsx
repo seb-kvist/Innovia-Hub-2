@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom";
 import * as signalR from "@microsoft/signalr";
 import { connection } from "../signalRConnection";
 
-
 const FreeSlots = ({ resourceId, date }: FreeSlotsProps) => {
   const allSlots = ["08-10", "10-12", "12-14", "14-16", "16-18", "18-20"];
   const [availableSlots, setAvailableSlots] = useState<string[]>([]);
@@ -31,40 +30,49 @@ const FreeSlots = ({ resourceId, date }: FreeSlotsProps) => {
     fetchSlots();
   }, [fetchSlots]);
 
-    // Lyssna på SignalR-uppdateringar och refetcha
-    useEffect(() => {
+  // Lyssna på SignalR-uppdateringar och refetcha
+  useEffect(() => {
+    const handler = (update: any) => {
+      // Optimistisk uppdatering: om samma datum → ta bort sloten direkt
+      try {
+        const updateDate = typeof update?.date === "string" ? update.date : "";
+        const updateSlot = update?.timeSlot as string | undefined;
 
-  
-      const handler = (update: any) => {
-        // Optimistisk uppdatering: om samma datum → ta bort sloten direkt
-        try {
-          const updateDate = typeof update?.date === "string" ? update.date : "";
-          const updateSlot = update?.timeSlot as string | undefined;
-
-          if (updateDate === normalizedDate && updateSlot) {
-            setAvailableSlots(prev => prev.filter(s => s !== updateSlot));
-          }
-        } catch(err){
-              console.log(err);
+        if (updateDate === normalizedDate && updateSlot) {
+          setAvailableSlots((prev) => prev.filter((s) => s !== updateSlot));
         }
-          fetchSlots();
-      };
-  
-      connection.on("ReceiveBookingUpdate", handler);
-  
-      return () => {
-        connection.off("ReceiveBookingUpdate", handler);
-      };
-    }, [fetchSlots, normalizedDate]);
+      } catch (err) {
+        console.log(err);
+      }
+      fetchSlots();
+    };
+
+    connection.on("ReceiveBookingUpdate", handler);
+
+    return () => {
+      connection.off("ReceiveBookingUpdate", handler);
+    };
+  }, [fetchSlots, normalizedDate]);
+  const isFutureSlot = (slot: string) => {
+    const [startHour, endHour] = slot.split("-").map(Number);
+    const now = new Date();
+    const today = new Date().toISOString().split("T")[0];
+    if (normalizedDate !== today) return true;
+
+    // om datumet är idag jämför sluttiden
+    return now.getHours() < endHour;
+  };
 
   return (
     <div className="slotsHolder">
       {allSlots.map((slot) => {
         const isAvailable = availableSlots.includes(slot);
+        const isFuture = isFutureSlot(slot);
+        const canBook = isAvailable && isFuture;
         return (
           <div
             key={slot}
-            className={isAvailable ? "isAvailable" : "notAvailable"}
+            className={canBook ? "isAvailable" : "notAvailable"}
             onClick={() =>
               isAvailable &&
               navigate(`/booking/${resourceId}/${normalizedDate}/${slot}`)

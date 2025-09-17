@@ -98,6 +98,11 @@
     justify-content: center;
     align-items: center;
 }
+.past-day {
+  color: #aaa !important;
+  background-color: #f5f5f5 !important;
+  
+}
 .slotsHolder{
     display: flex;
     flex-wrap: wrap;

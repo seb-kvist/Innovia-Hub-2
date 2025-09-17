@@ -40,14 +40,30 @@ const Calendar = ({
     onDateChange(date);
     if (effectiveVariant === "popup") setShowCalendar(false);
   };
+  const isToday = selectedDate
+    ? selectedDate.toDateString() === new Date().toDateString()
+    : false;
+  const fullCalendarProps = {
+    selected: selectedDate,
+    onChange: (date: Date | null) => {
+      if (date) handleDateChange(date);
+    },
+    minDate: new Date(),
+    inline: true,
+    dayClassName: (date: Date) => {
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      return date < today ? "past-day" : "";
+    },
+  };
 
   return (
     <div className={`custom-calendar ${effectiveVariant}`}>
       {/* Variant handling */}
-      {effectiveVariant === "popup" && (
+      {effectiveVariant === "popup" ? (
         <div className="calendar-popup">
           <div className="calendar-header">
-            <button onClick={goToPreviousDay}>◀</button>
+            {!isToday && <button onClick={goToPreviousDay}>◀</button>}
 
             <button onClick={toggleCalendar} className="selected-date">
               {selectedDate
@@ -61,26 +77,11 @@ const Calendar = ({
 
             <button onClick={goToNextDay}>▶</button>
           </div>
-
-          {showCalendar && (
-            <DatePicker
-              selected={selectedDate}
-              onChange={(date) => date && handleDateChange(date)}
-              inline
-              minDate={new Date()}
-            />
-          )}
+          {showCalendar && <DatePicker {...fullCalendarProps} />}
         </div>
-      )}
-
-      {effectiveVariant === "full" && (
+      ) : (
         <div className="calendar-full">
-          <DatePicker
-            selected={selectedDate}
-            onChange={(date) => date && handleDateChange(date)}
-            minDate={new Date()}
-            inline
-          />
+          <DatePicker {...fullCalendarProps} />
         </div>
       )}
     </div>
