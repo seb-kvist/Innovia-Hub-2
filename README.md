@@ -1,16 +1,29 @@
 # Innovia Hub – Intranät och bokningssystem
 
-Detta repo innehåller projektarbetet för kursuppgiften **Innovia Hub**, där vi som utvecklingsteam utvecklar ett intranät och bokningssystem åt coworkingcentret Innovia Hub.
+Detta repo innehåller projektarbetet för kursuppgiften **Innovia Hub**.
 
 ## Om uppgiften
 
-Projektet går ut på att ta fram ett system som hanterar:
-- Bokning av resurser i realtid (skrivbord, mötesrum, VR-headset, AI-server)
-- Användarvänlig administrationspanel för medlemmar
-- Integration av realtidsdata från sensorer (tillhandahålls via mockat API)
-- Responsiv design för dator, surfplatta och mobil
+Innovia Hub är ett intranät och bokningssystem för coworkingcentret Innovia Hub. Systemet är byggt för att underlätta vardagen för både medlemmar och administratörer.
 
-## Teknikstack
+För användaren
+- Medlemmar kan logga in och boka resurser i realtid, som skrivbord, mötesrum, VR-headsets och AI-servrar.
+- Systemet visar aktuellt tillgängliga tider och uppdateras automatiskt via SignalR när någon annan gör en bokning – användaren ser direkt om en tid blir upptagen.
+- En responsiv och enkel frontend gör att systemet kan användas på dator, surfplatta och mobil.
+
+För administratören
+- Administratörer har en egen panel där de kan hantera användare, resurser och bokningar.
+- De kan aktivera/inaktivera resurser, ta bort bokningar eller uppdatera information om medlemmar.
+- All data hanteras via ett API som backend tillhandahåller.
+
+Tekniska funktioner
+- Backend är byggt i ASP.NET Core med Entity Framework Core och Identity för autentisering och behörigheter.
+- Bokningar och användare lagras i en SQL-databas (MySQL).
+- Realtidskommunikation sker med SignalR, vilket gör att alla användare får live-uppdateringar utan att behöva ladda om sidan.
+- Frontend är byggd i React (Vite) och kommunicerar med backend via ett REST API och en SignalR-klient.
+
+
+## Vår Stack
 
 - **Backend:** ASP.NET Core (C#)
 - **Frontend:** React
