@@ -27,8 +27,7 @@ const Admin: React.FC<AdminProps> = ({ token }) => {
       <div className="adminHeaderHolder">
       <header className="header">
         <div>
-          <h1>Välkommen</h1>
-          <span className="user-label">Admin</span>
+          <h1>Adminpanel</h1>
         </div>
       </header>
       </div>
