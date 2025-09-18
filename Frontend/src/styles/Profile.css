@@ -23,6 +23,7 @@
   .editProfileSection {
     background: #f1eef4;
     color: black;
+    border-radius: 0.8rem;
   }
 
   .pastBooking {
