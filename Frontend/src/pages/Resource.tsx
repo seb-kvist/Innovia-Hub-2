@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import resourceData from "../data/resourceData";
 import "../styles/Resource.css";
 import Calendar from "../components/Calendar";
@@ -46,6 +46,21 @@ const Resource = () => {
         {id && selectedDate && (
           <FreeSlots resourceId={id} date={selectedDate} />
         )}
+      </div>
+
+      {/* Other resources thumbnails */}
+      <div className="otherResources">
+        <h3>Andra resurser</h3>
+        <div className="otherResources-grid">
+          {resourceData
+            .filter((r) => r.id !== id)
+            .map((r) => (
+              <Link key={r.id} to={r.path} className="otherResource-card" aria-label={r.name}>
+                <img src={r.imageUrl} alt={r.name} />
+                <span>{r.name}</span>
+              </Link>
+            ))}
+        </div>
       </div>
     </div>
   );
