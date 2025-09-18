@@ -9,10 +9,12 @@ interface Props {
 }
 
 const ResourcesTab: React.FC<Props> = ({ token }) => {
+
   const [resources, setResources] = useState<Resource[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [expandedTypes, setExpandedTypes] = useState<string[]>([]); // track expanded groups
+  // const [expandedTypes, setExpandedTypes] = useState<string[]>([]); // track expanded groups
+  const [selectedResource, setSelectedResource] = useState<string>("");
 
   useEffect(() => {
     const loadResources = async () => {
@@ -29,6 +31,7 @@ const ResourcesTab: React.FC<Props> = ({ token }) => {
     loadResources();
   }, [token]);
 
+
   const mergedResources: Resource[] = resources.map((r) => {
     const fullData = resourceData.find((rd) => rd.id === r.resourceTypeId);
     return {
@@ -40,6 +43,11 @@ const ResourcesTab: React.FC<Props> = ({ token }) => {
       resourceType: fullData?.name ?? "Unknown",
     };
   });
+useEffect(()=>{
+  if(mergedResources.length>0 && !selectedResource){
+    setSelectedResource(mergedResources[0].resourceType)
+  }
+}),[mergedResources, selectedResource]
 
   const toggleResourceStatus = async (id: number) => {
     try {
@@ -73,45 +81,66 @@ const ResourcesTab: React.FC<Props> = ({ token }) => {
     resourcesByType[r.resourceType].push(r);
   });
 
-  const toggleGroup = (type: string) => {
-    setExpandedTypes((prev) =>
-      prev.includes(type) ? prev.filter((t) => t !== type) : [...prev, type]
-    );
-  };
 
   return (
     <div className="resources-tab">
-      {Object.entries(resourcesByType).map(([type, resList]) => (
-        <div key={type} className="resource-group">
-          {/* Group header */}
-          <div
-            className="resource-group-header"
-            onClick={() => toggleGroup(type)}>
-            <img
-              src={resList[0].imageUrl}
-              alt={type}
-              className="resource-group-icon"
-            />
-            <span>{type}</span>
-            <span>{expandedTypes.includes(type) ? "" : ""}</span>
-          </div>
-
-          {/* Group resources */}
-          {expandedTypes.includes(type) && (
-            <div className="resource-group-list">
-              {resList.map((r) => (
-                <ResourceCard
-                  key={r.id}
-                  resource={r}
-                  onToggle={toggleResourceStatus}
+      {/* Vänsterkolumn: aktiv */}
+      <div className="left-column">
+        {Object.entries(resourcesByType)
+          .filter(([type]) => selectedResource === type)
+          .map(([type, resList]) => (
+            <div key={type} className="resource-group active">
+              {/* Group header */}
+              <div
+                className="resource-group-header"
+                onClick={() => setSelectedResource(type)}
+              >
+                <img
+                  src={resList[0].imageUrl}
+                  alt={type}
+                  className="resource-group-icon"
                 />
-              ))}
+                <span>{type}</span>
+              </div>
+  
+              {/* Group resources */}
+              <div className="resource-group-list">
+                {resList.map((r) => (
+                  <ResourceCard
+                    key={r.id}
+                    resource={r}
+                    onToggle={toggleResourceStatus}
+                  />
+                ))}
+              </div>
             </div>
-          )}
-        </div>
-      ))}
+          ))}
+      </div>
+  
+      {/* Högerkolumn: icke-aktiva */}
+      <div className="right-column">
+        {Object.entries(resourcesByType)
+          .filter(([type]) => selectedResource !== type)
+          .map(([type, resList]) => (
+            <div key={type} className="resource-group">
+              {/* Group header */}
+              <div
+                className="resource-group-header"
+                onClick={() => setSelectedResource(type)}
+              >
+                <img
+                  src={resList[0].imageUrl}
+                  alt={type}
+                  className="resource-group-icon"
+                />
+                <span>{type}</span>
+              </div>
+            </div>
+          ))}
+      </div>
     </div>
   );
+  
 };
 
 export default ResourcesTab;

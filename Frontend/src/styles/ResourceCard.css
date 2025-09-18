@@ -38,7 +38,7 @@
 
 /* Checked state */
 input:checked + .slider {
-  background-color: #4caf50; /* green */
+  background-color: #4caf50 !important; /* green */
 }
 
 input:checked + .slider:before {

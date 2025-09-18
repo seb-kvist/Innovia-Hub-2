@@ -65,11 +65,18 @@ const UsersTab: React.FC<Props> = ({ token }) => {
       <div className="pagination">
         {Array.from(
           { length: Math.ceil(filteredUsers.length / usersPerPage) },
-          (_, i) => (
-            <button key={i} onClick={() => setPage(i + 1)}>
-              {i + 1}
-            </button>
-          )
+          (_, i) => {
+            const pageNumber = i + 1;
+            return (
+              <button
+                key={i}
+                onClick={() => setPage(pageNumber)}
+                className={page === pageNumber ? "activePage" : ""}
+              >
+                {i + 1}
+              </button>
+            );
+          }
         )}
       </div>
     </div>
