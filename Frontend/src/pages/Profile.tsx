@@ -175,7 +175,7 @@ const Profile = () => {
 
   return (
     <div className="profileContainer">
-      <h2>Välkommen {userName || "Gäst"}!</h2>
+      <h1>Min profil</h1>
       <div className="profileSections">
         <div className="bookingsSection">
           <h3>Dina bokningar</h3>

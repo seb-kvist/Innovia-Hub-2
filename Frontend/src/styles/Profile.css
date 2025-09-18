@@ -3,11 +3,12 @@
     color: #e9e5ef;
     min-height: 100vh;
   }
-  
-  .profileContainer h2 {
+  .profileContainer h1 {
     text-align: center;
-    margin-bottom: 20px;
+    margin-bottom: 4rem;
   }
+  
+  
   
   .profileSections {
     display: flex;
