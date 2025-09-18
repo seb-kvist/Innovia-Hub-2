@@ -83,6 +83,18 @@ const BookingsTab: React.FC<Props> = ({ token }) => {
   if (loading) return <p>Laddar bokningar...</p>;
   if (error) return <p className="error">{error}</p>;
   if (filteredBookings.length === 0) return <p>Inga bokningar hittades</p>;
+  const resourceImages = (resourceName: string): string => {
+    if (resourceName.startsWith("VR Headset")) {
+      return "./img/vrheadset.png";
+    } else if (resourceName.startsWith("Drop-in skrivbord")) {
+      return "./img/skrivbord.png";
+    } else if (resourceName.startsWith("Mötesrum")) {
+      return "./img/motesrum.png";
+    } else if (resourceName.startsWith("AI Server")) {
+      return "./img/aiserver.png";
+    }
+    return "/images/innovialogo.png"; //fall back bild om det inte funkar
+  };
 
   return (
     <div className="bookings">
@@ -93,18 +105,19 @@ const BookingsTab: React.FC<Props> = ({ token }) => {
           variant="popup"
         />
       </div>
-
       {filteredBookings.map((b) => (
         <div key={b.bookingId} className="booking-card">
+          <img src={resourceImages(b.resourceName)} alt={b.resourceName} />
           <div className="booking-info">
-            <p>{b.timeSlot}</p>
             <p className="resource">{b.resourceName}</p>
-            <p>{b.userName}</p>
+            <p>Tid: {b.timeSlot}</p>
+            <p>Bokad av: {b.userName}</p>
           </div>
           <div className="booking-actions">
             <button
               className="delete-btn"
-              onClick={() => handleDeleteBooking(b.bookingId)}>
+              onClick={() => handleDeleteBooking(b.bookingId)}
+            >
               TA BORT
             </button>
           </div>

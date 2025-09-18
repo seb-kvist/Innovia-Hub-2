@@ -37,6 +37,9 @@ h3 {
 .react-datepicker__day {
   justify-content: center !important;
 }
+.react-datepicker__week .react-datepicker__day--disabled {
+  color: #b6b2bc !important;
+}
 .react-datepicker {
   width: 100% !important;
   height: 100%;
@@ -112,6 +115,9 @@ h3 {
   border-radius: 5px;
   padding: 40px 0px;
   margin-top: 20px;
+}
+.slotsHolder div:not(.isAvailable) {
+  pointer-events: none;
 }
 .isAvailable {
   background-color: rgba(73, 170, 177, 1) !important;

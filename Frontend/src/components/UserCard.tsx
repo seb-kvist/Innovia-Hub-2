@@ -80,47 +80,52 @@ const UserCard: React.FC<UserCardProps> = ({ user, onDelete }) => {
     <>
       <div
         onClick={handleFetchBookings}
-        className={`user-card ${showBookings ? "activeShowBookings" : ""}`}>
+        className={`user-card ${showBookings ? "activeShowBookings" : ""}`}
+      >
         <img src="/img/profile.png" />
         <p>{user.name}</p>
         <button
           onClick={() => {
             handleDeleteUser();
           }}
-          className="delete-btn">
+          className="delete-btn"
+        >
           Ta bort
         </button>
       </div>
-      {showBookings && (
-        <div className="userBookings">
-          <div>
-            <h3>Bookings:</h3>
-            <p>{user.email}</p>
-          </div>
-          {loading ? (
-            <p>Loading bookings...</p>
-          ) : error ? (
-            <p className="text-red-500">{error}</p>
-          ) : userBookings && userBookings.length > 0 ? (
-            <ul>
-              {userBookings.map((booking) => (
-                <li key={booking.bookingId}>
-                  {booking.resourceName} — {booking.date}
-                  <button
-                    className="deleteBookingBtn"
-                    onClick={() => {
-                      handleDeleteBooking(booking.bookingId);
-                    }}>
-                    🗑
-                  </button>
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <p className="noBookings">No bookings</p>
-          )}
-        </div>
-      )}
+      <div className={`userBookings ${showBookings ? "show" : ""}`}>
+        {showBookings && (
+          <>
+            <div>
+              <h3>Bookings:</h3>
+              <p>{user.email}</p>
+            </div>
+            {loading ? (
+              <p>Loading bookings...</p>
+            ) : error ? (
+              <p className="text-red-500">{error}</p>
+            ) : userBookings && userBookings.length > 0 ? (
+              <ul>
+                {userBookings.map((booking) => (
+                  <li key={booking.bookingId}>
+                    {booking.resourceName} — {booking.date}
+                    <button
+                      className="deleteBookingBtn"
+                      onClick={() => {
+                        handleDeleteBooking(booking.bookingId);
+                      }}
+                    >
+                      🗑
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p className="noBookings">No bookings</p>
+            )}
+          </>
+        )}
+      </div>
     </>
   );
 };
