@@ -19,7 +19,7 @@
   /* Let image height scale with viewport, but cap between 180–260px */
   height: clamp(180px, 22vw, 260px);
   object-fit: cover;
-  border-radius: 0;
+  border-radius: 0.8rem;
   display: block;
   transition: transform 0.3s ease;
 }
