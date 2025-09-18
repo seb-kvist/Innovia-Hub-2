@@ -124,6 +124,46 @@ h3 {
   cursor: pointer;
 }
 
+/* Other resources section */
+.otherResources {
+  margin-top: 3rem;
+}
+.otherResources h3 {
+  margin-bottom: 0.75rem;
+}
+.otherResources-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(140px, 1fr));
+  gap: 1rem;
+}
+.otherResource-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  text-decoration: none;
+  color: rgba(73, 78, 177, 1);
+}
+.otherResource-card img {
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 10px;
+  transition: transform 0.25s ease;
+}
+.otherResource-card:hover img {
+  transform: translateY(-2px) scale(1.02);
+}
+
+@media (max-width: 1024px) {
+  .otherResources-grid { grid-template-columns: repeat(3, 1fr); }
+}
+@media (max-width: 768px) {
+  .otherResources-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 480px) {
+  .otherResources-grid { grid-template-columns: 1fr; }
+}
+
 /* Speciell styling för header buttons på resource page */
 body.resourceBg .header-nav .btn-login,
 body.resourceBg .header-nav .btn-logout {
