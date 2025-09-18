@@ -20,6 +20,20 @@ const Profile = () => {
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [error, setError] = useState<string>("");
 
+  const parseTimeSlot = (date: string, timeSlot: string, useEndTime = false): number => {
+    const [startHour, endHour] = timeSlot.split("-").map(Number);
+    const bookingDate = new Date(date);
+
+    if (isNaN(bookingDate.getTime())) {
+      console.error("Ogiltigt datum:", date);
+      return 0;
+    }
+
+    const hourToUse = useEndTime ? endHour : startHour;
+    bookingDate.setHours(hourToUse, 0, 0, 0); 
+    return bookingDate.getTime();
+  };
+
   useEffect(() => {
     const storedName = localStorage.getItem("userName") || "Gäst";
     const storedEmail = localStorage.getItem("email") || "";
@@ -29,36 +43,54 @@ const Profile = () => {
     const fetchBookings = async () => {
       const userId = localStorage.getItem("userId");
       const token = localStorage.getItem("token");
-
+    
       if (userId && token) {
         try {
           const userBookings = await getUserBookings(userId, token);
           console.log("Bokningar från backend:", userBookings);
-
+    
           const now = new Date().getTime();
-
+    
+          console.log("Nuvarande tid (now):", now);
+          userBookings.forEach((booking: Booking) => {
+            const bookingStartTime = parseTimeSlot(booking.date, booking.timeSlot);
+            const bookingEndTime = parseTimeSlot(booking.date, booking.timeSlot, true);
+            console.log(
+              `Bokning: ${booking.date} ${booking.timeSlot}, Start: ${bookingStartTime}, Slut: ${bookingEndTime}`
+            );
+          });
+    
+          // filtrerar kommande bokningar
           const upcomingBookings = userBookings.filter((booking: Booking) => {
-            const bookingDate = new Date(booking.date).getTime();
-            return bookingDate >= now; // kommande bokningar
+            const bookingEndTime = parseTimeSlot(booking.date, booking.timeSlot, true); // Använd sluttiden
+            return bookingEndTime >= now;
           });
-
+    
+          // filtrerar tidigare bokningar
           const pastBookings = userBookings.filter((booking: Booking) => {
-            const bookingDate = new Date(booking.date).getTime();
-            return bookingDate < now; // tidigare bokningar
+            const bookingEndTime = parseTimeSlot(booking.date, booking.timeSlot, true); // Använd sluttiden
+            return bookingEndTime < now; 
           });
-
+    
+          // sorterar kommande bokningar och lägger tidigast först
           const sortedUpcomingBookings = upcomingBookings.sort(
             (a: Booking, b: Booking) => {
-              return new Date(a.date).getTime() - new Date(b.date).getTime();
+              const timeA = parseTimeSlot(a.date, a.timeSlot);
+              const timeB = parseTimeSlot(b.date, b.timeSlot);
+              return timeA - timeB;
             }
           );
     
+          // sorterar tidigare bokningar
           const sortedPastBookings = pastBookings.sort(
             (a: Booking, b: Booking) => {
-              return new Date(b.date).getTime() - new Date(a.date).getTime(); // Senaste först
+              const timeA = parseTimeSlot(a.date, a.timeSlot);
+              const timeB = parseTimeSlot(b.date, b.timeSlot);
+              return timeB - timeA;
             }
           );
-
+    
+          // uppdaterar state med filtrerade bokningar
           setBookings([...sortedUpcomingBookings, ...sortedPastBookings]);
         } catch (err: any) {
           if (err.response && err.response.status === 404) {
@@ -145,7 +177,6 @@ const Profile = () => {
     <div className="profileContainer">
       <h2>Välkommen {userName || "Gäst"}!</h2>
       <div className="profileSections">
-        {/* Bokningar */}
         <div className="bookingsSection">
           <h3>Dina bokningar</h3>
           {error && <p className="error">{error}</p>}
@@ -154,10 +185,12 @@ const Profile = () => {
               <h4>Kommande bokningar</h4>
               <ul>
                 {bookings
-                  .filter((booking) => new Date(booking.date).getTime() >= new Date().getTime())
+                  .filter((booking) => {
+                    const bookingEndTime = parseTimeSlot(booking.date, booking.timeSlot, true); 
+                    return bookingEndTime >= new Date().getTime(); 
+                  })
                   .map((booking) => (
                     <li key={booking.bookingId || `${booking.date}-${booking.timeSlot}`}>
-                      
                       <img
                         src={resourceImages(booking.resourceName)}
                         alt={booking.resourceName}
@@ -180,7 +213,10 @@ const Profile = () => {
               <h4>Tidigare bokningar</h4>
               <ul>
                 {bookings
-                  .filter((booking) => new Date(booking.date).getTime() < new Date().getTime())
+                  .filter((booking) => {
+                    const bookingEndTime = parseTimeSlot(booking.date, booking.timeSlot, true); 
+                    return bookingEndTime < new Date().getTime(); 
+                  })
                   .map((booking) => (
                     <li
                       key={booking.bookingId || `${booking.date}-${booking.timeSlot}`}
@@ -195,7 +231,6 @@ const Profile = () => {
                         <p>Tid: {booking.timeSlot}</p>
                         <p>Datum: {booking.date}</p>
                       </div>
-
                       <button className="cancelButton" disabled>
                         AVBOKA
                       </button>
