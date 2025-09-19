@@ -2,10 +2,13 @@ import React from "react";
 import "../styles/Hero.css";
 import { Link } from "react-router-dom";
 
+// Props för Hero-komponenten
 interface HeroProps {
-    isLoggedIn: boolean;
+    isLoggedIn: boolean; // Styr om call-to-action-knappen ska visas
 }
 
+// Hero-sektion på landningssidan
+// Visar titel, beskrivning och en CTA när användaren inte är inloggad
 const Hero: React.FC<HeroProps> = ({ isLoggedIn }) => {
     return (
         <section className="hero">
@@ -18,8 +21,8 @@ const Hero: React.FC<HeroProps> = ({ isLoggedIn }) => {
             för dina behov.
             </p>
 
+            {/* Visa CTA endast om användaren inte är inloggad */}
             {!isLoggedIn && (
-                // Om användaren inte är inloggad → visa call to action knapp
                 <Link to="/login" className="btn-cta">BLI MEDLEM IDAG!</Link>
             )}
         </section>

@@ -26,15 +26,19 @@ Tekniska funktioner
 ## Vår Stack
 
 - **Backend:** ASP.NET Core (C#)
-- **Frontend:** React
+- **Frontend:** React (Vite)
 - **Databas:** SQL (MySQL)
 - **Realtidskommunikation:** SignalR
-- **Deployment:** DigitalOcean
-- **API:** Mockat sensor-API
+- **API (framtid):** Mockat sensor-API
 
 ---
 
 ## Kom igång – Installation (Backend + Frontend)
+
+Krav på verktyg/versioner
+- **.NET SDK:** 9.0
+- **Node.js:** 18 eller 20 rekommenderas
+- **MySQL:** igång lokalt på `localhost:3307` (går att ändra i `Backend/appsettings.json`)
 
 Nedan följer en steg-för-steg guide för att köra projektet lokalt.
 
@@ -54,6 +58,8 @@ Notera:
 - Projektet seedar data och en admin-användare vid första körningen (se `Services/DbSeeder.cs`).
 - Standard-admin skapas med: användarnamn `admin`, lösenord `Admin@123`, roll `admin`.
 - SignalR hub körs på `/bookingHub`.
+- Databasanslutning styrs av `ConnectionStrings:DefaultConnection` i `Backend/appsettings.json`.
+  - Du kan byta port/användare/lösen här eller via user secrets/ miljövariabler.
 
 ### 2. Starta Frontend
 
@@ -79,5 +85,18 @@ Frontend startar på `http://localhost:5173`
 - `Backend/` – ASP.NET Core API, EF Core, Identity, SignalR
 - `Frontend/` – React + Vite, React Router, SignalR-klient
 
-## DATABASEN (TBA)
-Mer info om hur du använder databasen kommer här.
+## Databasen
+- Starta MySQL lokalt och säkerställ att konfigurationen matchar `appsettings.json` (se ovan).
+- Databasen och seed-data skapas automatiskt första gången du kör backend.
+
+---
+
+## Felsökning
+
+- CORS-fel mellan frontend och backend:
+  - Kontrollera att backend tillåter anrop från `http://localhost:5173`.
+  - Säkerställ att `VITE_API_URL` pekar på rätt adress (`http://localhost:5022/api`).
+
+- Databasanslutning misslyckas:
+  - Verifiera att MySQL kör på port `3307` eller uppdatera `appsettings.json` till din port.
+  - Kontrollera användare/lösenord och att databasen finns/kan skapas.

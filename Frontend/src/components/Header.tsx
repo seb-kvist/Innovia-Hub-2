@@ -1,23 +1,25 @@
 import React from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "../styles/Header.css"; 
 
+// Props för Header-komponenten
 interface HeaderProps {
-    isLoggedIn: boolean; // Kollar med boolean om vi är inloggade eller inte
+    isLoggedIn: boolean; // Om användaren är inloggad eller inte
     onLogout?: () => void;
 }
 
+// Header-komponenten som visar logo, adminknapp (för admins) och resterande knappar
 const Header: React.FC<HeaderProps> = ({ isLoggedIn, onLogout}) => {
-    const location = useLocation();
-    const navigate = useNavigate();
+    const navigate = useNavigate(); 
 
+    // Hämta roll från localStorage och avgör om användaren är admin
     const role = (typeof window !== "undefined" ? localStorage.getItem("role") : null) || "";
     const isAdmin = role.toLowerCase() === "admin";
 
     return (
         <header className="header"> 
             <nav className="header-nav">
-    {/* Admin panelbutton*/}
+    {/* Adminpanel-knapp (visas endast för admin) */}
     {isAdmin && (
       <button
         className="btn-back"
@@ -27,7 +29,7 @@ const Header: React.FC<HeaderProps> = ({ isLoggedIn, onLogout}) => {
       </button>
     )}
 
-    {/* Logo (absolute center) */}
+    {/* Logo */}
     <div className="header-logo">
       <Link to="/">
         <img
@@ -38,7 +40,7 @@ const Header: React.FC<HeaderProps> = ({ isLoggedIn, onLogout}) => {
       </Link>
     </div>
 
-    {/* Right-side buttons  */}
+    {/* Högerställda knappar (inloggnings-/profilflöde) */}
     <div className="header-buttons">
       {!isLoggedIn ? (
         <>
