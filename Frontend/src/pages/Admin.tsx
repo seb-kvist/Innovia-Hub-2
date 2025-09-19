@@ -4,18 +4,18 @@ import BookingsTab from "../components/BookingsTab";
 import UsersTab from "../components/UsersTab";
 import ResourcesTab from "../components/ResourcesTab";
 
-
 interface AdminProps {
   token: string;
 }
 
-
 const Admin: React.FC<AdminProps> = ({ token }) => {
-  const [activeTab, setActiveTab] = useState<
-    "bookings" | "users" | "resources"
-  >("bookings");
+  const [activeTab, setActiveTab] = useState("bookings");
 
   useEffect(() => {
+    const page = localStorage.getItem("activePage");
+    if (page) {
+      setActiveTab(page);
+    }
     document.body.classList.add("adminBg");
     return () => {
       document.body.classList.remove("adminBg");
@@ -25,27 +25,36 @@ const Admin: React.FC<AdminProps> = ({ token }) => {
   return (
     <div className="dashboard">
       <div className="adminHeaderHolder">
-      <header className="header">
-        <div>
-          <h1>Adminpanel</h1>
-        </div>
-      </header>
+        <header className="header">
+          <div>
+            <h1>Adminpanel</h1>
+          </div>
+        </header>
       </div>
 
       <nav className="tabs">
         <button
           className={`tab ${activeTab === "bookings" ? "active" : ""}`}
-          onClick={() => setActiveTab("bookings")}>
+          onClick={() => {
+            setActiveTab("bookings");
+            localStorage.setItem("activePage", "bookings");
+          }}>
           BOKNINGAR
         </button>
         <button
           className={`tab ${activeTab === "users" ? "active" : ""}`}
-          onClick={() => setActiveTab("users")}>
+          onClick={() => {
+            setActiveTab("users");
+            localStorage.setItem("activePage", "users");
+          }}>
           ANVÄNDARE
         </button>
         <button
           className={`tab ${activeTab === "resources" ? "active" : ""}`}
-          onClick={() => setActiveTab("resources")}>
+          onClick={() => {
+            setActiveTab("resources");
+            localStorage.setItem("activePage", "resources");
+          }}>
           RESURSER
         </button>
       </nav>
