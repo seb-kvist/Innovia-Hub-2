@@ -2,7 +2,6 @@ import { useCallback, useEffect, useState } from "react";
 import type { FreeSlotsProps } from "../Interfaces/Props";
 import { getFreeSlots } from "../api/api";
 import { useNavigate } from "react-router-dom";
-import * as signalR from "@microsoft/signalr";
 import { connection } from "../signalRConnection";
 
 const FreeSlots = ({ resourceId, date }: FreeSlotsProps) => {
@@ -10,12 +9,14 @@ const FreeSlots = ({ resourceId, date }: FreeSlotsProps) => {
   const [availableSlots, setAvailableSlots] = useState<string[]>([]);
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
-  // 🔹 Normalize date to YYYY-MM-DD once
+
+  // Normalize date to YYYY-MM-DD once
   const normalizedDate =
     date instanceof Date
       ? date.toISOString().split("T")[0]
       : new Date(date).toISOString().split("T")[0];
 
+  // Hämta tillgängliga slots från API
   const fetchSlots = useCallback(async () => {
     if (!token) return;
     try {
@@ -26,6 +27,7 @@ const FreeSlots = ({ resourceId, date }: FreeSlotsProps) => {
     }
   }, [normalizedDate, resourceId]);
 
+  // Fetch slots när komponenten mountas eller dependencies ändras
   useEffect(() => {
     fetchSlots();
   }, [fetchSlots]);
@@ -33,11 +35,11 @@ const FreeSlots = ({ resourceId, date }: FreeSlotsProps) => {
   // Lyssna på SignalR-uppdateringar och refetcha
   useEffect(() => {
     const handler = (update: any) => {
-      // Optimistisk uppdatering: om samma datum → ta bort sloten direkt
       try {
         const updateDate = typeof update?.date === "string" ? update.date : "";
         const updateSlot = update?.timeSlot as string | undefined;
-
+        
+        // Om samma datum → ta bort sloten direkt
         if (updateDate === normalizedDate && updateSlot) {
           setAvailableSlots((prev) => prev.filter((s) => s !== updateSlot));
         }
@@ -48,11 +50,12 @@ const FreeSlots = ({ resourceId, date }: FreeSlotsProps) => {
     };
 
     connection.on("ReceiveBookingUpdate", handler);
-
     return () => {
       connection.off("ReceiveBookingUpdate", handler);
     };
   }, [fetchSlots, normalizedDate]);
+
+   // Kontrollera om sloten är i framtiden
   const isFutureSlot = (slot: string) => {
     const [startHour, endHour] = slot.split("-").map(Number);
     const now = new Date();
