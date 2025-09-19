@@ -5,20 +5,23 @@ import Footer from "../components/Footer";
 
 /**
  * Layout-komponenten fungerar som en "ram" för hela applikationen.
- * - Header och Footer renderas alltid (oavsett vilken sida man är på).
- * - <Outlet /> är en plats där den aktuella route-sidan laddas in.
+ * - Header och Footer renderas alltid.
+ * - <Outlet /> renderar den aktuella sidans innehåll baserat på route.
  */
 
 const Layout: React.FC = () => {
+  // Håller koll på om användaren är inloggad (token i localStorage)
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
-  const location = useLocation();
-  const navigate = useNavigate();
+  const location = useLocation(); // Används för att reagera på sidbyten
+  const navigate = useNavigate(); // Används för att navigera vid utloggning
 
+  // Uppdatera inloggningsstatus när route ändras (t.ex. efter login/logout)
   useEffect(() => {
     const token = localStorage.getItem("token");
     setIsLoggedIn(!!token);
-  }, [location]); // Re-check when route changes
+  }, [location]);
 
+  // Hanterar utloggning: rensar token och användardata och navigerar till login
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("userId");
@@ -31,10 +34,13 @@ const Layout: React.FC = () => {
 
   return (
     <>
+      {/* Header visas på alla sidor och får inloggningsstatus + logout-funktion */}
       <Header isLoggedIn={isLoggedIn} onLogout={handleLogout} />
       <main>
-        <Outlet /> {/* Här visas den route du går till */}
+        {/* Här visas den route du går till */}
+        <Outlet />
       </main>
+      {/* Footer visas på alla sidor */}
       <Footer />
     </>
   );
