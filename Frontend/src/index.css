@@ -35,6 +35,15 @@ body {
 body.resourceBg footer {
   color: rgba(73, 78, 177, 1);
 }
+body.resourceBg .footer{
+  border-top:1px solid rgba(73, 78, 177, 1);
+}
+body.resourceBg .social-links a{
+  color:rgba(73, 78, 177, 1)!important;
+}
+body.adminBg .social-links a{
+  color:rgba(73, 78, 177, 1)!important;
+}
 body.adminBg {
   background: rgba(254, 247, 255, 1);
 }

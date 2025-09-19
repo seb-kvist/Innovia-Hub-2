@@ -11,9 +11,12 @@ const Booking = () => {
   const userName = localStorage.getItem("userName");
   const userId = localStorage.getItem("userId");
   const token = localStorage.getItem("token");
+
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
+
+  // Funktion för att skapa bokning
   const completeReservation = async () => {
     if (!userId || !date || !slot || !resourceId || !token) {
       return;
@@ -25,7 +28,6 @@ const Booking = () => {
       // Skicka ISO-datum (yyyy-MM-dd) om möjligt
       const isoDate = new Date(date).toISOString().slice(0, 10);
 
-      console.log(date, slot, resourceId, userId);
       await createBooking(
         {
           date: isoDate,
@@ -53,6 +55,8 @@ const Booking = () => {
       setIsLoading(false);
     }
   };
+
+  // Lägg till bakgrund när komponenten mountas
   useEffect(() => {
     document.body.classList.add("resourceBg");
     return () => {
@@ -64,12 +68,16 @@ const Booking = () => {
   return (
     <div className="bookingPage">
       <h2 className="resourceName">Boka {resource.name}</h2>
+
       <div className="recourceImgAndDate">
+        {/* Bild och datum */}
         <ResourceImgAndDate
           imgUrl={resource.imageUrl}
           imgAlt={resource.name}
           selectedDate={date!}
         />
+
+        {/* Bokningsinfo och knapp */}
         <div className="bookingDescription">
           <p>{resource.description}</p>
           <div className="bookingInfo">
@@ -80,9 +88,11 @@ const Booking = () => {
           <button
             className=" formBtn reserveBtn"
             onClick={completeReservation}
-            disabled={isLoading}>
+            disabled={isLoading}
+          >
             {isLoading ? "Reserverar..." : "Reservera"}
           </button>
+
           {errorMessage && <p className="errorMessage">{errorMessage}</p>}
         </div>
       </div>

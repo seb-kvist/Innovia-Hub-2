@@ -5,6 +5,7 @@ import Calendar from "../components/Calendar";
 import { useEffect, useState } from "react";
 import FreeSlots from "../components/FreeSlots";
 import ResouceImageAndDate from "../components/ResourceImgAndDate";
+
 const Resource = () => {
   const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
   const { resourceId } = useParams<{ resourceId: string }>();
@@ -12,6 +13,8 @@ const Resource = () => {
 
   //Hitta resursen i vår data baserat på id
   const resource = resourceData.find((r) => r.id === id);
+
+  // Lägg till bakgrundsfärg när komponenten mountas, ta bort när den unmountas
   useEffect(() => {
     document.body.classList.add("resourceBg");
     return () => {
@@ -22,17 +25,18 @@ const Resource = () => {
   return (
     <div className="resourcePage">
       <h2>{resource?.name}</h2>
+
+      {/* Resursbild + kalender */}
       <div className="recourceImgAndDate">
         {resource?.imageUrl &&
           resource?.name &&
           selectedDate?.toLocaleDateString() && (
             <ResouceImageAndDate
-              imgUrl={resource?.imageUrl}
-              imgAlt={resource?.name}
-              selectedDate={selectedDate?.toLocaleDateString()}
+              imgUrl={resource.imageUrl}
+              imgAlt={resource.name}
+              selectedDate={selectedDate.toLocaleDateString()}
             />
           )}
-
         <div className="calendar">
           <Calendar
             selectedDate={selectedDate}
@@ -41,6 +45,8 @@ const Resource = () => {
           />
         </div>
       </div>
+
+      {/* Tidsslotts */}
       <div>
         <h3>Välj en tid för att boka</h3>
         {id && selectedDate && (

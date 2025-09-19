@@ -4,27 +4,26 @@ import RegisterForm from "../components/RegisterForm";
 import { useLocation } from "react-router-dom";
 
 const Login = () => {
-  const location= useLocation();
+  const location = useLocation();
   const [showRegister, setShowRegister] = useState(false);
 
-  useEffect(()=>{
-    if(location.state?.mode==="register"){
-      setShowRegister(true)
-    }else{
-      setShowRegister(false)
+  // Kolla om vi ska visa registerformulär direkt baserat på location state
+  useEffect(() => {
+    if (location.state?.mode === "register") {
+      setShowRegister(true);
+    } else {
+      setShowRegister(false);
     }
-  },[location.state])
+  }, [location.state]);
 
   return (
     <div className={`loginContainer ${showRegister ? "showRegister" : ""}`}>
+      {/* Formulärssektion */}
       <div className="formHolder">
-        {showRegister ? (
-          <RegisterForm  />
-        ) : (
-          <LoginForm  />
-        )}
+        {showRegister ? <RegisterForm /> : <LoginForm />}
       </div>
 
+      {/* Sekundär vy som uppmanar användare att byta */}
       <div
         className={`secondaryView ${showRegister ? "secondaryViewLogin" : ""}`}
       >

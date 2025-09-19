@@ -1,5 +1,7 @@
 import React from "react";
 import "../styles/Footer.css";
+import { FaInstagram, FaLinkedin } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 const Footer: React.FC = () => {
     return (
@@ -25,8 +27,34 @@ const Footer: React.FC = () => {
                     </ul>
                 </div>    
             </div>
+        
+            <div className="social-links">
+            <a
+          href="https://www.instagram.com"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <FaInstagram size={32} />
+        </a>
+        <a
+          href="https://www.linkedin.com/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <FaLinkedin size={32} />
+        </a>
+            </div>
 
             <div className="footer-socials">
+            <div className="headerLogo">
+      <Link to="/">
+        <img
+          src="/img/innovialogo.png"
+          alt="Innovia Hub logo"
+          className="logoImg"
+        />
+      </Link>
+    </div>
                 <span>© Innovia Hub</span>
             </div>
         </footer>
