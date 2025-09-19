@@ -124,6 +124,14 @@ export const getAllResources = async (token: string) => {
   });
   return res.data;
 };
+export const getResourceById = async (token: string,id:number) => {
+  const res = await api.get(`/resource/${id}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  return res.data;
+};
+
+
 
 //USERS - Ge All Users
 export const getAllUsers = async (
@@ -180,3 +188,5 @@ export const deleteUserById = async (id: string, token: string) => {
   });
   return res.data;
 };
+
+

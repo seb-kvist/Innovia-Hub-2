@@ -7,6 +7,7 @@ import { connection } from "../signalRConnection";
 const FreeSlots = ({ resourceId, date }: FreeSlotsProps) => {
   const allSlots = ["08-10", "10-12", "12-14", "14-16", "16-18", "18-20"];
   const [availableSlots, setAvailableSlots] = useState<string[]>([]);
+  const [isBookable, setIsBookable] = useState(true);
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
 
@@ -33,6 +34,17 @@ const FreeSlots = ({ resourceId, date }: FreeSlotsProps) => {
   }, [fetchSlots]);
 
   // Lyssna på SignalR-uppdateringar och refetcha
+  useEffect(() => {
+    const handler = (update: { resourceId: number; isBookable: boolean }) => {
+      setIsBookable(update.isBookable);
+      console.log(update.isBookable);
+    };
+    connection.on("ReceiveResourceStatusUpdate", handler);
+    return () => {
+      connection.off("ReceiveResourceStatusUpdate", handler);
+    };
+  }, [isBookable]);
+
   useEffect(() => {
     const handler = (update: any) => {
       try {
@@ -71,16 +83,15 @@ const FreeSlots = ({ resourceId, date }: FreeSlotsProps) => {
       {allSlots.map((slot) => {
         const isAvailable = availableSlots.includes(slot);
         const isFuture = isFutureSlot(slot);
-        const canBook = isAvailable && isFuture;
+        const canBook = isAvailable && isFuture && isBookable;
         return (
           <div
             key={slot}
             className={canBook ? "isAvailable" : "notAvailable"}
             onClick={() =>
-              isAvailable &&
+              canBook &&
               navigate(`/booking/${resourceId}/${normalizedDate}/${slot}`)
-            }
-          >
+            }>
             {slot}
           </div>
         );

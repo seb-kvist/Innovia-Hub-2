@@ -61,7 +61,11 @@ const Resource = () => {
           {resourceData
             .filter((r) => r.id !== id)
             .map((r) => (
-              <Link key={r.id} to={r.path} className="otherResource-card" aria-label={r.name}>
+              <Link
+                key={r.id}
+                to={r.path}
+                className="otherResource-card"
+                aria-label={r.name}>
                 <img src={r.imageUrl} alt={r.name} />
                 <span>{r.name}</span>
               </Link>

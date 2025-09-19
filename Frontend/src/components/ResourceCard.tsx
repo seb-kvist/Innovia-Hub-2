@@ -1,13 +1,36 @@
-import React from "react";
+import React, { useEffect } from "react";
 import type { Resource } from "../Interfaces/types";
 import "../styles/ResourceCard.css";
+import { connection } from "../signalRConnection";
 
 interface Props {
   resource: Resource;
   onToggle: (id: number) => void;
+  onStatusUpdate: (id: number, isBookable: boolean) => void; // NEW callback for live updates
 }
 
-const ResourceCard: React.FC<Props> = ({ resource, onToggle }) => {
+const ResourceCard: React.FC<Props> = ({
+  resource,
+  onToggle,
+  onStatusUpdate,
+}) => {
+  useEffect(() => {
+    const updateHandler = (data: {
+      resourceId: number;
+      isBookable: boolean;
+    }) => {
+      if (data.resourceId === resource.id) {
+        // ✅ update resource status directly instead of calling onToggle again
+        onStatusUpdate(data.resourceId, data.isBookable);
+      }
+    };
+
+    connection.on("ReceiveResourceStatusUpdate", updateHandler);
+    return () => {
+      connection.off("ReceiveResourceStatusUpdate", updateHandler);
+    };
+  }, [resource.id, onStatusUpdate]);
+
   return (
     <div className="resource-card">
       {/* Image */}
@@ -35,7 +58,7 @@ const ResourceCard: React.FC<Props> = ({ resource, onToggle }) => {
           <input
             type="checkbox"
             checked={resource.isBookable}
-            onChange={() => onToggle(resource.id)}
+            onChange={() => onToggle(resource.id)} 
           />
           <span className="slider round"></span>
         </label>

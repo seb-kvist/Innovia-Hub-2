@@ -12,10 +12,11 @@ namespace Backend.Controllers
     public class ResourceController : ControllerBase
     {
         public readonly AppDbContext _dbContext;
-        public ResourceController(AppDbContext appDbContext) {
+        public ResourceController(AppDbContext appDbContext)
+        {
             _dbContext = appDbContext;
         }
-        [Authorize(Roles = "admin")]
+        // [Authorize(Roles = "admin")]
         [HttpGet]
         public async Task<IActionResult> GetAllResources()
         {
@@ -23,6 +24,13 @@ namespace Backend.Controllers
 
             return Ok(resources);
 
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetResourceById(int id)
+        {
+            var resource = await _dbContext.Resources.FirstOrDefaultAsync(r => r.Id == id);
+            return Ok(resource);
         }
 
 
