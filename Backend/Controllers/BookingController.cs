@@ -207,19 +207,30 @@ public class BookingController : ControllerBase
 
 
     [HttpPatch("resource/{resourceId}")]
-    public async Task<IActionResult> ChangeResourceStatus(int resourceId)
+public async Task<IActionResult> ChangeResourceStatus(int resourceId)
+{   
+    var resource = await _context.Resources.FindAsync(resourceId);
+    if (resource == null)
     {
-        var resource = await _context.Resources.FindAsync(resourceId);
-        if (resource == null)
-        {
-            return NotFound(new { message = "Resource not found" });
-        }
-
-        resource.IsBookable =  !resource.IsBookable;
-        await _context.SaveChangesAsync();
-
-        return Ok(new { message = "Resource status is changed" });
+        return NotFound(new { message = "Resource not found" });
     }
+
+    // Toggle status
+    resource.IsBookable = !resource.IsBookable;
+
+    // Save first
+    await _context.SaveChangesAsync();
+
+    // Then broadcast
+    await _hubContext.Clients.All.SendAsync("ReceiveResourceStatusUpdate", new
+    {
+        resourceId = resource.Id,
+        isBookable = resource.IsBookable
+    });
+    Console.WriteLine($"📢 Broadcast sent for resource {resource.Id}, isBookable: {resource.IsBookable}");
+    return Ok(new { message = "Resource status is changed" });
+}
+
 
     
 
