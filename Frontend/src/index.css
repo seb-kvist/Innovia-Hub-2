@@ -29,6 +29,8 @@ body {
   background-repeat: no-repeat;
   min-height: 100vh;
 }
+
+/* Om man står på resource sidan */
 .resourceBg {
   background: rgba(233, 229, 239, 1);
 }
@@ -41,6 +43,8 @@ body.resourceBg .footer{
 body.resourceBg .social-links a{
   color:rgba(73, 78, 177, 1)!important;
 }
+
+/* Om man står på admin sidan */
 body.adminBg .social-links a{
   color:rgba(73, 78, 177, 1)!important;
 }
@@ -50,7 +54,6 @@ body.adminBg {
 body.adminBg .selected-date{
   background-color: white !important;
 }
-
 body.adminBg footer {
   color: rgba(73, 78, 177, 1);
 }
@@ -66,14 +69,6 @@ h1 {
   line-height: 1.1;
 }
 
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
-}
-
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;
@@ -86,6 +81,7 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+
 /* Tablet breakpoint */
 @media (max-width: 1024px) {
   main {
