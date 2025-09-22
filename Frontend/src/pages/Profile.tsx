@@ -7,12 +7,8 @@ import {
 } from "../api/api";
 import "../styles/Profile.css";
 
-interface Booking {
-  bookingId: number;
-  resourceName: string;
-  date: string;
-  timeSlot: string;
-}
+import type { Booking } from "../Interfaces/types";
+
 
 const Profile = () => {
   const [userName, setUserName] = useState<string>("");
@@ -25,7 +21,6 @@ const Profile = () => {
     const bookingDate = new Date(date);
 
     if (isNaN(bookingDate.getTime())) {
-      console.error("Ogiltigt datum:", date);
       return 0;
     }
 
@@ -47,11 +42,9 @@ const Profile = () => {
       if (userId && token) {
         try {
           const userBookings = await getUserBookings(userId, token);
-          console.log("Bokningar från backend:", userBookings);
     
           const now = new Date().getTime();
     
-          console.log("Nuvarande tid (now):", now);
           userBookings.forEach((booking: Booking) => {
             const bookingStartTime = parseTimeSlot(booking.date, booking.timeSlot);
             const bookingEndTime = parseTimeSlot(booking.date, booking.timeSlot, true);
@@ -109,9 +102,9 @@ const Profile = () => {
     fetchBookings();
   }, []);
 
+  // funktion för att avboka bokning
   const handleCancelBooking = async (bookingId: number) => {
     try {
-      console.log("Avbokar bokning med ID:", bookingId);
       const token = localStorage.getItem("token");
 
       if (!token) {
@@ -132,13 +125,11 @@ const Profile = () => {
     }
   };
 
+  // funktion för att uppdatera profil
   const handleUpdateProfile = async () => {
     try {
       const token = localStorage.getItem("token");
       const userId = localStorage.getItem("userId");
-
-      console.log("Token:", token);
-      console.log("UserId:", userId);
 
       if (!token || !userId) {
         alert("Du är inte inloggad.");
@@ -160,6 +151,7 @@ const Profile = () => {
     }
   };
 
+  // funktion för att välja bild baserat på resursnamn
   const resourceImages = (resourceName: string): string => {
     if (resourceName.startsWith("VR Headset")) {
       return "./img/vrheadset.png";
@@ -170,7 +162,7 @@ const Profile = () => {
     } else if (resourceName.startsWith("AI Server")) {
       return "./img/aiserver.png";
     }
-    return "/images/default.jpg"; //fall back bild om det inte funkar
+    return "/images/innovialogo.png"; //fall back bild om det inte funkar
   };
 
   return (
