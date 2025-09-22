@@ -21,9 +21,7 @@ namespace Backend.Controllers
         public async Task<IActionResult> GetAllResources()
         {
             var resources = await _dbContext.Resources.ToListAsync();
-
             return Ok(resources);
-
         }
 
         [HttpGet("{id}")]

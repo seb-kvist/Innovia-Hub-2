@@ -105,7 +105,6 @@
 }
 
 .btn-back:hover {
-
   background-color: #e9e5ef;
   color: #494EB1;
   transform: translateY(-1px);
@@ -132,7 +131,6 @@
     width: 90px;
   }
 }
-
 
 /* Mobile breakpoint */
 @media (max-width: 768px) {
