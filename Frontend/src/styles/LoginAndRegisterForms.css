@@ -2,7 +2,7 @@
   position: relative;
   width: 100%;
   max-width: 100%;
-  height: 500px; /* eller auto beroende på innehåll */
+  height: 500px; 
   overflow: hidden;
   border-radius: 12px;
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
@@ -17,7 +17,6 @@
   top: 0;
   width: 50%;
   height: 100%;
-
   transition: transform 0.6s ease-in-out;
 }
 
@@ -44,6 +43,7 @@
   transform: translateX(-100%); /* secondaryView glider till vänster */
   z-index: 2;
 }
+
 .formBox {
   padding: 0px 30px;
   display: flex;
@@ -51,6 +51,7 @@
   justify-content: center;
   height: 100%;
 }
+
 form input {
   width: 100%;
   box-sizing: border-box;
@@ -67,9 +68,11 @@ form input {
 form p {
   color: rgba(73, 78, 177, 1);
 }
+
 .formHeading {
   margin-bottom: 30px;
 }
+
 .formBtn,
 .secondaryView button {
   all: unset;
@@ -81,6 +84,7 @@ form p {
   text-transform: uppercase;
   font-size: 14px;
 }
+
 .secondaryView {
   background-color: rgba(73, 78, 177, 1);
   border-top-left-radius: 30%;
@@ -90,62 +94,71 @@ form p {
   align-items: center;
   justify-content: center;
 }
+
 .secondaryViewLogin {
   border-top-left-radius: 0%;
   border-bottom-left-radius: 0%;
   border-top-right-radius: 30%;
   border-bottom-right-radius: 30%;
 }
+
 .secondaryView h2 {
   margin-top: 0;
   margin-bottom: 40px;
 }
+
 .secondaryView button {
   border: 0.7px solid rgba(233, 229, 239, 1);
 }
-.formBtn{
-    border: 0.7px solid rgba(73, 78, 177, 1);
-}
-.secondaryView button:hover{
-    background-color: rgba(233, 229, 239, 1);
-    color:rgba(73, 78, 177, 1);
-  }
-  .formBtn:hover{
-    border: 0.7px solid rgba(73, 78, 177, 1);
-    background-color: rgba(233, 229, 239, 1);
-    color:rgba(73, 78, 177, 1);
-  }
-  .errorMessage{
-    color:red;
-  }
-  .successMessage {
-    color: rgba(73, 170, 177, 1);
 
+.formBtn {
+  border: 0.7px solid rgba(73, 78, 177, 1);
+}
+
+.secondaryView button:hover {
+  background-color: rgba(233, 229, 239, 1);
+  color: rgba(73, 78, 177, 1);
+}
+
+.formBtn:hover {
+  border: 0.7px solid rgba(73, 78, 177, 1);
+  background-color: rgba(233, 229, 239, 1);
+  color: rgba(73, 78, 177, 1);
+}
+
+.errorMessage {
+  color: red;
+}
+
+.successMessage {
+  color: rgba(73, 170, 177, 1);
+}
+
+@media (max-width: 1024px) {
+  .loginContainer {
+    margin-top: 3rem;
   }
-  @media (max-width: 1024px) {
-    .loginContainer{
-      margin-top: 3rem;
-    }
+}
+
+@media (max-width: 768px) {
+  .loginContainer {
+    flex-direction: column;
+    height: auto;
+    box-shadow: none;
+    border-radius: 0;
   }
-  @media (max-width: 768px) {
-    .loginContainer {
-      flex-direction: column;   
-      height: auto;            
-      box-shadow: none;  
-      border-radius: 0;
-    }
-  
-    .formHolder,
-    .secondaryView {
-      position: relative; 
-      width: 100%;        
-      height: auto;  
-      transform: none !important; 
-      border-radius: 0;   
-    }
-  
-    .secondaryView {
-      margin-top: 30px; 
-      padding: 20px 0px;
-    }
+
+  .formHolder,
+  .secondaryView {
+    position: relative;
+    width: 100%;
+    height: auto;
+    transform: none !important;
+    border-radius: 0;
   }
+
+  .secondaryView {
+    margin-top: 30px;
+    padding: 20px 0px;
+  }
+}

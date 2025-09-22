@@ -26,6 +26,7 @@ public class BookingController : ControllerBase
         _bookingRepository = bookingRepository;
         _hubContext = hubContext;
     }
+
     [HttpPost("{resourceTypeId}/freeSlots")]
     public async Task<IActionResult> GetFreeSlots(int resourceTypeId, [FromBody] BookingInfo bookingInfo)
     {
@@ -48,16 +49,7 @@ public class BookingController : ControllerBase
         return Ok(freeSlots);
     }
 
-
-    
-  
-    
-
-
-
-
     [Authorize(Roles = "admin")]
-
     [HttpGet]
     public async Task<IActionResult> GetAllBookings()
     {
@@ -66,20 +58,18 @@ public class BookingController : ControllerBase
         .Include(b => b.ResourceType)
         .Include(b => b.Resource)
         .Select(b => new BookingsDto
-        {   bookingId = b.Id,
+        {
+            bookingId = b.Id,
             userName = b.User.UserName,
             date = b.Date.ToString("yyyy-MM-dd"),
             timeSlot = b.TimeSlot,
             resourceType = b.ResourceType.ResourceTypeName,
             resourceName = b.Resource.ResourceName
-            
+
         }).ToListAsync();
-              
 
         return Ok(bookings);
     }
-
-
 
     [HttpGet("date")]
     public async Task<IActionResult> GetBookingsByDate([FromQuery] DateTime date)
@@ -94,14 +84,12 @@ public class BookingController : ControllerBase
             timeSlot = b.TimeSlot,
             resourceName = b.Resource.ResourceName,
             resourceType = b.ResourceType.ResourceTypeName
-            
-
         });
+
         return Ok(filteredBookings);
     }
 
-
-
+    // Hämta användarens bokningar
     [HttpGet("user/{userId}")]
     public async Task<IActionResult> GetUserBookings(string userId)
     {
@@ -109,18 +97,17 @@ public class BookingController : ControllerBase
         .Include(b => b.Resource)
         .Where(b => b.UserId == userId)
         .Select(b => new UserBookingDTO
-        {   
+        {
             bookingId = b.Id,
             date = b.Date.ToString("yyyy-MM-dd"),
             timeSlot = b.TimeSlot,
             resourceName = b.Resource.ResourceName
-            
-        }).ToListAsync();
 
-        
+        }).ToListAsync();
 
         return Ok(userBookings);
     }
+
     [HttpPost]
     public async Task<IActionResult> CreateBooking([FromBody] DTOCreateBooking dto)
     {
@@ -137,10 +124,9 @@ public class BookingController : ControllerBase
                 userId = booking.UserId
             });
 
-
             return Ok(new UserBookingDTO
-            {   
-                bookingId =booking.Id,
+            {
+                bookingId = booking.Id,
                 date = booking.Date.ToString("yyyy-MM-dd"),
                 timeSlot = booking.TimeSlot,
                 resourceName = booking.Resource!.ResourceName
@@ -152,13 +138,12 @@ public class BookingController : ControllerBase
             return BadRequest(new { message = ex.Message });
         }
     }
-    
+
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteBooking(int id)
     {
-         var booking = await _context.Bookings.Include(b =>b.Resource) 
-        .FirstOrDefaultAsync(b => b.Id == id);
-        
+        var booking = await _context.Bookings.Include(b => b.Resource)
+       .FirstOrDefaultAsync(b => b.Id == id);
 
         var deleteInfo =
         new
@@ -171,15 +156,13 @@ public class BookingController : ControllerBase
         var success = await _bookingRepository.DeleteBooking(id);
         if (!success) return NotFound();
 
-        
         //SignalR: meddela att bokningen tagits bort
-        await _hubContext.Clients.All.SendAsync("ReceiveDeleteBookingUpdate",deleteInfo);
+        await _hubContext.Clients.All.SendAsync("ReceiveDeleteBookingUpdate", deleteInfo);
         return NoContent();
     }
 
-
-    //Hämta all bokningar för en specifik resource
-    [Authorize (Roles ="admin")]
+    //Hämta alla bokningar för en specifik resource
+    [Authorize(Roles = "admin")]
     [HttpPost("{resourceTypeId}")]
     public async Task<IActionResult> GetResourceFreeSlots(int resourceTypeId, [FromBody] BookingInfo bookingInfo)
     {
@@ -198,74 +181,34 @@ public class BookingController : ControllerBase
         {
             return NotFound(new { message = "No bookings under this day" });
         }
-        
 
         return Ok(bookings);
-
-
-    // var resourceType = await _context.ResourceTypes.FindAsync(resourceTypeId);
-        // if (resourceType == null)
-        // {
-        //     return NotFound(new { message = "Resource Type not found" });
-        // }
-        // var resources = resourceType.Resources.Select(b => b.Bookings.Where(b.Bookings.Select());
-
-
-
-
     }
 
-
-
+    //uppdatera status för en resource bokningsbar/ej bokningsbar
     [HttpPatch("resource/{resourceId}")]
-public async Task<IActionResult> ChangeResourceStatus(int resourceId)
-{   
-    var resource = await _context.Resources.FindAsync(resourceId);
-    if (resource == null)
+    public async Task<IActionResult> ChangeResourceStatus(int resourceId)
     {
-        return NotFound(new { message = "Resource not found" });
+        var resource = await _context.Resources.FindAsync(resourceId);
+        if (resource == null)
+        {
+            return NotFound(new { message = "Resource not found" });
+        }
+
+        // Toggle status
+        resource.IsBookable = !resource.IsBookable;
+
+        // Save first
+        await _context.SaveChangesAsync();
+
+        // Then broadcast
+        await _hubContext.Clients.All.SendAsync("ReceiveResourceStatusUpdate", new
+        {
+            resourceId = resource.Id,
+            isBookable = resource.IsBookable
+        });
+        Console.WriteLine($"📢 Broadcast sent for resource {resource.Id}, isBookable: {resource.IsBookable}");
+        return Ok(new { message = "Resource status is changed" });
     }
 
-    // Toggle status
-    resource.IsBookable = !resource.IsBookable;
-
-    // Save first
-    await _context.SaveChangesAsync();
-
-    // Then broadcast
-    await _hubContext.Clients.All.SendAsync("ReceiveResourceStatusUpdate", new
-    {
-        resourceId = resource.Id,
-        isBookable = resource.IsBookable
-    });
-    Console.WriteLine($"📢 Broadcast sent for resource {resource.Id}, isBookable: {resource.IsBookable}");
-    return Ok(new { message = "Resource status is changed" });
-}
-
-
-    
-
-    // [HttpPost("resource/{resourceId}/block-period")]
-    // public async Task<IActionResult> BlockResourceForPeriod(int resourceId, [FromBody]  DTOBlockPeriod blockPeriod)
-    // {
-    //     var resource = await _context.Resources.FindAsync(resourceId);
-    //     if (resource == null)
-    //     {
-    //         return NotFound(new { message = "Resource not found" });
-    //     }
-
-    //     // Create a new booking entry to block the resource for the specified period
-    //     var blockBooking = new Booking
-    //     {
-    //         ResourceId = resourceId,
-    //         UserId = "system-userid", 
-    //         StartTime = blockPeriod.StartDate,
-    //         EndTime = blockPeriod.EndDate
-    //     };
-
-    //     _context.Bookings.Add(blockBooking);
-    //     await _context.SaveChangesAsync();
-
-    //     return Ok(new { message = "Resource blocked for the specified period" });
-    // }
 }

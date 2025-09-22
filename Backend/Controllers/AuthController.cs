@@ -3,7 +3,6 @@ using Backend.DTOs.Auth;
 using Backend.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Backend.DTOs.Auth;
 using API;
 
 
@@ -67,19 +66,5 @@ public class AuthController : ControllerBase
         var Token = _jwtToken.GenerateJwtToken(user, role);
         return Ok(new { Message = "Login successful", user.Id, user.Email, user.UserName, Token,role });
     }
-    
-//     [HttpGet("generate-system-token")]
-//     public IActionResult GenerateSystemToken([FromServices] JwtToken jwtToken)
-//     {
-//         var systemUser = new User
-//         {
-//             Id = "system-user-id",
-//             UserName = "admin",
-//             Email = "admin@example.com"
-//         };
-
-//         var token = jwtToken.GenerateJwtToken(systemUser, "Admin");
-//         return Ok(new { token });
-// }
     
 }
