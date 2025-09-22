@@ -53,7 +53,7 @@ const Resource = () => {
           <FreeSlots resourceId={id} date={selectedDate} />
         )}
       </div>
-
+      
       {/* Other resources thumbnails */}
       <div className="otherResources">
         <h3>Andra resurser</h3>
