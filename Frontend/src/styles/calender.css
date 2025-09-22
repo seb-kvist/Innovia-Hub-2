@@ -3,7 +3,6 @@
   flex-direction: column;
   align-items: center;
 }
-
 .calendar-header {
   display: flex;
   gap: 10px;
@@ -17,7 +16,6 @@
   border: none;
   margin-top: 10px;
 }
-
 .selected-date {
   background: none;
   border: none;
@@ -33,11 +31,10 @@
   margin-top: 8px;
   padding: 10px;
 }
-
 .calendar-full{
   width: 100% !important;
- 
 }
+
 @media (max-width: 610px) {
   .calendar-popup{
     width: 100% !important;

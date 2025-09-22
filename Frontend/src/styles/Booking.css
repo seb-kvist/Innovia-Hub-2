@@ -28,15 +28,17 @@
   border: 0.7px solid rgba(73, 78, 177, 1) !important;
   background-color: rgba(233, 229, 239, 1) !important;
 }
+
 /* Tablet breakpoint */
 @media (max-width: 1142px) {
   .bookingPage {
     margin: 0rem 1.5rem;
   }
-  .bookingDescription .formBtn{
+  .bookingDescription .formBtn {
     min-width: 200px;
   }
 }
+
 @media (max-width: 825px) {
   .recourceImgAndDate {
     flex-wrap: wrap;
@@ -48,7 +50,7 @@
   .bookingDescription p {
     width: 100%;
   }
-  .bookingDescription .formBtn{
+  .bookingDescription .formBtn {
     min-width: 230px;
   }
 }
