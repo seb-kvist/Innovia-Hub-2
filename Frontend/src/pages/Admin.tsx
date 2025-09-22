@@ -3,6 +3,9 @@ import "../styles/Admin.css";
 import BookingsTab from "../components/BookingsTab";
 import UsersTab from "../components/UsersTab";
 import ResourcesTab from "../components/ResourcesTab";
+import { connection } from "../signalRConnection";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 interface AdminProps {
   token: string;
@@ -22,8 +25,51 @@ const Admin: React.FC<AdminProps> = ({ token }) => {
     };
   }, []);
 
+  useEffect(() => {
+    const handler = (update: any) => {
+      toast.info(
+        `en ${update.resourceName} har blivit bokad på ${update.date} under ${update.timeSlot}`
+      );
+      console.log(update);
+    };
+    connection.on("ReceiveBookingUpdate", handler);
+    return () => {
+      connection.off("ReceiveBookingUpdate", handler);
+    };
+  }, []);
+
+  useEffect(() => {
+    const handler = (update: any) => {
+      toast.info(
+        `en ${update.resourceName} har blivit Avbokad på ${update.date} under ${update.timeSlot}`
+      );
+      console.log(update);
+    };
+    connection.on("ReceiveDeleteBookingUpdate", handler);
+    return () => {
+      connection.off("ReceiveDeleteBookingUpdate", handler);
+    };
+  }, []);
+
+  if (!token) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <div className="dashboard">
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
+
       <div className="adminHeaderHolder">
         <header className="header">
           <div>

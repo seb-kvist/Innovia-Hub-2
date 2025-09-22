@@ -12,15 +12,26 @@ import ProtectedRoute from "./components/protectedRoute";
 import { useEffect, useState } from "react";
 
 function App() {
-  // In App.tsx or similar
   const [token, setToken] = useState<string | null>(null);
-
+  const [isTokenLoading, setIsTokenLoading] = useState(true);
   useEffect(() => {
-    const storedToken = localStorage.getItem("token");
-    if (storedToken) {
-      setToken(storedToken);
-    }
+    const loadToken = async () => {
+      try {
+        const storedToken = localStorage.getItem("token");
+        if (storedToken) {
+          setToken(storedToken);
+        }
+      } catch (error) {
+        console.error("Error loading token:", error);
+        localStorage.removeItem("token");
+      }
+      setIsTokenLoading(false);
+    };
+    loadToken();
   }, []);
+  if (isTokenLoading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <Routes>
