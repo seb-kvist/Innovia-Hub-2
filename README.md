@@ -57,6 +57,7 @@ Backend startar på `http://localhost:5022` (API-bas: `http://localhost:5022/api
 Notera:
 - Projektet seedar data och en admin-användare vid första körningen (se `Services/DbSeeder.cs`).
 - Standard-admin skapas med: användarnamn `admin`, lösenord `Admin@123`, roll `admin`.
+- Du kan inte bli admin när du registrerar dig. För att logga in som admin, använd e-postadressen `admin@example.com` och lösenordordet `Admin@123`
 - SignalR hub körs på `/bookingHub`.
 - Databasanslutning styrs av `ConnectionStrings:DefaultConnection` i `Backend/appsettings.json`.
   - Du kan byta port/användare/lösen här eller via user secrets/ miljövariabler.
