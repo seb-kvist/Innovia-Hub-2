@@ -9,6 +9,7 @@ import Resource from "./pages/Resource";
 import Layout from "./pages/Layout"; // "ram" med Header + Footer
 import Login from "./pages/Login";
 import ProtectedRoute from "./components/protectedRoute";
+import ChatBot from "./components/ChatBot";
 import { useEffect, useState } from "react";
 
 function App() {

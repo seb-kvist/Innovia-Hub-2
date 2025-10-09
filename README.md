@@ -101,3 +101,30 @@ Frontend startar på `http://localhost:5173`
 - Databasanslutning misslyckas:
   - Verifiera att MySQL kör på port `3307` eller uppdatera `appsettings.json` till din port.
   - Kontrollera användare/lösenord och att databasen finns/kan skapas.
+
+
+## CHATBOT - Jarvis
+
+Chatboten använder sig av en ChatGpt-modell (gpt-4.1).
+HTTP-klient (IHttpClientFactory) används för att kommunicera med OpenAi:s API.
+
+För att kunna använda Chatbotten behövs en API-nyckel från OpenAI som ska ligga i en .env-fil:
+DB_HOST= !HOST!
+DB_PORT=3306
+DB_USER=tester
+DB_PASSWORD= !Lösenord!
+DB_NAME=innoviahub
+OPEN_API_KEY="Din API-nyckel"
+
+- ChatController.cs 
+  - ChatController.cs har en POST-endpoint /api/Chat
+  - Tar emot frågor från användaren och skickar den till OpenAI:s API
+  - Den hanterar historik genom att inkludera meddelanden i Input-fältet
+  - Returnerar svaret från OpenAI till frontend
+
+
+- ChatBot.tsx
+  - messages håller koversationens historik
+  - question håller användarens aktuella fråga
+  - API anrop skickar användarens fråga till backend via fetch
+  - meddelanden visar koversationer mellan användaren och chatboten

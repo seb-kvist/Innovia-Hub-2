@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import ChatBot from "../components/ChatBot";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 
@@ -39,6 +40,7 @@ const Layout: React.FC = () => {
       <main>
         {/* Här visas den route du går till */}
         <Outlet />
+        <ChatBot />
       </main>
       {/* Footer visas på alla sidor */}
       <Footer />
