@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Data.Common;
 using System.Collections.Generic;
+using System.Net.Http.Headers;
 
 using DotNetEnv;
 using Microsoft.AspNetCore.Builder;
@@ -29,6 +30,15 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddControllers();
 builder.Services.AddSignalR();
 
+builder.Services.AddHttpClient("openai", client =>
+{
+    client.BaseAddress = new Uri("https://api.openai.com/v1/");
+    var apiKey = Environment.GetEnvironmentVariable("OPEN_API_KEY");
+
+    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", apiKey);
+    client.DefaultRequestHeaders.Accept.ParseAdd("application/json");
+});
+
 
 builder.Services.AddIdentity<User, IdentityRole>(options =>
     {
@@ -48,7 +58,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     if (!string.IsNullOrEmpty(envHost))
     {
         var host = envHost;
-        var port = Environment.GetEnvironmentVariable("DB_PORT") ?? "3306";
+        var port = Environment.GetEnvironmentVariable("DB_PORT") ?? "3307";
         var user = Environment.GetEnvironmentVariable("DB_USER") ?? "";
         var pass = Environment.GetEnvironmentVariable("DB_PASSWORD") ?? "";
         var db = Environment.GetEnvironmentVariable("DB_NAME") ?? "";
